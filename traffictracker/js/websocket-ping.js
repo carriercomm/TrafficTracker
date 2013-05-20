@@ -1,5 +1,5 @@
-var connection = new WebSocket('ws://html5rocks.websocket.org/echo', ['soap', 'xmpp']);
-var output;
+var connection = new WebSocket('ws://localhost:8080', ['soap', 'xmpp']);
+var outputPing;
 
 function init() {
 	output = document.getElementById("output");
@@ -11,7 +11,7 @@ function pingServer() {
 }
 // When the connection is open, send some data to the server
 connection.onopen = function () {
-  connection.send('Ping -c 3 google.fi'); // Send the message 'Ping' to the server
+  connection.send('Ping'); // Send the message 'Ping' to the server
 };
 
 // Log errors
