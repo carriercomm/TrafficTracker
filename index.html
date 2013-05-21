@@ -18,19 +18,19 @@
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
-
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="../assets/js/html5shiv.js"></script>
     <![endif]-->
 
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
+
+   <script>
+    
+
+
+  
+  </script>
 
   <body>
     <!-- Navigation -->
@@ -54,27 +54,33 @@
       </div>
     </div>
 
+
+
     <div class="container">
 
       <h1>TrafficTracker</h1>
       <p>This site is created to show outgoing traffic from <strike>PFsense</strike> Debian, or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Maps Api</a>. <br> This site uses <a href="http://twitter.github.io/bootstrap/">Bootstrap</a> as a template.</p>
 
 
-
-      <h2>Tasklist</h2>
-      <code>  Git established! </code>
-      <p>Google Maps Api key obtained</p>
-        <code>AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q</code>
+      <h3>Tasklist</h3>
+      <ul>
+        <li> Git established! - <a href="https://github.com/iuuso/TrafficTracker">TrafficTracker on Github</a></li>
+        <li> Obtain Google Maps Api key - done</li>
+          <code>AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q</code>
+      </ul>
 
       <h1>Playground</h1>
       <p>This is a place where strange this happen. Ye be warned! </p>
 
       <h2>Websocket functionality test #1</h2>
+      <p>This section connects to Websocket.coms echo server and greets it.</p>
       <div id="output"></div>
 
       <h2>Websocket functionality test #2</h2>
-      <div id="outputPing"></div>
-      <div class="map-canvas">
+      <div id="socket"></div>
+
+      <h2>Google Maps canvas</h2>
+      <div class="map-canvas"> <!-- Div id for Google Maps -->
       </div>
       
 
@@ -87,9 +93,13 @@
 
     <script src="js/google/simplemap.js"></script>
     <script src="js/websocket_test.js"></script>
-    <script src="js/websocket-ping.js"></script>
+    <!-- <script src="js/websocket_ping.js"></script> -->
+    <script src="js/websocket.client.js"></script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q&sensor=false"></script>
+
+</script>
+
 
   </body>
 </html>
