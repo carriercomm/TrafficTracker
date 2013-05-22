@@ -24,10 +24,22 @@
     <![endif]-->
 
   </head>
-
-   <script>
+    <script>
     
-
+    window.addEventListener("load", function(event) {
+      //New websocket to 127.0.0.1:8080 using dummy-protocol
+      socket = new WebSocket('ws://127.0.0.1:8080', "dummy-protocol");
+      //Eventlistener for socket open 
+      socket.addEventListener("open", function(event) {
+          //You now have a connection. start your stuff.
+          socket.send('');
+      });
+      //Eventlistener for incoming messages.
+      socket.addEventListener("message", function(event) {
+         //Message from server. handle it!!!!
+         alert('We got message: '+event.data);
+      });
+    });  
 
   
   </script>
@@ -94,7 +106,7 @@
     <script src="js/google/simplemap.js"></script>
     <script src="js/websocket_test.js"></script>
     <!-- <script src="js/websocket_ping.js"></script> -->
-    <script src="js/websocket.client.js"></script>
+    <!-- <script src="js/websocket.client.js"></script> -->
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q&sensor=false"></script>
 

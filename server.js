@@ -1,41 +1,36 @@
-
-var http = require('http');
-var fs=require('fs');
-var url = require('url');
-var path = require('path');
-var sys = require('sys');
-
-//Create HTTP-server
-var server = http.createServer(function(request, response) {
-            console.log((new Date()) + ' Received request for ' + request.url + ' url');
-
-            var my_path = url.parse(request.url).pathname;
-            var full_path = path.join(process.cwd(),my_path);
-            path.exists(full_path,function(exists){
-                if(!exists){
-                    response.writeHeader(404, {"Content-Type": "text/plain"});  
-                    response.write("404 Not Found\n");  
-                    response.end();
-                }
-                else{
-                    filesys.readFile(full_path, "binary", function(err, file) {  
-                        if(err) {  
-                            response.writeHeader(500, {"Content-Type": "text/plain"});  
-                            response.write(err + "\n");  
-                            response.end();  
-               
-                        }  
-                        else{
-                            response.writeHeader(200);  
-                            response.write(file, "binary");  
-                            response.end();
-                        }
-                     
-                    });
-                }
-        });
-});    
-
+var sys = require("sys"),
+http = require("http"),
+path = require("path"),
+url = require("url"),
+filesys = require("fs");
+var server = http.createServer(function(request,response){
+	console.log(new Date() + ' Received request for ' + request.url);
+	var my_path = url.parse(request.url).pathname;
+	var full_path = path.join(process.cwd(),my_path);
+	path.exists(full_path,function(exists){
+		if(!exists){
+			response.writeHeader(404, {"Content-Type": "text/plain"});  
+			response.write("404 Not Found\n");  
+			response.end();
+		}
+		else{
+			filesys.readFile(full_path, "binary", function(err, file) {  
+			     if(err) {  
+			         response.writeHeader(500, {"Content-Type": "text/plain"});  
+			         response.write(err + "\n");  
+			         response.end();  
+			   
+			     }  
+				 else{
+					response.writeHeader(200);  
+			        response.write(file, "binary");  
+			        response.end();
+				}
+					 
+			});
+		}
+	});
+})	
 
 //Set server to listen port 8080
 server.listen(8080, function(err) {
@@ -66,6 +61,3 @@ wsServer.on('request', function(request) {
 wsServer.on('close',function(){
 	console.log('Connection closed.')
 })
-
-
-
