@@ -1,10 +1,7 @@
 /*****************************************************************************/
+// Initialize a websocket connection to server
 
 var websocket;
-
-
-/*****************************************************************************/
-
 
 function connect() {
   //open socket
@@ -16,7 +13,7 @@ function connect() {
     websocket.onopen = onOpen;
     websocket.onclose = onClose;
 
-    websocket.onmessage = onMessage;
+    websocket.onmessage = receiveOutput;
     websocket.onerror = onError;
     } 
     else {
@@ -27,7 +24,7 @@ function connect() {
 
 
 /*****************************************************************************/
-
+// Server status
 
 
 var serverStatus; // Variable for server status (Connected/Disconnected/Error)
@@ -54,11 +51,10 @@ function onError(evt){
 
 
 
+/*****************************************************************************/
+// Send server a command a receive output
 
-/***********************SEND SYSTEM CALL TO NODE.JS**********************************************/
-
-
-var outputCommand;
+var outputCommand; // Variable for command sent to server
 
 function sendCommand() {
 
@@ -68,24 +64,20 @@ function sendCommand() {
   websocket.send(command);
 
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
-
-
-  var pre = document.createElement("p");
-  pre.style.wordWrap = "break-word"; 
-  pre.innerHTML = command; output.appendChild(pre);
-
-  outputCommand.innerHTML += "<p class='text-success'>RESPONSE: " + evt.data+ "</p>"; 
-  websocket.close(); 
-
 }
-/*
-function sendMessage(){
-  //get message from text field
-  //txtMessage = document.getElementById("txtMessage");
-  //message = txtMessage.value
-  message = "Test message";
-  websocket.send(message);
-  serverStatus.innerHTML += "<p>MESSAGE SENT: " + message + "</p>";
-  sendCommand();
-  lineSpace();
-} // end sendMessage */
+
+function receiveOutput(evt){
+    //called on receipt of message
+    outputCommand.innerHTML += "<p class = 'text-success'>RESPONSE: " + evt.data + "</p>";
+} // end onMessage
+
+
+
+
+/*****************************************************************************/
+
+
+
+
+
+
