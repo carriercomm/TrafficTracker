@@ -1,0 +1,34 @@
+#section
+{
+	margin: 0;
+	padding: 0;
+	height: 500px;
+}
+
+#map-canvas 
+{
+	margin: 0;
+	padding: 0;
+	height: 90%;
+}
+
+#output
+{
+	margin: 0;
+	padding: 0;
+}
+
+#outputLocal
+{
+	margin: 0;
+	padding: 0;
+	width: 80%;
+}
+
+.error {
+	color: red;
+}
+
+.response {
+	color: blue;
+}

@@ -10,7 +10,7 @@
 
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/map.css" rel="stylesheet">
+    <link href="css/traffictracker.default.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -24,27 +24,8 @@
     <![endif]-->
 
   </head>
-    <script>
-    
-    window.addEventListener("load", function(event) {
-      //New websocket to 127.0.0.1:8080 using dummy-protocol
-      socket = new WebSocket('ws://127.0.0.1:8080', "dummy-protocol");
-      //Eventlistener for socket open 
-      socket.addEventListener("open", function(event) {
-          //You now have a connection. start your stuff.
-          socket.send('');
-      });
-      //Eventlistener for incoming messages.
-      socket.addEventListener("message", function(event) {
-         //Message from server. handle it!!!!
-         alert('We got message: '+event.data);
-      });
-    });  
 
-  
-  </script>
-
-  <body>
+  <body onload = 'init()'>
     <!-- Navigation -->
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -73,6 +54,8 @@
       <h1>TrafficTracker</h1>
       <p>This site is created to show outgoing traffic from <strike>PFsense</strike> Debian, or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Maps Api</a>. <br> This site uses <a href="http://twitter.github.io/bootstrap/">Bootstrap</a> as a template.</p>
 
+      <p>Request from browser to start tshark -> websocket + js -> Node.js "Start tshark" -> tshark -> output via Node.js + websocket -> js -> geolocation lookup with <a href="http://www.geoplugin.com">Geoplugin</a> -> input location data do Google Maps (latitude, longitude) </p>
+
 
       <h3>Tasklist</h3>
       <ul>
@@ -81,20 +64,28 @@
           <code>AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q</code>
       </ul>
 
-      <h1>Playground</h1>
-      <p>This is a place where strange this happen. Ye be warned! </p>
+      <!-- Google Maps stuff -->
+      <h1>Google Maps canvas</h1>
+       <div id="section">
 
-      <h2>Websocket functionality test #1</h2>
-      <p>This section connects to Websocket.coms echo server and greets it.</p>
-      <div id="output"></div>
+        <div id="map-canvas"/>
 
-      <h2>Websocket functionality test #2</h2>
-      <div id="socket"></div>
-
-      <h2>Google Maps canvas</h2>
-      <div class="map-canvas"> <!-- Div id for Google Maps -->
       </div>
-      
+      <!-- Google stuff ends -->
+
+
+      <h1>Websocket</h1>
+      <div id="section">
+
+      <h2>Web Socket Echo Chamber</h2>
+    
+        <pre id="outputLocal"/>
+        
+
+
+      </div> <!-- End section -->
+
+
 
 
     </div> <!-- /container -->
@@ -102,16 +93,14 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-
-    <script src="js/google/simplemap.js"></script>
-    <script src="js/websocket_test.js"></script>
+    <!-- <script src="js/websocket_test.js"></script> -->
     <!-- <script src="js/websocket_ping.js"></script> -->
     <!-- <script src="js/websocket.client.js"></script> -->
+    <script src="js/websocket.client.ping.js"></script>
 
+    <!-- Google scripts -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q&sensor=false"></script>
-
-</script>
-
+    <script src="js/google.map.simple.js"></script>
 
   </body>
 </html>

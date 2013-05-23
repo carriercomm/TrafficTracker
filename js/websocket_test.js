@@ -41,4 +41,4 @@ function writeToScreen(message) {
 	pre.innerHTML = message; output.appendChild(pre);
 }  
 
-window.addEventListener("load", init, false);
+window.addEventListener("load", init, true);

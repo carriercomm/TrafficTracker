@@ -1,12 +1,16 @@
-var sys = require("sys"),
-http = require("http"),
-path = require("path"),
-url = require("url"),
-filesys = require("fs");
+var sys = require("sys");
+var http = require("http");
+var path = require("path");
+var url = require("url");
+var filesys = require("fs");
+var execSync = require("execSync");
+
+// Create dynamic http-server
 var server = http.createServer(function(request,response){
 	console.log(new Date() + ' Received request for ' + request.url);
 	var my_path = url.parse(request.url).pathname;
 	var full_path = path.join(process.cwd(),my_path);
+
 	path.exists(full_path,function(exists){
 		if(!exists){
 			response.writeHeader(404, {"Content-Type": "text/plain"});  
@@ -48,16 +52,25 @@ wsServer = new WebSocketServer({
 
 //Eventlistener for wsServer request
 wsServer.on('request', function(request) {
-	//We create connections for requests using protocol dummy-protocol
-    connection = request.accept('dummy-protocol', request.origin);
+    connection = request.accept("echo-protocol", request.origin)
+    console.log((new Date()) + ' Connection accepted. ');
+
     //Eventlistener for connection message
     connection.on('message', function(message) {
-    	//You got message. Handle it!!!
-    	console.log('we got message'+message)
-    	connection.sendUTF('Hello world')
+
+    	//Checking the type of message and acting accordingly
+    	if (message.type == 'utf8') {
+    		console.log('Received message: ' + message.utf8Data);
+    		connection.sendUTF(message.utf8Data);
+    	}
+    	else if (message.type === 'binary') {
+        	console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+            connection.sendBytes(message.binaryData);
+        }
+    	
 	})
 })
 //Eventlistener for wsServer close
 wsServer.on('close',function(){
-	console.log('Connection closed.')
+	console.log('Server: Connection closed.')
 })

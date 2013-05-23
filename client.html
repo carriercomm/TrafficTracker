@@ -5,7 +5,7 @@
     
     window.addEventListener("load", function(event) {
       //New websocket to 127.0.0.1:8080 using dummy-protocol
-      socket = new WebSocket('ws://127.0.0.1:8080', "dummy-protocol");
+      socket = new WebSocket('ws://127.0.0.1:8080', "echo-protocol");
       //Eventlistener for socket open 
       socket.addEventListener("open", function(event) {
           //You now have a connection. start your stuff.
