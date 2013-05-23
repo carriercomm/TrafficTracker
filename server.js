@@ -61,7 +61,14 @@ wsServer.on('request', function(request) {
     	//Checking the type of message and acting accordingly
     	if (message.type == 'utf8') {
     		console.log('Received message: ' + message.utf8Data);
-    		connection.sendUTF(message.utf8Data);
+
+    		// Execute the command from client
+    		var command = execSync.stdout(message.utf8Data);
+
+    		// Print the command to console 
+    		console.log('Received command, output:' + command);
+
+    		connection.sendUTF(command);
     	}
     	else if (message.type === 'binary') {
         	console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
@@ -69,6 +76,7 @@ wsServer.on('request', function(request) {
         }
     	
 	})
+
 })
 //Eventlistener for wsServer close
 wsServer.on('close',function(){

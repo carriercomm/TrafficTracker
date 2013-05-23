@@ -52,9 +52,9 @@
     <div class="container">
 
       <h1>TrafficTracker</h1>
-      <p>This site is created to show outgoing traffic from <strike>PFsense</strike> Debian, or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Maps Api</a>. <br> This site uses <a href="http://twitter.github.io/bootstrap/">Bootstrap</a> as a template.</p>
+      <p class="lead">This site is created to show outgoing traffic from <strike>PFsense</strike> Debian, or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Maps Api</a>. <br> This site uses <a href="http://twitter.github.io/bootstrap/">Bootstrap</a> as a template.</p>
 
-      <p>Request from browser to start tshark -> websocket + js -> Node.js "Start tshark" -> tshark -> output via Node.js + websocket -> js -> geolocation lookup with <a href="http://www.geoplugin.com">Geoplugin</a> -> input location data do Google Maps (latitude, longitude) </p>
+      <p class="prettyprint">Request from browser to start tshark -> websocket + js -> Node.js "Start tshark" -> tshark -> output via Node.js + websocket -> js -> geolocation lookup with <a href="http://www.geoplugin.com">Geoplugin</a> -> input location data do Google Maps (latitude, longitude) </p>
 
 
       <h3>Tasklist</h3>
@@ -66,26 +66,22 @@
 
       <!-- Google Maps stuff -->
       <h1>Google Maps canvas</h1>
-       <div id="section">
-
+      <div id="section">
         <div id="map-canvas"/>
-
       </div>
-      <!-- Google stuff ends -->
 
 
       <h1>Websocket</h1>
-      <div id="section">
-
-      <h2>Web Socket Echo Chamber</h2>
     
-        <pre id="outputLocal"/>
-        
+          <fieldset>
+            <legend>Start tracking</legend>
+            <pre> Server state: 
+              <p id="serverStatus"/>
+            </pre>
+            <button class="btn" onclick="sendCommand()">Initialize</button>
+          </fieldset>
 
-
-      </div> <!-- End section -->
-
-
+        <div id="outputCommand"/>
 
 
     </div> <!-- /container -->
@@ -93,10 +89,8 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <!-- <script src="js/websocket_test.js"></script> -->
-    <!-- <script src="js/websocket_ping.js"></script> -->
-    <!-- <script src="js/websocket.client.js"></script> -->
-    <script src="js/websocket.client.ping.js"></script>
+    <script src="js/google-code-prettify/prettify.js"></script>
+    <script src="js/websocket.js"></script>
 
     <!-- Google scripts -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q&sensor=false"></script>

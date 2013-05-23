@@ -18,11 +18,46 @@
 	padding: 0;
 }
 
-#outputLocal
+#outputConnect
 {
 	margin: 0;
 	padding: 0;
-	width: 80%;
+	min-width: 40%;
+	max-height: 200px;
+}
+
+#outputCommand
+{
+	margin: 0;
+	padding: 0;
+}
+
+#server
+{
+	margin: 0;
+	padding: 0;
+}
+
+.smallTitle
+{
+	font-style: bold;
+	background: black;
+
+}
+
+.serverStatus
+{
+	background: gray;
+	float: none;
+}
+
+.connected
+{
+	color: blue;
+}
+.disconnected
+{
+	color: red;
 }
 
 .error {
