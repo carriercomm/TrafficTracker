@@ -5,6 +5,13 @@ var url = require("url");
 var filesys = require("fs");
 var execSync = require("execSync");
 
+var spawn = require('child_process').spawn;
+
+var asyncblock = require('asyncblock');
+
+/*****************************************************************************/
+
+
 // Create dynamic http-server
 var server = http.createServer(function(request,response){
 	console.log(new Date() + ' Received request for ' + request.url);
@@ -41,6 +48,10 @@ server.listen(8080, function(err) {
 		console.log('Server listening port '+'8080')
 });
 
+
+
+/*****************************************************************************/
+
 //Require node-websocket server implementation
 var WebSocketServer = require('websocket').server;
 
@@ -59,16 +70,24 @@ wsServer.on('request', function(request) {
     connection.on('message', function(message) {
 
     	//Checking the type of message and acting accordingly
-    	if (message.type == 'utf8') {
-    		console.log('Received message: ' + message.utf8Data);
+    	if (message.type == 'utf8' && message.utf8Data !== undefined ) {
+    		console.log((new Date()) + ' Received message: ' + message.utf8Data);
 
     		// Execute the command from client
-    		var command = execSync.stdout(message.utf8Data);
+    		var command = message.utf8Data
+    		
+    		var cmd = command.split(' ')[0]
+    		
+    		var commandArray = (message.utf8Data).split(' ')
+    		var cmd=commandArray[0]
+    		var args=commandArray.slice(1, commandArray.length)
 
-    		// Print the command to console 
-    		console.log('Received command, output:' + command);
+    		var command = spawn(cmd, args);
+    		command.stdout.on('data', function(data) {
+    			console.log(data.toString()); 
+    			connection.sendUTF(data.toString())
+    		})
 
-    		connection.sendUTF(command);
     	}
     	else if (message.type === 'binary') {
         	console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
@@ -82,3 +101,25 @@ wsServer.on('request', function(request) {
 wsServer.on('close',function(){
 	console.log('Server: Connection closed.')
 })
+
+
+/*****************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

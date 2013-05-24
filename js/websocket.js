@@ -32,6 +32,7 @@ var serverStatus; // Variable for server status (Connected/Disconnected/Error)
 function init(){
   serverStatus = document.getElementById("serverStatus");
   connect();
+  geoplugin_request();
 } // end init
 
 function onOpen(evt){
@@ -60,24 +61,18 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  command = "uptime";
+  command = "ping -c 4 google.fi";
   websocket.send(command);
 
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
 }
 
 function receiveOutput(evt){
-    //called on receipt of message
-    outputCommand.innerHTML += "<p class = 'text-success'>RESPONSE: " + evt.data + "</p>";
+    //called on receival of message
+    outputCommand.innerHTML += "<p class = 'text-success'>" + evt.data + "</p>";
 } // end onMessage
 
 
 
 
 /*****************************************************************************/
-
-
-
-
-
-

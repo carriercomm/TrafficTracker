@@ -1,0 +1,21 @@
+<html>
+ <head>
+  <script src="http://maps.google.com/maps?file=api&v=3&key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q" type="text/javascript"></script>
+  <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
+ 
+  <script type="text/javascript">
+    function load() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map"));
+        map.addControl(new GLargeMapControl());
+        map.addControl(new GMapTypeControl());
+        map.setCenter(new GLatLng(geoplugin_latitude(), geoplugin_longitude()), 12);
+      }
+    }
+  </script>
+ </head>
+ <body>
+   <div id="map" style="width: 500px; height: 300px"></div>
+   <script>load();</script>
+ </body>
+</html>
