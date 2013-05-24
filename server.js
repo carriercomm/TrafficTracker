@@ -64,7 +64,7 @@ wsServer = new WebSocketServer({
 //Eventlistener for wsServer request
 wsServer.on('request', function(request) {
     connection = request.accept("echo-protocol", request.origin)
-    console.log((new Date()) + ' Connection accepted. ');
+    console.log((new Date()) + ' WebSocket connection accepted. ');
 
     //Eventlistener for connection message
     connection.on('message', function(message) {
@@ -76,13 +76,20 @@ wsServer.on('request', function(request) {
     		// Execute the command from client
     		var command = message.utf8Data
     		
+    		// Separate arguments from command
     		var cmd = command.split(' ')[0]
     		
+    		// The basic command
     		var commandArray = (message.utf8Data).split(' ')
+
     		var cmd=commandArray[0]
+
+    		// Command arguments
     		var args=commandArray.slice(1, commandArray.length)
 
+    		// Lets put the arguments and command back together
     		var command = spawn(cmd, args);
+
     		command.stdout.on('data', function(data) {
     			console.log(data.toString()); 
     			connection.sendUTF(data.toString())
@@ -99,7 +106,7 @@ wsServer.on('request', function(request) {
 })
 //Eventlistener for wsServer close
 wsServer.on('close',function(){
-	console.log('Server: Connection closed.')
+	console.log((new Date()) + ' WbSocket connection closed.');
 })
 
 

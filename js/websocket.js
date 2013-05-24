@@ -7,7 +7,6 @@ function connect() {
   //open socket
   if ("WebSocket" in window){
     websocket = new WebSocket("ws://127.0.0.1:8080/", "echo-protocol");
-    serverStatus.innerHTML = "Websocket.js : connecting..." ;
   
     //attach event handlers
     websocket.onopen = onOpen;
@@ -31,8 +30,7 @@ var serverStatus; // Variable for server status (Connected/Disconnected/Error)
 
 function init(){
   serverStatus = document.getElementById("serverStatus");
-  connect();
-  geoplugin_request();
+  serverStatus.innerHTML = "<p class='text-info'>NOT CONNECTED</p>";
 } // end init
 
 function onOpen(evt){
@@ -61,7 +59,7 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  command = "ping -c 4 google.fi";
+  command = "ping -c 3 google.fi";
   websocket.send(command);
 
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
