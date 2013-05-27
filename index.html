@@ -93,7 +93,7 @@
 
           </fieldset>
           
-          <div id="outputCommand"/>
+         <div id="outputCommand"/>
 
       </div> <!-- /section -->
 
@@ -103,7 +103,7 @@
 
       <div id="section">
 
-          <table class="table table-striped table-hover">
+          <table class="table table-striped table-hover table-bordered">
 
             <thead> <!-- Headers for table -->
               <tr>
@@ -111,6 +111,8 @@
                 <th>Source</th>
                 <th>Destination</th>
                 <th>Location</th>
+                <th>Type</th>
+                <th>Port</th>
               </tr>
           </thead> <!-- End of headers -->
 
@@ -120,18 +122,24 @@
               <td>10.20.47.120</td>
               <td>130.231.241.29</td>
               <td>Oulu, Finland</td>
+              <td>HTTP</td>
+              <td>80</td>
             </tr>
             <tr>
               <td>1.006023</td>
               <td>10.20.47.120</td>
               <td>130.231.241.29</td>
               <td>Oulu, Finland</td>
+              <td>SSH</td>
+              <td>22</td>
             </tr>
             <tr>
-              <td>3.001011</td>
-              <td>10.20.47.120</td>
-              <td>130.231.241.29</td>
-             <td>Oulu, Finland</td>
+              <td id="jpacket"></td>
+              <td id="jsourse"></td>
+              <td id="jdestination"></td>
+              <td>Oulu, Finland</td>
+              <td>HTTP</td>
+              <td>80</td>
             </tr>   
 
           </tbody>
@@ -141,12 +149,14 @@
 
       </div> <!-- /section -->
 
+
     </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/websocket.js"></script>
+    <script src="js/json2.js"></script>
 
     <!-- Google scripts -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q&sensor=false"></script>

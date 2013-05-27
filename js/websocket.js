@@ -59,18 +59,53 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  command = "ping -c 3 google.fi";
+  command = "tshark -n -T fields -E separator=, -E quote=d -e frame.number -e ip.src -e ip.dst -c 3 -i en1 src net 10.20.210.225";
+  //command = "ping -c 6 google.fi";
+  //command = "tshark -n -T psml -c 3 -i en1 src net 10.20.210.225"; // XML
   websocket.send(command);
 
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
+
 }
 
 function receiveOutput(evt){
     //called on receival of message
     outputCommand.innerHTML += "<p class = 'text-success'>" + evt.data + "</p>";
+
+    outputxml = evt.data;
+
+    //outputxml.toString();
+
+    JSON.stringify(outputxml);
+
+  
+
+    outputCommand.innerHTML += "<p class = 'text-error'>" + outputxml + "</p>";
+
+
+
+    var splitted = outputxml.split("\n");
+    //var trimmed = str.replace(/^\s+|\s+$/g, '') ;
+    //var sliced = splitted.slice(1,splitted.length)
+
+
+    outputCommand.innerHTML += "<p class = 'text-info'>Splitted: " + splitted + "</p>";
+    //outputCommand.innerHTML += "<p class = 'text-info'>Sliced: " + sliced + "</p>";
+
+
 } // end onMessage
 
 
 
 
-/*****************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
