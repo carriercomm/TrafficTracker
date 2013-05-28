@@ -1,7 +1,10 @@
 /*****************************************************************************/
 // Initialize a websocket connection to server
-
 var websocket;
+var outputxml;
+
+var sampleString = "'1','10.20.215.17','130.231.241.29' '2','10.20.215.17','239.255.255.250' '3','10.20.215.17','224.0.0.251'";
+var patt= new RegExp(sampleString);
 
 function connect() {
   //open socket
@@ -59,9 +62,7 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  command = "tshark -n -T fields -E separator=, -E quote=d -e frame.number -e ip.src -e ip.dst -c 3 -i en1 src net 10.20.210.225";
-  //command = "ping -c 6 google.fi";
-  //command = "tshark -n -T psml -c 3 -i en1 src net 10.20.210.225"; // XML
+  command = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 1 -i en1 src host 10.20.215.17";
   websocket.send(command);
 
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
@@ -70,34 +71,80 @@ function sendCommand() {
 
 function receiveOutput(evt){
     //called on receival of message
-    outputCommand.innerHTML += "<p class = 'text-success'>" + evt.data + "</p>";
+
+    // Table creation
+
+    var table = document.getElementById("outputTable");
+    var body = document.createElement('tbody');
 
     outputxml = evt.data;
+    outputxml.toString();
+    
+    // First let's split the data for per packets
+    var packet = outputxml.split(/\n/)
 
-    //outputxml.toString();
+      // Print packets line by line
+      for (var i=0;i<packet.length-1;i++) {
+        var pDetails = packet[i].split(",") // Split every packet separately
 
-    JSON.stringify(outputxml);
+        // pDetails[0] == Frame number
+        // pDetails[1] == Source ip
+        // pDetails[2] == Destination ip
 
-  
+        // Create row for the table
+        var row = document.createElement("tr");
 
-    outputCommand.innerHTML += "<p class = 'text-error'>" + outputxml + "</p>";
+          // Create cell for packet number
+          var numberCell = document.createElement("th");
+          var numberCelltext = document.createTextNode(pDetails[0]);
+          numberCell.appendChild(numberCelltext);
+
+          // Create cell for the source ip
+          var sourceCell = document.createElement("th");
+          var sourceCelltext = document.createTextNode(pDetails[1]);
+          sourceCell.appendChild(sourceCelltext);
+
+          // Create sell for the destination ip
+          var destinationCell = document.createElement("th");
+          var destinationCelltext = document.createTextNode(pDetails[2]);
+          destinationCell.appendChild(destinationCelltext);
+
+          // Cell for location (unfinished)
+          var locationCell = document.createElement("th");
+          var geoplugin = "http://www.geoplugin.net/json.gp?ip=";
+          window.alert(geoplugin);
+
+          var track = geoplugin + pDetails[2];
+          window.alert(track);
+
+          var script = document.createElement('script');
+          script.type= ' text/javascript';
+          script.src = track;
+          document.getElementsByTagName("body")[0].appendChild(script);
+          window.alert(script);
+
+          // Tässä vaiheessa on oikea toteutus ja tuloksena on JSON
+          // Miten tilaat jsonista oikean tiedon?
+          // Onko kysely suoritetty?
+
+          
+
+          var locationCelltext = document.createTextNode(track);
+          locationCell.appendChild(locationCelltext);
 
 
+        row.appendChild(numberCell);
+        row.appendChild(sourceCell);
+        row.appendChild(destinationCell);
+        row.appendChild(locationCell);
 
-    var splitted = outputxml.split("\n");
-    //var trimmed = str.replace(/^\s+|\s+$/g, '') ;
-    //var sliced = splitted.slice(1,splitted.length)
+        body.appendChild(row);
 
+      }
 
-    outputCommand.innerHTML += "<p class = 'text-info'>Splitted: " + splitted + "</p>";
-    //outputCommand.innerHTML += "<p class = 'text-info'>Sliced: " + sliced + "</p>";
-
+    table.appendChild(body);
 
 } // end onMessage
-
-
-
-
 
 
 

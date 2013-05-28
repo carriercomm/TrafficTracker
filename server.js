@@ -71,24 +71,21 @@ wsServer.on('request', function(request) {
 
     	//Checking the type of message and acting accordingly
     	if (message.type == 'utf8' && message.utf8Data !== undefined ) {
-    		console.log((new Date()) + ' Received message: ' + message.utf8Data);
+    		console.log((new Date()) + ' Received command: ' + message.utf8Data);
 
     		// Execute the command from client
     		var command = message.utf8Data
     		
     		// Separate arguments from command
     		var cmd = command.split(' ')[0]
-            console.log('Received command: ' + cmd);
     		
     		// The basic command
     		var commandArray = (message.utf8Data).split(' ')
-            console.log('Received command:' + commandArray);
 
     		var cmd=commandArray[0]
 
     		// Command arguments
     		var args=commandArray.slice(1, commandArray.length)
-            console.log('Command arguments: ' + args ) ;
 
     		// Lets put the arguments and command back together
     		var command = spawn(cmd, args);

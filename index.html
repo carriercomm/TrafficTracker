@@ -50,9 +50,11 @@
 
 
     <div class="container">
+      <div class="hero-unit">
 
       <h1>TrafficTracker</h1>
-      <p class="lead">This site is created to show outgoing traffic from <strike>PFsense</strike> Debian, or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Maps Api</a>. <br> This site uses <a href="http://twitter.github.io/bootstrap/">Bootstrap</a> as a template.</p>
+      <p class="lead">This site is created to show outgoing traffic from <strike>PFsense</strike> Debian, or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Maps Api</a>.
+      </div> <br> This site uses <a href="http://twitter.github.io/bootstrap/">Bootstrap</a> as a template.</p>
 
       <p class="prettyprint">Request from browser to start tshark -> websocket + js -> Node.js "Start tshark" -> tshark -> output via Node.js + websocket -> js -> geolocation lookup with <a href="http://www.geoplugin.com">Geoplugin</a> -> input location data do Google Maps (latitude, longitude) </p>
 
@@ -78,7 +80,7 @@
           <fieldset>
 
             <legend>Start tracking</legend>
-            <dl class="dl-horizontal">
+            <dl class="dl-horizontal well well-small">
               <dt>Server state:</dt> 
               <dd id="serverStatus"></dd>
             </dl>
@@ -97,13 +99,9 @@
 
       </div> <!-- /section -->
 
-      <h1>Playground</h1>
-
-      <h2>Sniffing output sample table </h2>
-
       <div id="section">
 
-          <table class="table table-striped table-hover table-bordered">
+          <table id="outputTable" class="table table-striped table-hover table-bordered table-condensed">
 
             <thead> <!-- Headers for table -->
               <tr>
@@ -111,38 +109,8 @@
                 <th>Source</th>
                 <th>Destination</th>
                 <th>Location</th>
-                <th>Type</th>
-                <th>Port</th>
               </tr>
           </thead> <!-- End of headers -->
-
-          <tbody>
-            <tr>
-              <td>0.000000</td>
-              <td>10.20.47.120</td>
-              <td>130.231.241.29</td>
-              <td>Oulu, Finland</td>
-              <td>HTTP</td>
-              <td>80</td>
-            </tr>
-            <tr>
-              <td>1.006023</td>
-              <td>10.20.47.120</td>
-              <td>130.231.241.29</td>
-              <td>Oulu, Finland</td>
-              <td>SSH</td>
-              <td>22</td>
-            </tr>
-            <tr>
-              <td id="jpacket"></td>
-              <td id="jsourse"></td>
-              <td id="jdestination"></td>
-              <td>Oulu, Finland</td>
-              <td>HTTP</td>
-              <td>80</td>
-            </tr>   
-
-          </tbody>
 
         </table> <!-- /table -->
 
@@ -151,19 +119,15 @@
 
 
     </div> <!-- /container -->
-
+  </div>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/websocket.js"></script>
-    <script src="js/json2.js"></script>
 
     <!-- Google scripts -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBn5KQFrOoyxYgSkGjwsOQNSUyNdO8_0Q&sensor=false"></script>
     <script src="js/google.map.simple.js"></script>
-
-    <!-- geoPlugin script-->
-    <script language="JavaScript" src="http://www.geoplugin.net/javascript.gp" type="text/javascript"></script>
 
   </body>
 </html>
