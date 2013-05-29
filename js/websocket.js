@@ -3,9 +3,6 @@
 var websocket;
 var outputxml;
 
-var sampleString = "'1','10.20.215.17','130.231.241.29' '2','10.20.215.17','239.255.255.250' '3','10.20.215.17','224.0.0.251'";
-var patt= new RegExp(sampleString);
-
 function connect() {
   //open socket
   if ("WebSocket" in window){
@@ -62,14 +59,15 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  command = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 8 -i en1 src host 10.20.211.179";
+  commandBase = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 5 -i en1 src host ";
+  ipAddress = "10.20.211.179"
+  command = commandBase + ipAddress;
   websocket.send(command);
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
 
 }
 
 function receiveOutput(evt){
-    //called on receival of message
 
     // Table creation
 
@@ -84,6 +82,7 @@ function receiveOutput(evt){
 
       // Print packets line by line
       for (var i=0;i<packet.length-1;i++) {
+
         var pDetails = packet[i].split(",") // Split every packet separately
 
         // pDetails[0] == Frame number
@@ -92,6 +91,9 @@ function receiveOutput(evt){
 
         // Create row for the table
         var row = document.createElement("tr");
+        row.style.fontWeight = "bold";
+
+
 
           // Create cell for packet number
           var numberCell = document.createElement("th");
@@ -108,40 +110,57 @@ function receiveOutput(evt){
           var destinationCelltext = document.createTextNode(pDetails[2]);
           destinationCell.appendChild(destinationCelltext);
 
-            // Cell for location
-            var locationCell = document.createElement("th");
-        
-            // This is a WorldIP free geo-location database.
-            var freegeoip = "http://freegeoip.net/json/";
 
-            // Attach outgoing ip to WorldIP json
-            var url = freegeoip + pDetails[2];
+          // Cell for City, Country
+          var locationCell = document.createElement("th");
+          var locationCelltext = document.createTextNode("F-F-Fetching...");
+          locationCell.appendChild(locationCelltext);
 
-            // http://robertodecurnex.github.io/J50Npi/
-            var data = {};
-            var callback = function(geodata){ 
-              //outputCommand.innerHTML += "<p class='text-info'>" + geodata.country_name + "</p>";
-              locationCell.innerHTML = "Fetching...";
-              locationCell.innerHTML = (geodata.country_name);
-            };
+          // Cell for latitude
+          var latitudeCell = document.createElement("th");
+          var latitudeCelltext = document.createTextNode("F-F-Fetching...");
+          latitudeCell.appendChild(latitudeCelltext);
 
-            J50Npi.getJSON(url, data, callback);
-    
-  
+          //Cell for longitude
+          var longitudeCell = document.createElement("th");
+          var longitudeCelltext = document.createTextNode("F-F-Fetching...")
+          longitudeCell.appendChild(longitudeCelltext)
+
+
+              // This is a WorldIP free geo-location database.
+              var freegeoip = "http://freegeoip.net/json/";
+
+              // Attach outgoing ip to WorldIP json
+              var url = freegeoip + pDetails[2];
+
+              // http://robertodecurnex.github.io/J50Npi/
+              var data = {};
+              var callback = function(geodata){               
+                //locationCell.innerHTML = (geodata.city_name + ", " + geodata.country_name)
+                locationCell.innerHTML += "<p class='text-info'>" + geodata.country_name + "</p>";
+                latitudeCell.innerHTML = (geodata.latitude)
+                longitudeCell.innerHTML = (geodata.longitude)
+              }
+              J50Npi.getJSON(url, data, callback);
+
+
+        // Attach cells to row
         row.appendChild(numberCell);
         row.appendChild(sourceCell);
         row.appendChild(destinationCell);
         row.appendChild(locationCell);
+        row.appendChild(latitudeCell);
+        row.appendChild(longitudeCell);
 
-        body.appendChild(row);
 
-      }
 
-    table.appendChild(body);
+         // Attach row to body
+        body.appendChild(row);  
+}
+
+    table.appendChild(body)
 
 } // end onMessage
-
-
 
 
 
