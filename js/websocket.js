@@ -62,9 +62,8 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  command = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 1 -i en1 src host 10.20.215.17";
+  command = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 8 -i en1 src host 10.20.211.179";
   websocket.send(command);
-
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
 
 }
@@ -109,30 +108,26 @@ function receiveOutput(evt){
           var destinationCelltext = document.createTextNode(pDetails[2]);
           destinationCell.appendChild(destinationCelltext);
 
-          // Cell for location (unfinished)
-          var locationCell = document.createElement("th");
-          var geoplugin = "http://www.geoplugin.net/json.gp?ip=";
-          window.alert(geoplugin);
+            // Cell for location
+            var locationCell = document.createElement("th");
+        
+            // This is a WorldIP free geo-location database.
+            var freegeoip = "http://freegeoip.net/json/";
 
-          var track = geoplugin + pDetails[2];
-          window.alert(track);
+            // Attach outgoing ip to WorldIP json
+            var url = freegeoip + pDetails[2];
 
-          var script = document.createElement('script');
-          script.type= ' text/javascript';
-          script.src = track;
-          document.getElementsByTagName("body")[0].appendChild(script);
-          window.alert(script);
+            // http://robertodecurnex.github.io/J50Npi/
+            var data = {};
+            var callback = function(geodata){ 
+              //outputCommand.innerHTML += "<p class='text-info'>" + geodata.country_name + "</p>";
+              locationCell.innerHTML = "Fetching...";
+              locationCell.innerHTML = (geodata.country_name);
+            };
 
-          // Tässä vaiheessa on oikea toteutus ja tuloksena on JSON
-          // Miten tilaat jsonista oikean tiedon?
-          // Onko kysely suoritetty?
-
-          
-
-          var locationCelltext = document.createTextNode(track);
-          locationCell.appendChild(locationCelltext);
-
-
+            J50Npi.getJSON(url, data, callback);
+    
+  
         row.appendChild(numberCell);
         row.appendChild(sourceCell);
         row.appendChild(destinationCell);
@@ -145,10 +140,6 @@ function receiveOutput(evt){
     table.appendChild(body);
 
 } // end onMessage
-
-
-
-
 
 
 
