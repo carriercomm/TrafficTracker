@@ -1,5 +1,6 @@
 /*****************************************************************************/
 // Initialize a websocket connection to server
+
 var websocket;
 var outputxml;
 
@@ -26,11 +27,10 @@ function connect() {
 /*****************************************************************************/
 // Server status
 
-
 var serverStatus; // Variable for server status (Connected/Disconnected/Error)
 
 function init(){
-  serverStatus = document.getElementById("serverStatus");
+  //serverStatus = document.getElementById("serverStatus");
   //serverStatus.innerHTML = "<p class='text-info'>NOT CONNECTED</p>";
 } // end init
 
@@ -68,13 +68,11 @@ function sendCommand() {
 }
 
 var table = document.getElementById('outputTable');
+var body = document.createElement('tbody');
 
 function receiveOutput(evt){
 
     // Table creation
-
-    var body = document.createElement('tbody');
-
     outputxml = evt.data;
     outputxml.toString();
     
@@ -90,13 +88,8 @@ function receiveOutput(evt){
         // pDetails[1] == Source ip
         // pDetails[2] == Destination ip
 
- 
-
-
         // Create row for the table
         var row = document.createElement("tr");
-        row.style.fontWeight = "bold";
-
 
 
           // Create cell for packet number
@@ -117,21 +110,21 @@ function receiveOutput(evt){
 
           // Cell for City, Country
           var locationCell = document.createElement("th")
-          var locationCelltext = document.createTextNode("(location)" + pDetails[0]);
+          locationCell.setAttribute("id", "locCell")
+          var locationCelltext = document.createTextNode("Fetching . . .");
           locationCell.appendChild(locationCelltext);
 
           // Cell for latitude
-          var latitudeCell = document.createElement("th");
-          var latitudeCelltext = document.createTextNode("(latitude)" + pDetails[0]);
+          var latitudeCell = document.createElement("th")
+          latitudeCell.setAttribute("id", "latCell")
+          var latitudeCelltext = document.createTextNode("Fetching . . .")
           latitudeCell.appendChild(latitudeCelltext);
 
           //Cell for longitude
-          var longitudeCell = document.createElement("th");
-          var longitudeCelltext = document.createTextNode("latitude)" + pDetails[0]);
+          var longitudeCell = document.createElement("th")
+          longitudeCell.setAttribute("id", "lonCell")
+          var longitudeCelltext = document.createTextNode("Fetching . . .")
           longitudeCell.appendChild(longitudeCelltext)
-
-
-
 
 
         // Attach cells to row
@@ -148,84 +141,42 @@ function receiveOutput(evt){
     }
     table.appendChild(body)
 
-    GetCellValues();
-
+    GetCellValues()
 
 } // end onMessage
 
-   function GetCellValues() {
 
-        var freegeoip = "http://freegeoip.net/json/";
 
-        for (var r = 1, n = table.rows.length; r < n; r++) {
+function GetCellValues() {
 
-            for (var c = 2, m = 3; c < m; c++) {
+    //window.alert("Funktio käynnistyi")
 
-                //alert(table.rows[r].cells[c].innerHTML);
-                var url = freegeoip + table.rows[r].cells[c].innerHTML;
+    var freegeoip = "http://freegeoip.net/json/";
 
-                // http://robertodecurnex.github.io/J50Npi/
-                var data = {};
-                callback = function(geodata){           
-                    window.alert("funktion sisällä: " + geocountry)
-                }
-               J50Npi.getJSON(url, data, callback);
+    for (var r = 1, n = table.rows.length; r < n;r++) {
 
+        for (var c = 2, m = table.rows[r].cells.length; c < m; c++) {
+
+            //alert(table.rows[r].cells[c].innerHTML);
+            var url = freegeoip + table.rows[r].cells[c].innerHTML;
+
+            // http://robertodecurnex.github.io/J50Npi/
+            var data = {};
+            callback = function(geodata){
+                      var newRow = body.insertRow(-1);
+                      var newCell0 = newRow.insertCell(0)
+                      newCell0.innerHTML ='Fetching...'
+                      var newCell1 = newRow.insertCell(1)
+                      newCell1.innerHTML = geodata.country_name
+                      //var location = document.getElementById('locCell').innerHTML += geodata.country_name
+                      var latitude = document.getElementById('latCell').innerHTML = geodata.latitude
+                      var longitude = document.getElementById('lonCell').innerHTML = geodata.longitude
             }
+           J50Npi.getJSON(url, data, callback);
+
+
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       // // Locate ip
-
-       //        // This is a WorldIP free geo-location database.
-       //        var freegeoip = "http://freegeoip.net/json/";
-
-       //        // Attach outgoing ip to WorldIP json
-       //        var url = freegeoip + destinationCelltext.value;
-
-       //        // http://robertodecurnex.github.io/J50Npi/
-       //        var data = {};
-       //        var callback = function(geodata){
-       //          window.alert(geodata.country_name)
-       //          //locationCell.innerHTML = (geodata.city_name + ", " + geodata.country_name)
-       //          //latitudeCell.innerHTML = (geodata.latitude)
-       //          //longitudeCell.innerHTML = (geodata.longitude)
-                
-       //        }
-       //        J50Npi.getJSON(url, data, callback);
-       //        window.alert("GEODATA : " + data)
-       //        console.log(data)
-       //        var country = JSON.stringify(data)
-       //        console.log(data)
-       //  // End locate ip
+}
 
 
