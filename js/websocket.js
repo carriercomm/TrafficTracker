@@ -15,7 +15,6 @@ function connect() {
 
     websocket.onmessage = receiveOutput;
     websocket.onerror = onError;
-
     } 
     else {
       alert("WebSockets not supported on your browser.");
@@ -36,7 +35,7 @@ function init(){
 
 function onOpen(evt){
   //called as soon as a connection is opened
-  sendCommand();
+  sendCommand()
 } // end onOpen
 
 function onClose(evt){
@@ -59,8 +58,8 @@ function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
 
-  commandBase = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 3 -i en1 src host ";
-  ipAddress = "10.20.45.124"
+  commandBase = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 50 -i en1 src host ";
+  ipAddress = "10.20.218.217"
   command = commandBase + ipAddress;
   websocket.send(command);
   outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
@@ -68,13 +67,14 @@ function sendCommand() {
 }
 
 var table = document.getElementById('outputTable');
-var body = document.createElement('tbody');
+var body = document.createElement('tbody')
 
 function receiveOutput(evt){
 
-    // Table creation
     outputxml = evt.data;
     outputxml.toString();
+
+    var row = document.createElement("tr");
     
     // First let's split the data for per packets
     var packet = outputxml.split(/\n/)
@@ -89,94 +89,85 @@ function receiveOutput(evt){
         // pDetails[2] == Destination ip
 
         // Create row for the table
-        var row = document.createElement("tr");
 
+        var newRow = body.insertRow(i);
 
-          // Create cell for packet number
-          var numberCell = document.createElement("th");
-          var numberCelltext = document.createTextNode(pDetails[0]);
-          numberCell.appendChild(numberCelltext);
+        // Frame number
+        var newCell0 = newRow.insertCell(0)      
+        newCell0.innerHTML = pDetails[0];
 
-          // Create cell for the source ip
-          var sourceCell = document.createElement("th");
-          var sourceCelltext = document.createTextNode(pDetails[1]);
-          sourceCell.appendChild(sourceCelltext);
+        // Source ip
+        var newCell1 = newRow.insertCell(1)
+        newCell1.innerHTML = pDetails[1]
 
-          // Create sell for the destination ip
-          var destinationCell = document.createElement("th");
-          var destinationCelltext = document.createTextNode(pDetails[2]);
-          destinationCell.appendChild(destinationCelltext);
-
-
-          // Cell for City, Country
-          var locationCell = document.createElement("th")
-          locationCell.setAttribute("id", "locCell")
-          var locationCelltext = document.createTextNode("Fetching . . .");
-          locationCell.appendChild(locationCelltext);
-
-          // Cell for latitude
-          var latitudeCell = document.createElement("th")
-          latitudeCell.setAttribute("id", "latCell")
-          var latitudeCelltext = document.createTextNode("Fetching . . .")
-          latitudeCell.appendChild(latitudeCelltext);
-
-          //Cell for longitude
-          var longitudeCell = document.createElement("th")
-          longitudeCell.setAttribute("id", "lonCell")
-          var longitudeCelltext = document.createTextNode("Fetching . . .")
-          longitudeCell.appendChild(longitudeCelltext)
-
-
-        // Attach cells to row
-        row.appendChild(numberCell);
-        row.appendChild(sourceCell);
-        row.appendChild(destinationCell);
-        row.appendChild(locationCell);
-        row.appendChild(latitudeCell);
-        row.appendChild(longitudeCell);
-
-        
-         // Attach row to body
-        body.appendChild(row);  
+        // Destination ip
+        var newCell2 = newRow.insertCell(2)
+        newCell2.innerHTML = pDetails[2]           
     }
-    table.appendChild(body)
+
+    // Attach row to body
+    body.appendChild(newRow)
+    table.appendChild(body) 
 
     GetCellValues()
 
+
+
+
 } // end onMessage
 
-
+var locationTable = document.getElementById("locTable")
+var locationBody = document.createElement("tbody")
 
 function GetCellValues() {
 
-    //window.alert("Funktio käynnistyi")
-
     var freegeoip = "http://freegeoip.net/json/";
+    var newRow = document.createElement("tr");
 
     for (var r = 1, n = table.rows.length; r < n;r++) {
 
-        for (var c = 2, m = table.rows[r].cells.length; c < m; c++) {
+        for (var c = 2, m = 3; c < m; c++) {
 
             //alert(table.rows[r].cells[c].innerHTML);
             var url = freegeoip + table.rows[r].cells[c].innerHTML;
 
+
             // http://robertodecurnex.github.io/J50Npi/
             var data = {};
-            callback = function(geodata){
-                      var newRow = body.insertRow(-1);
-                      var newCell0 = newRow.insertCell(0)
-                      newCell0.innerHTML ='Fetching...'
-                      var newCell1 = newRow.insertCell(1)
-                      newCell1.innerHTML = geodata.country_name
-                      //var location = document.getElementById('locCell').innerHTML += geodata.country_name
-                      var latitude = document.getElementById('latCell').innerHTML = geodata.latitude
-                      var longitude = document.getElementById('lonCell').innerHTML = geodata.longitude
-            }
+              callback = function(geodata){
+
+                    var newRow = locationBody.insertRow(-1);
+                    var locationCell = newRow.insertCell(0)
+                    var latitudeCell = newRow.insertCell(1)
+                    var longitudeCell = newRow.insertCell(2)
+                    
+                    if (geodata.city == "") {
+                      var locatedCity = "Unknown"
+                    } else {
+                      var LocatedCity = geodata.city
+                    }
+
+                    if (geodata.country_name == "Reserved") {
+                      locationCell.innerHTML = "Reserved ip"
+                    } else {
+                      var locatedCountry = geodata.country_name
+                    }
+                    
+                    locationCell.innerHTML = geodata.city + ", " + geodata.country_name
+
+                    /*
+                    if (geodata.latitude == "0" {
+                      newCell1
+                    } */
+                    latitudeCell.innerHTML = geodata.latitude
+
+                    longitudeCell.innerHTML = geodata.longitude
+
+              }
            J50Npi.getJSON(url, data, callback);
-
-
         }
-    }
+  }
+  locationBody.appendChild(newRow)
+  locationTable.appendChild(locationBody)         
 }
-
 

@@ -1,52 +1,27 @@
-google.maps.visualRefresh = true;
-
 var map;
+
+var oulu = new google.maps.LatLng(65.0167, 25.4667);
+var trondheim = new google.maps.LatLng(63.4167, 10.4167);
+
+var locationArray = [oulu,trondheim];
+var locationNameArray = ['Oulu','Trondheim'];
 
 function initialize() {
   var mapOptions = {
-    zoom: 6,
+    zoom: 3,
+    center: new google.maps.LatLng(0,0),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
-
-  // Try HTML5 geolocation
-  if(navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = new google.maps.LatLng(position.coords.latitude,
-                                       position.coords.longitude);
-
-      var infowindow = new google.maps.InfoWindow({
-        map: map,
-        position: pos,
-        content: 'Location found using HTML5.'
-      });
-
-      map.setCenter(pos);
-    }, function() {
-      handleNoGeolocation(true);
-    });
-  } else {
-    // Browser doesn't support Geolocation
-    handleNoGeolocation(false);
-  }
 }
 
-function handleNoGeolocation(errorFlag) {
-  if (errorFlag) {
-    var content = 'Error: The Geolocation service failed.';
-  } else {
-    var content = 'Error: Your browser doesn\'t support geolocation.';
-  }
-
-  var options = {
-    map: map,
-    position: new google.maps.LatLng(60, 105),
-    content: content
-  };
-
-  var infowindow = new google.maps.InfoWindow(options);
-  map.setCenter(options.position);
+var coord;
+for (coord in locationArray) {
+  new google.maps.Marker( {
+    position: locationArray[coord],
+    title: locationNameArray[coord]
+  });
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

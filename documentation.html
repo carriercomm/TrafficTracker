@@ -64,8 +64,10 @@
       <div class="span3 bs-docs-sidebar">
         <ul class="nav nav-list bs-docs-sidenav">
           <li><a href="#about"><i class="icon-chevron-right"></i> About</a></li>
-          <li><a href="#buttonGroups"><i class="icon-chevron-right"></i> Button groups</a></li>
-          <li><a href="#buttonDropdowns"><i class="icon-chevron-right"></i> Button dropdowns</a></li>
+          <li><a href="#dependencies"><i class="icon-chevron-right"></i> Dependencies</a></li>
+          <li><a href="#installation"><i class="icon-chevron-right"></i> Installation</a></li>
+          <li><a href="#howtouse"><i class="icon-chevron-right"></i> How-to-use</a></li>
+          <li><a href="#notes"><i class="icon-chevron-right"></i> Notes</a></li>
         </ul>
       </div>
       <div class="span9">
@@ -81,7 +83,7 @@
        <p>TrafficTracker is a web application tool showing user the packet traffic from his localhost to different locations. It is running on top of Node.js and requires WebSockets and it uses tshark as a packet sniffing tool. Basicly TrafficTracker is a limited front-end for tshark but with added features.
        </p>
 
-      <h2>Usage</h2>
+      <h2>Function</h2>
 
 <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed risus mauris, id elementum ipsum. Cras odio risus, imperdiet nec adipiscing eget, condimentum eget neque. Sed dignissim, ante in tristique consectetur, eros elit blandit felis, eu sodales libero risus sed orci. Nulla facilisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pretium euismod arcu, sit amet sagittis nibh dapibus nec. Quisque at justo vel risus venenatis laoreet. </p>
@@ -92,8 +94,60 @@ Donec libero justo, adipiscing eu imperdiet non, sodales imperdiet ante. Nulla f
 
       </p>
 
+    <!-- Dependencies
+    ================================================== -->
+    <section id="dependencies">
+      <div class="page-header">
+         <h1>Dependencies</h1>
+       </div>
+
+      <p>TrafficTracker uses several different services in initialization. Here is listed those services and notes about their services.</p>
+
+      <h2>Google Maps</h2>
+      <p>This site uses Google Maps as canvas for the map.</p>
+
+      <h3>Issues</h3>
+      <p>From <a href="https://developers.google.com/maps/documentation/javascript/usage" target="_blank">Google Developers</a>:</p>
+      <blockquote>For-profit web sites are permitted to generate up to 25 000 map loads per day using the Google Maps JavaScript API v3. A map load is counted when a map is initialized on a web page. User interaction with a map after it has loaded (eg. panning the map, zooming the map, or changing from roadmap to satellite map) does not have any impact on usage limits.</blockquote>
+      <p>TrafficTracker has in default limited the amount of packages and locations you can track, but it is possible to change amount of packages. Therefore the location points increase, but it doesn't effect the quota limitations. Maps are initialized when the application is launched, and thus the only thing effecting is the repeation of loading the application.</p>
+
+      <p>The usage of Google Maps is tracked with API key. At default TrafficTracker uses my personal API key, and thus it's preferred to change the API key to your personal one if you indent to use this app more frequently. <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">Obtain an API key</a>
+
+      <h2>jQuery</h2>
+      <p>Bootstap needs jQuery to function properly, see more in <a href="http://twitter.github.io/bootstrap/javascript.html" target="_blank">here</a>. jQuery is loaded from the  <a href="http://code.jquery.com/" target="_blank">jQuery website</a>, and therefore is strictly dependant on their services. 
+
+      <h2>Node.js</h2>
+      <p>TrafficTracker runs on top <a href="http://nodejs.org/" target="_blank">Node.js</a> for event-based requirements. It makes synchronous functionability possible with the help of <a href="http://www.websocket.org/" target="_blank">WebSockets</a>. </p>
+
+      <p>TrafficTracker packet contains server file for Node. To use it, use this command in your working directory to start the server:</p>
+      <code>node server.js</code>
+
+      <p>Your terminal should issue:</p>
+      <code>Server listening port 8080</code>
 
 
+
+    <!-- Installation
+    ================================================== -->
+    <section id="installation">
+      <div class="page-header">
+         <h1>Installation</h1>
+       </div>
+
+
+    <!-- How-to-use
+    ================================================== -->
+    <section id="howtouse">
+      <div class="page-header">
+         <h1>How-to-use</h1>
+       </div>
+
+    <!-- Notes
+    ================================================== -->
+    <section id="notes">
+      <div class="page-header">
+         <h1>Notes</h1>
+       </div>
 
 
     </div> <!-- /container -->
