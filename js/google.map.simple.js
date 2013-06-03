@@ -1,10 +1,6 @@
+google.maps.visualRefresh = true;
+
 var map;
-
-var oulu = new google.maps.LatLng(65.0167, 25.4667);
-var trondheim = new google.maps.LatLng(63.4167, 10.4167);
-
-var locationArray = [oulu,trondheim];
-var locationNameArray = ['Oulu','Trondheim'];
 
 function initialize() {
   var mapOptions = {
@@ -16,12 +12,20 @@ function initialize() {
       mapOptions);
 }
 
-var coord;
-for (coord in locationArray) {
-  new google.maps.Marker( {
-    position: locationArray[coord],
-    title: locationNameArray[coord]
-  });
+
+
+function locate() {
+    console.log(locationTable)
+
+    for (var r = 1, n = table.rows.length; r < n;r++) {
+
+        for (var c = 3, m = 4; c < m; c++) {
+
+            var value = table.rows[r].cells[c].innerHTML
+            console.log(value)
+
+        }
+    }
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

@@ -50,34 +50,40 @@ function onError(evt){
 
 
 /*****************************************************************************/
-// Send server a command a receive output
+// Sending server a command
 
 var outputCommand; // Variable for command sent to server
+//var packetAmount = document.getElementById("amountOfPackets").value
+//var packetAmount = 20;
 
 function sendCommand() {
 
   outputCommand = document.getElementById("outputCommand");
+  
+  commandBase = "tshark -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
 
-  commandBase = "tshark -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -c 50 -i en1 src host ";
-  ipAddress = "10.20.218.217"
-  command = commandBase + ipAddress;
+  var packetAmount = document.getElementById("amountOfPackets").value
+  var temp1 = "-c 50"// + packetAmount; // Temp value, because we need this variable to create tabl
+  //ipAddress = " src host " + document.getElementById("ipInput").value
+  ipAddress = " src host 10.20.216.77"
+  command = commandBase + temp1 + ipAddress;
   websocket.send(command);
-  outputCommand.innerHTML += "<p class='text-info'>Command sent: " + command + "</p>";
-
 }
 
 var table = document.getElementById('outputTable');
 var body = document.createElement('tbody')
+//var row = document.createElement("tr");
 
 function receiveOutput(evt){
 
     outputxml = evt.data;
     outputxml.toString();
 
-    var row = document.createElement("tr");
+    //var row = document.createElement("tr");
     
     // First let's split the data for per packets
     var packet = outputxml.split(/\n/)
+  
 
       // Print packets line by line
       for (var i=0;i<packet.length-1;i++) {
@@ -102,12 +108,16 @@ function receiveOutput(evt){
 
         // Destination ip
         var newCell2 = newRow.insertCell(2)
-        newCell2.innerHTML = pDetails[2]           
+        newCell2.innerHTML = pDetails[2]
+
+        
     }
 
     // Attach row to body
     body.appendChild(newRow)
     table.appendChild(body) 
+
+    console.log("Values fetched, getting cell values")
 
     GetCellValues()
 
@@ -128,39 +138,22 @@ function GetCellValues() {
 
         for (var c = 2, m = 3; c < m; c++) {
 
-            //alert(table.rows[r].cells[c].innerHTML);
+            var value = table.rows[r].cells[c].innerHTML
             var url = freegeoip + table.rows[r].cells[c].innerHTML;
-
 
             // http://robertodecurnex.github.io/J50Npi/
             var data = {};
               callback = function(geodata){
-
                     var newRow = locationBody.insertRow(-1);
-                    var locationCell = newRow.insertCell(0)
-                    var latitudeCell = newRow.insertCell(1)
-                    var longitudeCell = newRow.insertCell(2)
                     
-                    if (geodata.city == "") {
-                      var locatedCity = "Unknown"
-                    } else {
-                      var LocatedCity = geodata.city
-                    }
+                    var destinationCell = newRow.insertCell(0)
+                    var locationCell = newRow.insertCell(1)
+                    var latitudeCell = newRow.insertCell(2)
+                    var longitudeCell = newRow.insertCell(3)
 
-                    if (geodata.country_name == "Reserved") {
-                      locationCell.innerHTML = "Reserved ip"
-                    } else {
-                      var locatedCountry = geodata.country_name
-                    }
-                    
+                    destinationCell.innerHTML = geodata.ip                    
                     locationCell.innerHTML = geodata.city + ", " + geodata.country_name
-
-                    /*
-                    if (geodata.latitude == "0" {
-                      newCell1
-                    } */
                     latitudeCell.innerHTML = geodata.latitude
-
                     longitudeCell.innerHTML = geodata.longitude
 
               }
@@ -168,6 +161,8 @@ function GetCellValues() {
         }
   }
   locationBody.appendChild(newRow)
-  locationTable.appendChild(locationBody)         
+  locationTable.appendChild(locationBody)
+console.log("Location values done, calling for GMaps")
 }
+
 
