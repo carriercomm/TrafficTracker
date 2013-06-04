@@ -10,13 +10,12 @@
 
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="css/docs.css" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -31,7 +30,7 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-  <body data-spy="scroll" data-target=".nav">
+  <body data-spy="scroll" data-target=".bs-docs-sidenav">
 
 
     <!-- Navbar
@@ -62,11 +61,18 @@
           <li><a href="#about"><i class="icon-chevron-right"></i> About</a></li>
           <li><a href="#dependencies"><i class="icon-chevron-right"></i> Dependencies</a></li>
           <li><a href="#installation"><i class="icon-chevron-right"></i> Installation</a></li>
+          <li><a href="#development"><i class="icon-chevron-right"></i> Development</a></li>
           <li><a href="#howtouse"><i class="icon-chevron-right"></i> How-to-use</a></li>
           <li><a href="#notes"><i class="icon-chevron-right"></i> Notes</a></li>
         </ul>
       </div>
+
       <div class="span9">
+
+
+        <div class="page-header">
+          <h1>Traffictracker <small>Documentation</small></h1>
+        </div>
 
 
     <!-- About
@@ -81,12 +87,11 @@
 
       <h2>Function</h2>
 
-<p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sed risus mauris, id elementum ipsum. Cras odio risus, imperdiet nec adipiscing eget, condimentum eget neque. Sed dignissim, ante in tristique consectetur, eros elit blandit felis, eu sodales libero risus sed orci. Nulla facilisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec pretium euismod arcu, sit amet sagittis nibh dapibus nec. Quisque at justo vel risus venenatis laoreet. </p>
-<p>
-Aenean sodales elit in lacus imperdiet ullamcorper. Ut faucibus, orci id porttitor tincidunt, nulla quam egestas odio, sit amet aliquam metus massa non purus. Etiam tincidunt metus quis ligula facilisis vel interdum justo suscipit. Praesent vitae justo vitae eros facilisis eleifend. Suspendisse interdum, enim a fermentum condimentum, nisl velit posuere neque, in tristique purus tellus vitae nunc. Etiam non sapien vitae enim iaculis placerat. Morbi tincidunt laoreet lectus, nec sagittis lectus euismod aliquet. Nunc bibendum scelerisque molestie. Nam rhoncus molestie consequat. Etiam ornare ultricies metus, mollis porta magna lacinia vitae. Ut vitae auctor justo. Phasellus ultrices, sapien vitae facilisis semper, mi mauris lacinia odio, non tristique lorem mi in ligula. Sed scelerisque, nulla eget tristique aliquet, sem massa imperdiet urna, quis mollis nulla urna eu erat. Maecenas lacus odio, ullamcorper nec varius et, suscipit ac nisl. Praesent eros nisl, vehicula et vulputate at, dictum non mauris. Curabitur pretium dictum lacinia. </p>
-<p>
-Donec libero justo, adipiscing eu imperdiet non, sodales imperdiet ante. Nulla facilisi. Sed sed erat magna, eleifend elementum nulla. Proin ut sem sapien, nec mollis turpis. Ut eros leo, varius et mollis quis, tincidunt sit amet ligula. Cras fermentum pellentesque condimentum. Maecenas posuere metus vitae lacus malesuada hendrerit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean et massa lacus. Donec eget lacus urna, vitae elementum nibh.
+      <p>TrafficTracker was originally meant to be built on top of <a href="http://pfsense.org/" target="_blank">pfSense</a>. TrafficTracker would have been an added functionality on that awesome firewall-distro. After some time thinking, testing and planning I decided to ditch the idea of running TrafficTracker on top of pfSense. The development and implementation for that would have been unnecessary difficult, concerning the fact that pfSense has <a href="http://doc.pfsense.org/index.php/Can_I_use_FreeBSD_ports_with_pfSense%3F" target="_blank">disabled the default ports installation process</a>, and the idea of installing several different applications on a firewall sounded a bit ludicrous. Firewalls are, built to be fast, reliable and sleek, and adding many different services running on the background would also have been a security risk.</p>
+
+      <p><small>psst. Although, theres nothing that comes to mind that would make installing TrafficTracker on a firewall impossible. It should be possible, if you know what you are doing and most importantly, WHY you are doing it. </small></p>
+
+      <p>TrafficTracker runs on top of Node.
 
       </p>
 
@@ -100,38 +105,42 @@ Donec libero justo, adipiscing eu imperdiet non, sodales imperdiet ante. Nulla f
       <p>TrafficTracker uses several different services in initialization. Here is listed those services and notes about their services.</p>
 
       <h2>Google Maps</h2>
-      <p>This site uses Google Maps as canvas for the map.</p>
+        <p>This site uses Google Maps as canvas for the map.</p>
 
       <h3>Issues</h3>
-      <p>From <a href="https://developers.google.com/maps/documentation/javascript/usage" target="_blank">Google Developers</a>:</p>
-      <blockquote>For-profit web sites are permitted to generate up to 25 000 map loads per day using the Google Maps JavaScript API v3. A map load is counted when a map is initialized on a web page. User interaction with a map after it has loaded (eg. panning the map, zooming the map, or changing from roadmap to satellite map) does not have any impact on usage limits.</blockquote>
-      <p>Therefore the Maps itself has said 25 000 limit on map initialization. However, this is from <a href="https://developers.google.com/maps/documentation/geocoding/" target="_blank">Google Developers site concerning geocoding</a>.</p>
-      <blockquote>Use of the Google Geocoding API is subject to a query limit of 2,500 geolocation requests per day. (User of Google Maps API for Business may perform up to 100,000 requests per day.) This limit is enforced to prevent abuse and/or repurposing of the Geocoding API, and this limit may be changed in the future without notice. Additionally, we enforce a request rate limit to prevent abuse of the service. If you exceed the 24-hour limit or otherwise abuse the service, the Geocoding API may stop working for you temporarily. If you continue to exceed this limit, your access to the Geocoding API may be blocked.</blockquote>
-      <p>TrafficTracker has in default limited the amount of packages and locations you can track, but it is possible to change amount of packages. Therefore the location points increase, but it doesn't effect the quota limitations. Maps are initialized when the application is launched, and thus the only thing effecting is the repeation of loading the application.</p>
+        <p>From <a href="https://developers.google.com/maps/documentation/javascript/usage" target="_blank">Google Developers</a>:</p>
+        <blockquote>For-profit web sites are permitted to generate up to 25 000 map loads per day using the Google Maps JavaScript API v3. A map load is counted when a map is initialized on a web page. User interaction with a map after it has loaded (eg. panning the map, zooming the map, or changing from roadmap to satellite map) does not have any impact on usage limits.</blockquote>
+        <p>Therefore the Maps itself has said 25 000 limit on map initialization. However, this is from <a href="https://developers.google.com/maps/documentation/geocoding/" target="_blank">Google Developers site concerning geocoding</a>.</p>
+        <blockquote>Use of the Google Geocoding API is subject to a query limit of 2,500 geolocation requests per day. (User of Google Maps API for Business may perform up to 100,000 requests per day.) This limit is enforced to prevent abuse and/or repurposing of the Geocoding API, and this limit may be changed in the future without notice. Additionally, we enforce a request rate limit to prevent abuse of the service. If you exceed the 24-hour limit or otherwise abuse the service, the Geocoding API may stop working for you temporarily. If you continue to exceed this limit, your access to the Geocoding API may be blocked.</blockquote>
+        <p>TrafficTracker has in default limited the amount of packages and locations you can track, but it is possible to change amount of packages. Therefore the location points increase, but it doesn't effect the quota limitations. Maps are initialized when the application is launched, and thus the only thing effecting is the repeation of loading the application.</p>
 
-      <p>The usage of Google Maps is tracked with API key. At default TrafficTracker uses my personal API key, and thus it's preferred to change the API key to your personal one if you indent to use this app more frequently. <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">Obtain an API key</a>
+        <p>The usage of Google Maps is tracked with API key. At default TrafficTracker uses my personal API key, and thus it's preferred to change the API key to your personal one if you indent to use this app more frequently. <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">Obtain an API key</a>
 
       <h2>jQuery</h2>
-      <p>Bootstap needs jQuery to function properly, see more in <a href="http://twitter.github.io/bootstrap/javascript.html" target="_blank">here</a>. jQuery is loaded from the  <a href="http://code.jquery.com/" target="_blank">jQuery website</a>, and therefore is strictly dependant on their services. 
+        <p>Bootstap needs jQuery to function properly, see more in <a href="http://twitter.github.io/bootstrap/javascript.html" target="_blank">here</a>. jQuery is loaded from the  <a href="http://code.jquery.com/" target="_blank">jQuery website</a>, and therefore is strictly dependant on their services. 
 
       <h2>Node.js</h2>
-      <p>TrafficTracker runs on top <a href="http://nodejs.org/" target="_blank">Node.js</a> for event-based requirements. It makes synchronous functionability possible with the help of <a href="http://www.websocket.org/" target="_blank">WebSockets</a>. </p>
+        <p>TrafficTracker runs on top <a href="http://nodejs.org/" target="_blank">Node.js</a> for event-based requirements. It makes synchronous functionability possible with the help of <a href="http://www.websocket.org/" target="_blank">WebSockets</a>. </p>
 
-      <p>TrafficTracker packet contains server file for Node. To use it, use this command in your working directory to start the server:</p>
-      <code>node server.js</code>
+        <p>TrafficTracker packet contains server file for Node. To use it, use this command in your working directory to start the server:</p>
+        <code>node server.js</code>
 
-      <p>Your terminal should issue:</p>
-      <code>Server listening port 8080</code>
+        <p>Your terminal should issue:</p>
+        <code>Server listening port 8080</code>
+
+        <p>There are also requirements for the Node.js to work properly. See more in the <a href="">installation section</a>.
 
       <h2>tshark</h2>
-      <p>From <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">tshark's website</a> : </p>
-      <blockquote>TShark is a network protocol analyzer. It lets you capture packet data from a live network, or read packets from a previously saved capture file, either printing a decoded form of those packets to the standard output or writing the packets to a file. TShark's native capture file format is libpcap format, which is also the format used by tcpdump and various other tools.</blockquote>
-        <dl class="dl-horizontal">
-          <dt>Website</dt>
-          <dd>www.asldaksd.com</dd>
-        </dl>
+        <p>From <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">tshark's website</a> : </p>
+        <blockquote>TShark is a network protocol analyzer. It lets you capture packet data from a live network, or read packets from a previously saved capture file, either printing a decoded form of those packets to the standard output or writing the packets to a file. TShark's native capture file format is libpcap format, which is also the format used by tcpdump and various other tools.</blockquote>
 
 
+    <!-- Development
+    ================================================== -->
+    <section id="development">
+      <div class="page-header">
+         <h1>Development</h1>
+       </div>
 
     <!-- Installation
     ================================================== -->
@@ -157,6 +166,8 @@ Donec libero justo, adipiscing eu imperdiet non, sodales imperdiet ante. Nulla f
 
 
     </div> <!-- /container -->
+  </div>
+
 
     <!-- Le javascript
     ================================================== -->
