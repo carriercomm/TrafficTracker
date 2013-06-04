@@ -54,7 +54,7 @@ function onError(evt){
 
 var outputCommand; // Variable for command sent to server
 //var packetAmount = document.getElementById("amountOfPackets").value
-//var packetAmount = 20;
+var packetAmount = 20;
 
 function sendCommand() {
 
@@ -62,8 +62,8 @@ function sendCommand() {
   
   commandBase = "tshark -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
 
-  var packetAmount = document.getElementById("amountOfPackets").value
-  var temp1 = "-c 50"// + packetAmount; // Temp value, because we need this variable to create tabl
+  //var packetAmount = document.getElementById("amountOfPackets").value
+  var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
   //ipAddress = " src host " + document.getElementById("ipInput").value
   ipAddress = " src host 10.20.214.53"
   command = commandBase + temp1 + ipAddress;
@@ -71,6 +71,9 @@ function sendCommand() {
   createRows();
 }
 
+
+
+/*****************************************************************************/
 // Table elements
 var table = document.getElementById('outputTable');
 var body = document.createElement('tbody')
@@ -82,25 +85,33 @@ var destinationCell   // Destination IP
 
 function createRows() {
 
-  for(var r=0; r<50; r++) {
+  for(var r=0; r<=packetAmount; r++) {
 
   var row = body.insertRow(r);
 
     frameCell = row.insertCell(0)
     frameCell.setAttribute("id", "frameCell" + r )
-    frameCell.innerHTML = "null"
+    frameCell.innerHTML = r
 
     sourceCell = row.insertCell(1)
     sourceCell.setAttribute("id", "sourceCell" + r )
     sourceCell.innerHTML = "null"
 
     destinationCell = row.insertCell(2)
-    destinationCell.setAttribute("id", "destinationCell" + r)
+    destinationCell.setAttribute("id", "destinationCell" + r )
     destinationCell.innerHTML = "null"
 
     locationCell = row.insertCell(3)
-    locationCell.setAttribute("id", "locationCell" + r)
+    locationCell.setAttribute("id", "locationCell" + r )
     locationCell.innerHTML = "null"
+
+    latitudeCell = row.insertCell(4)
+    latitudeCell.setAttribute("id", "latitudeCell" + r )
+    latitudeCell.innerHTML = "null"
+
+    longitudeCell = row.insertCell(5)
+    longitudeCell.setAttribute("id", "longitudeCell" + r )
+    longitudeCell.innerHTML = "null"
 
     body.appendChild(row)
   }
@@ -108,6 +119,12 @@ function createRows() {
   table.appendChild(body)
 
 }
+
+
+
+
+
+/*****************************************************************************/
 
 function receiveOutput(evt){
 
@@ -145,10 +162,6 @@ function receiveOutput(evt){
         
     }
 
-    // Attach row to body
-    //body.appendChild(newRow)
-    //table.appendChild(body) 
-
     console.log("Values fetched, getting cell values")
 
     GetCellValues()
@@ -158,42 +171,57 @@ function receiveOutput(evt){
 
 } // end onMessage
 
-var locationTable = document.getElementById("locTable")
-var locationBody = document.createElement("tbody")
-var kalle;  // Variable for loop counter in callback-function
-kalle = 0;  
+
+
+
+
+/*****************************************************************************/
+
+var justStupidCounter;  // Variable for loop counter in callback-function
+justStupidCounter = 0;  
 
 function GetCellValues() {
 
     var freegeoip = "http://freegeoip.net/json/";
-    //var newRow = document.createElement("tr");
 
-    for (var r = 1, n = table.rows.length; r < n;r++) {
+    //for (var r = 1, n = table.rows.length; r < n;r++) {
 
-        for (var c = 2, m = 3; c < m; c++) {
+        //for (var c = 2, m = 3; c < m; c++) {
 
-            var value = table.rows[r].cells[c].innerHTML
-            var url = freegeoip + table.rows[r].cells[c].innerHTML;
+          for (var i=0; i<=packetAmount; i++) {
+
+            var paamaara = "destinationCell" + i
+            var value = document.getElementById(paamaara).innerHTML
+            console.log("Value : " + value)
+            console.log(" i: " + i)
+            var url = freegeoip + value
+            // console.log("Funktion ulkopuolella justStupidCounter: " + justStupidCounter)
 
             // http://robertodecurnex.github.io/J50Npi/
             var data = {};
               callback = function(geodata){
 
-                  kalle++
-                  console.log("Muuttuja Kalle : " + kalle)
+                  // console.log("Funktion sisällä i :" + i )
+                  // console.log("Funktion sisällä justStupidCounter: " + justStupidCounter)
 
+                  var lokaatio = "destinationCell" + justStupidCounter
+                  
 
-                    var location = "locationCell" + kalle
-                    var locationCell = document.getElementById(location).innerHTML = geodata.country_name
+                  var location = "locationCell" + justStupidCounter
+                  var locationCell = document.getElementById(location).innerHTML = geodata.ip + " : " + geodata.city + ", " + geodata.country_name
 
+                  var latitude = "latitudeCell" + justStupidCounter
+                  var latitudeCell = document.getElementById(latitude).innerHTML = "Laskuri : " + justStupidCounter
+
+                  var longitude = "longitudeCell" + justStupidCounter
+                  var longitudeCell = document.getElementById(longitude).innerHTML = geodata.longitude
+
+                  justStupidCounter++
 
               }
            J50Npi.getJSON(url, data, callback);
-        }
-  }
-  //locationBody.appendChild(newRow)
-  //locationTable.appendChild(locationBody)
-console.log("Location values done, calling for GMaps")
+    }
+          console.log("Location values done, calling for GMaps")
 }
 
 
