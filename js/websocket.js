@@ -65,7 +65,7 @@ function sendCommand() {
   //var packetAmount = document.getElementById("amountOfPackets").value
   var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
   //ipAddress = " src host " + document.getElementById("ipInput").value
-  ipAddress = " src host 10.20.214.53"
+  ipAddress = " src host 10.20.45.71"
   command = commandBase + temp1 + ipAddress;
   websocket.send(command);
   createRows();
@@ -188,7 +188,7 @@ function GetCellValues() {
 
         //for (var c = 2, m = 3; c < m; c++) {
 
-          for (var i=0; i<=packetAmount; i++) {
+          for (var i=0; i<=packetAmount-1; i++) {
 
             var paamaara = "destinationCell" + i
             var value = document.getElementById(paamaara).innerHTML
@@ -199,24 +199,33 @@ function GetCellValues() {
 
             // http://robertodecurnex.github.io/J50Npi/
             var data = {};
+
               callback = function(geodata){
 
-                  // console.log("Funktion sisällä i :" + i )
-                  // console.log("Funktion sisällä justStupidCounter: " + justStupidCounter)
-
                   var lokaatio = "destinationCell" + justStupidCounter
-                  
+                  var destIP = document.getElementById(lokaatio).innerHTML
 
-                  var location = "locationCell" + justStupidCounter
-                  var locationCell = document.getElementById(location).innerHTML = geodata.ip + " : " + geodata.city + ", " + geodata.country_name
+                  if (destIP != geodata.ip) {
+                    //console.log("IP:t eivät ole samat " + destIP + " : " + geodata.ip )
+                    // Hmmm, jonkinlainen hakualgoritmi pitäisi saada
+                    // 
+                  } 
+                  else  {
 
-                  var latitude = "latitudeCell" + justStupidCounter
-                  var latitudeCell = document.getElementById(latitude).innerHTML = "Laskuri : " + justStupidCounter
+                    //console.log("IP Match! : " + destIP + ":" + geodata.ip)
 
-                  var longitude = "longitudeCell" + justStupidCounter
-                  var longitudeCell = document.getElementById(longitude).innerHTML = geodata.longitude
+                      var location = "locationCell" + justStupidCounter
+                      var locationCell = document.getElementById(location).innerHTML = geodata.ip + " : " + geodata.city + ", " + geodata.country_name
 
-                  justStupidCounter++
+                      var latitude = "latitudeCell" + justStupidCounter
+                      var latitudeCell = document.getElementById(latitude).innerHTML = geodata.latitude
+
+                      var longitude = "longitudeCell" + justStupidCounter
+                      var longitudeCell = document.getElementById(longitude).innerHTML = geodata.longitude
+
+                  }
+
+            justStupidCounter++
 
               }
            J50Npi.getJSON(url, data, callback);

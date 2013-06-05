@@ -30,7 +30,7 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-  <body data-spy="scroll" data-target=".bs-docs-sidenav">
+  <body data-spy="scroll" data-target=".nav">
 
 
     <!-- Navbar
@@ -55,6 +55,7 @@
 
     <!-- Docs nav
     ================================================== -->
+
    <div class="row">
       <div class="span3 bs-docs-sidebar">
         <ul class="nav nav-list bs-docs-sidenav">
@@ -68,6 +69,7 @@
       </div>
 
       <div class="span9">
+         <div data-spy="scroll" data-target="#navbarExample" data-offset="0" class="scrollspy-example">
 
 
         <div class="page-header">
@@ -134,6 +136,12 @@
         <p>From <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">tshark's website</a> : </p>
         <blockquote>TShark is a network protocol analyzer. It lets you capture packet data from a live network, or read packets from a previously saved capture file, either printing a decoded form of those packets to the standard output or writing the packets to a file. TShark's native capture file format is libpcap format, which is also the format used by tcpdump and various other tools.</blockquote>
 
+      <h2>Freegeoip</h2>
+        <p><a href="http://freegeoip.net/" target="_blank">Freegeoip</a> is an online service for geolocating IP addresses. It's basicly just an online database, from where you can download geolocation data based on your ip address. Freegeoip supports JSON, and that makes it easy to fetch several different IP-addresses from the database.</p>
+
+        <p>Freeg
+
+
 
     <!-- Development
     ================================================== -->
@@ -142,12 +150,42 @@
          <h1>Development</h1>
        </div>
 
+       <p>Development has been interesting. What started out as a idea has transformed greatly during the recent weeks. The basic idea is still the same, which is locate your connection points and traffic on the map, but the platform and functionalities have changed.</p>
+
+       <h2>Security concerns</h2>
+       <p>This application have been designed to "perform as a security enhancing application", in a sense that user would have information about his/her connection points. Although there are limitations, and this isn't going to be "ultimate tool" for this job, I hope that someone would find this useful.</p>
+
+       <p>Using this kind of application (websockets without SSL/TLS (yet)) with this kind of implementation (local Node.js server) could increase the risk of exploiting your system to the outside. The Google services uses SSL, which makes it more reliable security-wise.</p>
+
+       <p><a href="#freegeoip">Freegeoip</a> doesn't use or provide SSL-tunneling for their service, atleast for now. If there is a need for greater security Freegeoip could be turned down. Instead, one could use <a href="http://whatismyipaddress.com/geolocation-providers" target="_blank">alternate services</a>, but be prepared to modify TrafficTracker for different geolocation implementation. There is also a possibility for downloading a database on your server and using the geolocation locally. That would require some modifications too, i guess. </p>
+
     <!-- Installation
     ================================================== -->
     <section id="installation">
       <div class="page-header">
          <h1>Installation</h1>
        </div>
+
+       <p>Here shall be step-by-step instructions how to install TrafficTracker on different platforms.</p>
+
+       <h2>Windows</h2>
+
+       <ul>
+
+          <li>Powershell, or is regular windows terminal sufficient?</li>
+          <li>On what versions does it work properly, which are tested and which are not? (XP/Vista/7(8)</li>
+
+        </ul>
+
+       <h2>Linux</h2>
+
+       <ul>
+
+        <li>Linux/unix? On what versions or distros does this tutorial apply?</li>
+
+      </ul>
+
+       <h2>Mac OS X</h2>
 
 
     <!-- How-to-use
@@ -156,6 +194,8 @@
       <div class="page-header">
          <h1>How-to-use</h1>
        </div>
+
+       <p>TrafficTracker's usage should be quite straight forward without extra hazzle. After you have managed to get it running, there are couple of things you have to do before you can be sure that the system is workign properly.</p>
 
     <!-- Notes
     ================================================== -->

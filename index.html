@@ -90,20 +90,19 @@
 
        <h2>Issues</h2>
        <ul>
-        <li>The location table prints differently in Firefox and in Chrome. What's up with that?</li>
-        <li>Filter duplicate destination IP's.
+        <li>Printout is fine, but if the destination ip address from tshark and and freegeoip don't match, it doesn't print.</li>
+        <li>There is a need for a sorting algorithm.</li>
+        <li>Filter duplicate destination IP's.</li>
           <li>The best solution would be to filter the output from tshark. Is it possible? Seems like a no-go.</li>
-          <li>Filter received arrays? Good script for that: <a href="http://dreaminginjavascript.wordpress.com/2008/08/22/eliminating-duplicates/" target="_blank">link</a></li>
-          <li>There could be some issues with the location function.</li>
-          </li>
-          <li>Locations are real and they are downloaded with proper values, but the location table isn't correct. </li>
+          <li>Filtering could also be a as database or filtering arrays.
+          <li>Locations are real and they are downloaded with proper values, but the location table isn't correct. Yet </li>
         </ul>
 
 <!-- With this value table is created with matching number of rows and the command is sent-->
 
 <div class="input-append">
 
-  <input type="text" id="ipInput" text="10.20.216.77"></input>
+  <input type="text" id="ipInput" placeholder="IP Address...."></input>
     <select class="span1" id="amountOfPackets">
       <option>3</option>
       <option>10</option>
