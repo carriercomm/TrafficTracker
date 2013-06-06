@@ -30,21 +30,19 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-  <body data-spy="scroll" data-target=".nav">
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
 
 
     <!-- Navbar
     ================================================== -->
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-fixed-top" id="navbar">
       <div class="navbar-inner">
-
 
           <a class="brand" href="./index.html">TrafficTracker</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="index.html">Home</a></li>
               <li class="active"><a href="">Documentation</a></li>
-              <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 
@@ -69,7 +67,6 @@
       </div>
 
       <div class="span9">
-         <div data-spy="scroll" data-target="#navbarExample" data-offset="0" class="scrollspy-example">
 
 
         <div class="page-header">
@@ -93,7 +90,11 @@
 
       <p><small>psst. Although, theres nothing that comes to mind that would make installing TrafficTracker on a firewall impossible. It should be possible, if you know what you are doing and most importantly, WHY you are doing it. </small></p>
 
-      <p>TrafficTracker runs on top of Node.
+      <p>TrafficTracker runs on top of Node. Node makes event-based communication with the web-page possible, and therefore the usage of websockets is possible. There was consideration to run TrafficTracker on top of Apache, but that would have killed the idea of (1) using websockets and (2) hence it's based on php, event-based functionalities and realtime output would have been much more difficult. Node is also much lighter than i.e. Apache.</p>
+
+      <p>Tracking request is basicly a system command run through websockets to the server (that's the reason why you have to run Node server locally). </p>
+
+
 
       </p>
 
@@ -124,13 +125,15 @@
       <h2>Node.js</h2>
         <p>TrafficTracker runs on top <a href="http://nodejs.org/" target="_blank">Node.js</a> for event-based requirements. It makes synchronous functionability possible with the help of <a href="http://www.websocket.org/" target="_blank">WebSockets</a>. </p>
 
+        <h3>Node.js libraries</h3>
+
         <p>TrafficTracker packet contains server file for Node. To use it, use this command in your working directory to start the server:</p>
         <code>node server.js</code>
 
         <p>Your terminal should issue:</p>
         <code>Server listening port 8080</code>
 
-        <p>There are also requirements for the Node.js to work properly. See more in the <a href="">installation section</a>.
+        <p>There are also requirements for the Node.js to work properly. See more in the <a href="">installation section</a>.</p>
 
       <h2>tshark</h2>
         <p>From <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">tshark's website</a> : </p>
@@ -152,12 +155,16 @@
 
        <p>Development has been interesting. What started out as a idea has transformed greatly during the recent weeks. The basic idea is still the same, which is locate your connection points and traffic on the map, but the platform and functionalities have changed.</p>
 
+        <p>Truly real-time functionality seems to be a problem. Tshark is at the moment the biggest <i>bottleneck</i>, and the way it implements its output is a problem. Instead of implementing output one line at a time, it prints after its buffer is full (i think). That means that if there is no limitations on packet count, it would output in bursts, something like 200 lines at a time. <strong> NOTE: </strong> Output issue could be something that is Node.js:s fault.<strong> Check the libraries server.js has; are they implemented properly? Also, test Traffictracker with some other traffic sniffer, i.e. tcpdump and check whether it has any effect on it.</strong> </p>
+
        <h2>Security concerns</h2>
        <p>This application have been designed to "perform as a security enhancing application", in a sense that user would have information about his/her connection points. Although there are limitations, and this isn't going to be "ultimate tool" for this job, I hope that someone would find this useful.</p>
 
        <p>Using this kind of application (websockets without SSL/TLS (yet)) with this kind of implementation (local Node.js server) could increase the risk of exploiting your system to the outside. The Google services uses SSL, which makes it more reliable security-wise.</p>
 
        <p><a href="#freegeoip">Freegeoip</a> doesn't use or provide SSL-tunneling for their service, atleast for now. If there is a need for greater security Freegeoip could be turned down. Instead, one could use <a href="http://whatismyipaddress.com/geolocation-providers" target="_blank">alternate services</a>, but be prepared to modify TrafficTracker for different geolocation implementation. There is also a possibility for downloading a database on your server and using the geolocation locally. That would require some modifications too, i guess. </p>
+
+
 
     <!-- Installation
     ================================================== -->
@@ -195,7 +202,7 @@
          <h1>How-to-use</h1>
        </div>
 
-       <p>TrafficTracker's usage should be quite straight forward without extra hazzle. After you have managed to get it running, there are couple of things you have to do before you can be sure that the system is workign properly.</p>
+       <p>TrafficTracker's usage should be quite straight forward without extra hazzle. After you have managed to get it running, there are couple of things you have to do before you can be sure that the system is working properly.</p>
 
     <!-- Notes
     ================================================== -->
@@ -204,9 +211,14 @@
          <h1>Notes</h1>
        </div>
 
+       <p>Could TrafficTracker be implemented as a bootable application, running on top of i.e. Debian? </p>
 
-    </div> <!-- /container -->
+
+
+    </div> 
   </div>
+
+</div>
 
 
     <!-- Le javascript

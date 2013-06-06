@@ -91,10 +91,11 @@ wsServer.on('request', function(request) {
     		var command = spawn(cmd, args);
 
     		command.stdout.on('data', function(data) {
-    			console.log(data.toString()); 
+    			console.log(data.toString() + "length : " + data.toString().length)
+
     			connection.sendUTF(data.toString())
     		})
-
+            command.stdin.end()
     	}
     	else if (message.type === 'binary') {
         	console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');

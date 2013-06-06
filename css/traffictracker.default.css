@@ -39,6 +39,10 @@
 	padding: 0;
 }
 
+#outputTable
+{
+	margin-bottom: 20px;
+}
 .smallTitle
 {
 	font-style: bold;
