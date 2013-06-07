@@ -91,7 +91,7 @@ wsServer.on('request', function(request) {
     		var command = spawn(cmd, args);
 
     		command.stdout.on('data', function(data) {
-    			console.log(data.toString() + "length : " + data.toString().length)
+    			console.log(data.toString())
 
     			connection.sendUTF(data.toString())
     		})
