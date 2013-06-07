@@ -76,16 +76,18 @@
       </div> 
 
       <button class="btn btn-large btn-primary" type="button" onclick="locations()">Locate</button>
+      <button class="btn btn-large btn-primary" type="button" onclick="locate()">Locate on the map</button>
+
 
 
        <h2>Issues</h2>
        <ul>
         <li>Printout is fine, but if the destination ip address from tshark and and freegeoip don't match, it doesn't print.</li>
         <li>There is a need for a sorting algorithm.</li>
-        <li>Filter duplicate destination IP's.</li>
+        <li><strike>Filter duplicate destination IP's.</li>
           <li>The best solution would be to filter the output from tshark. Is it possible? Seems like a no-go.</li>
           <li>Filtering could also be a as database or filtering arrays.
-          <li>Locations are real and they are downloaded with proper values, but the location table isn't correct. Yet </li>
+          <li>Locations are real and they are downloaded with proper values, but the location table isn't correct. Yet</strike> </li>
         </ul>
 
 <!-- With this value table is created with matching number of rows and the command is sent-->

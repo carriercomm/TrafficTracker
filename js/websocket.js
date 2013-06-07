@@ -253,7 +253,7 @@ function locations() {
    
     } else {
 
-        var locationCell = document.getElementById(temp1).innerHTML =  /*addressArray[e] + " | " + */ cityArray[e] + ", " + countryArray[e]
+        var locationCell = document.getElementById(temp1).innerHTML =  addressArray[e] + " | " + cityArray[e] + ", " + countryArray[e]
         var latitudeCell = document.getElementById(temp2).innerHTML = latitudeArray[e]
         var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
 
@@ -271,75 +271,3 @@ function locations() {
   }
 }
 
-
-
-/*****************************************************************************/
-/*
-var justStupidCounter;  // Variable for loop counter in callback-function
-justStupidCounter = 0;  
-
-function GetCellValues() {
-
-    var freegeoip = "http://freegeoip.net/json/";
-
-    //for (var r = 1, n = table.rows.length; r < n;r++) {
-
-        //for (var c = 2, m = 3; c < m; c++) {
-
-          for (var i=0; i<=packetAmount-1; i++) {
-
-            var paamaara = "destinationCell" + i
-            var value = document.getElementById(paamaara).innerHTML
-            var url = freegeoip + value
-
-            // http://robertodecurnex.github.io/J50Npi/
-            var data = {};
-
-              callback = function(geodata){
-
-                  var lokaatio = "destinationCell" + justStupidCounter
-                  var destIP = document.getElementById(lokaatio).innerHTML
-
-                  if (destIP != geodata.ip) {
-                    //console.log("IP:t eivät ole samat " + destIP + " : " + geodata.ip )
-                    // Hmmm, jonkinlainen hakualgoritmi pitäisi saada
-                    // 
-                  } 
-                  else  {
-
-                    //console.log("IP Match! : " + destIP + ":" + geodata.ip)
-
-                    if (geodata.country_name == "Reserved") {
-                      var location = "locationCell" + justStupidCounter
-                      var locationCell = document.getElementById(location).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address</a>"
-                    } else {
-
-                        if (geodata.city == "") {
-                          var location = "locationCell" + justStupidCounter
-                          var locationCell = document.getElementById(location).innerHTML = geodata.country_name
-
-                        } else {
-
-                          var location = "locationCell" + justStupidCounter
-                          var locationCell = document.getElementById(location).innerHTML = geodata.ip + " | " + geodata.city + ", " + geodata.country_name
-
-                          var latitude = "latitudeCell" + justStupidCounter
-                          var latitudeCell = document.getElementById(latitude).innerHTML = geodata.latitude
-
-                          var longitude = "longitudeCell" + justStupidCounter
-                          var longitudeCell = document.getElementById(longitude).innerHTML = geodata.longitude
-                        }
-                    }
-
-                  }
-
-            justStupidCounter++
-
-              }
-           J50Npi.getJSON(url, data, callback);
-    }
-          console.log("Sniff output printed to table, exiting.")
-}
-
-
-*/
