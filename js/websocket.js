@@ -1,4 +1,5 @@
-/*****************************************************************************/
+
+//---------------------------------------------------------------------------
 // Initialize a websocket connection to server
 
 var websocket;
@@ -23,7 +24,7 @@ function connect() {
 
 
 
-/*****************************************************************************/
+//---------------------------------------------------------------------------
 // Server status
 
 var serverStatus; // Variable for server status (Connected/Disconnected/Error)
@@ -49,21 +50,24 @@ function onError(evt){
 
 
 
-/*****************************************************************************/
+//---------------------------------------------------------------------------
 // Sending server a command
 
 var outputCommand; // Variable for command sent to server
 //var packetAmount = document.getElementById("amountOfPackets").value
 
 
-//Changeable values--------------------------------------------------------
+//Changeable values-------------------------------------------------------------
 
 
-var packetAmount = 25;           //-------------------------------------------
-var ipAddress = '10.20.45.122'  //-------------------------------------------
+var packetAmount = 50
+var ipAddress = '10.20.200.151'
 
 
 // Changeable values end---------------------------------------------------
+
+
+
 
 function sendCommand() {
 
@@ -84,22 +88,36 @@ function sendCommand() {
 
 //-------------------------------------------------------------
 
+
+
 var table = document.getElementById('outputTable');
 var body = document.createElement('tbody')
 
 
+
+
 //-------------------------------------------------------------
+
+
 
 var justStupidCounter;  // Variable for loop counter in callback-function
-justStupidCounter = 0;  
+justStupidCounter = 0; 
+
+
 
 //-------------------------------------------------------------
+
+
 
 var cityArray = []
 var addressArray = []
 var countryArray = []
 var latitudeArray = []
 var longitudeArray = []
+
+var duplicateCount = []
+
+
 
 //-------------------------------------------------------------
 
@@ -168,47 +186,75 @@ function receiveOutput(evt){
           var freegeoip ="http://freegeoip.net/json/"
           var url = freegeoip + pDetails[2]
 
+          // Credit for this function to Roberto Decurnex
           // http://robertodecurnex.github.io/J50Npi/
           var data = {};
           callback = function(geodata) {
-            //console.log(geodata.ip + " | " + geodata.country_name)
 
-            addressArray.push(geodata.ip)                       // Työnnetään IP:t arrayhyn
-            cityArray.push(geodata.city)
-            countryArray.push(geodata.country_name)             // Työnnetään maannimet arrayhyn
+            // Store locationdata in different arrays
+
+            // if geodata ip on jo in array
+            // then dont push anything
+            // else push kaikki
+            if (addressArray.indexOf(geodata.ip) != "-1") {
+              duplicateCount.push(1)
+              console.log("Hey, i think we have a duplicate! " + duplicateCount.length)
+              
+            } else
+            addressArray.push(geodata.ip)
+            countryArray.push(geodata.country_name)  
             latitudeArray.push(geodata.latitude)
             longitudeArray.push(geodata.longitude)
-
-
             
           }
           J50Npi.getJSON(url, data, callback);
-
-          //console.log(addressArray[i] + " | " + cityArray[i] + ", " + countryArray[i])
-
-          //locationCell.innerHTML = addressArray[i] + " | " + cityArray[i] + ", " + countryArray[i]
 
           justStupidCounter++ // Kasvaa oikein, per paketti
         
     }
 
-    console.log("Value fetching = done?")
-    
-
-
 } // end receiveOutput
+
+
+
+
+//---------------------------------------------------------------------------
+
+var successCount = []
+var failureCount = []
 
 function locations() {
 
+
+
   for (e=0;e<=addressArray.length-1; e++) {
-    //console.log(addressArray[e])
+
     var temp1 = "locationCell" + e
     var temp2 = "latitudeCell" + e
     var temp3 = "longitudeCell" + e
+    var temp4 = "destinationCell" + e 
 
-    var locationCell = document.getElementById(temp1).innerHTML = addressArray[e] + " | " + cityArray[e] + ", " + countryArray[e]
-    var latitudeCell = document.getElementById(temp2).innerHTML = latitudeArray[e]
-    var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
+    if (addressArray[e] == "Reserved") {
+ 
+      var locationCell = document.getElementById(temp1).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address</a>"
+   
+    } else {
+
+        var locationCell = document.getElementById(temp1).innerHTML =  addressArray[e] + " | " + cityArray[e] + ", " + countryArray[e]
+        var latitudeCell = document.getElementById(temp2).innerHTML = latitudeArray[e]
+        var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
+
+        var destIP = document.getElementById(temp4).innerHTML
+        console.log(destIP)
+
+  }
+
+    if (destIP == addressArray[e]) {
+      successCount.push(1)
+
+
+    } else 
+      failureCount.push(1)
 
   }
 }
