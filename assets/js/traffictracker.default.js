@@ -29,19 +29,15 @@ function connect() {
 
 var serverStatus; // Variable for server status (Connected/Disconnected/Error)
 
-function init(){
-  //serverStatus = document.getElementById("serverStatus");
-  //serverStatus.innerHTML = "<p class='text-info'>NOT CONNECTED</p>";
-} // end init
+/*function init(){
+  console.log("Init käynnistyi")
+} // end init */
 
 function onOpen(evt){
-  //called as soon as a connection is opened
   sendCommand()
 } // end onOpen
 
 function onClose(evt){
-  //called when connection is severed
-  //serverStatus.innerHTML = "<p class = 'text-error'>DISCONNECTED</p>";
 } // end onClose;
 
 function onError(evt){
@@ -53,7 +49,6 @@ function onError(evt){
 //---------------------------------------------------------------------------
 // Sending server a command
 
-var outputCommand; // Variable for command sent to server
 //var packetAmount = document.getElementById("amountOfPackets").value
 
 
@@ -61,7 +56,7 @@ var outputCommand; // Variable for command sent to server
 
 
 var packetAmount = 20
-var ipAddress = '10.20.210.222'
+var ipAddress = '10.20.46.45'
 
 
 // Changeable values end---------------------------------------------------
@@ -71,7 +66,7 @@ var ipAddress = '10.20.210.222'
 
 function sendCommand() {
 
-  outputCommand = document.getElementById("outputCommand");
+  var outputCommand = document.getElementById("outputCommand");
   
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
 
@@ -132,9 +127,6 @@ function receiveOutput(evt){
         
 
         var pDetails = packet[i].split(",") 
-
-        var loopCounter = document.getElementById("packetCounter").innerHTML = "<p> Package counter : " + pDetails[0] + "</p>"
-
 
         // pDetails[0] == Frame number
         // pDetails[1] == Source ip
