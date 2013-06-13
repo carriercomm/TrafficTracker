@@ -6,6 +6,7 @@ var websocket;
 var outputxml;
 
 function connect() {
+
   //open socket
   if ("WebSocket" in window){
     websocket = new WebSocket("ws://127.0.0.1:8080/", "echo-protocol");
@@ -38,6 +39,7 @@ function onOpen(evt){
 } // end onOpen
 
 function onClose(evt){
+
 } // end onClose;
 
 function onError(evt){
