@@ -53,9 +53,14 @@ function addMarkers() {
 		var lon = longitudeArray[longitudeArray.length-1];
 		var lat = latitudeArray[latitudeArray.length-1];
 
-		var lonlat = lon + "," + lat;
-		console.log(nameMarker + " // " + lonlat)
-		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon));
+		// var lonlat = lon + "," + lat;
+		// console.log(nameMarker + " // " + lonlat)
+		// markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon));
+
+		marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon.clone());
+		marker.setOpacity(0.8);
+		marker.events.register('mousedown', marker, function(evt) { alert(this.icon.url); OpenLayers.Event.stop(evt); });
+		markers.addMarker(marker); 
 
 	} else {
 		console.log("undefined value detected, doing nothings");

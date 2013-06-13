@@ -66,7 +66,7 @@ function sendCommand() {
 
   var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
   var temp2 = " src host " + ipAddress  
-  command = commandBase + temp1 + temp2
+  command = commandBase + /*temp1 + */temp2
   websocket.send(command);
 
 }
