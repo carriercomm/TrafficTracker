@@ -129,7 +129,7 @@ function receiveOutput(evt){
           // Filter duplicates from the destination array
           if (destinationArray.indexOf(pDetails[2]) != "-1" ) {
 
-            console.log("Burn the Duplicate! Counter : " + pDetails[2] + " | " + duplicateCount.length)
+            //console.log("Duplicate destination number " + duplicateCount.length + " detected (" + pDetails[2] + ")")
             duplicateCount.push(1)
 
           }  else
@@ -209,13 +209,17 @@ function receiveOutput(evt){
                 J50Npi.getJSON(url, data, callback);
 
                 justStupidCounter++
-                locations()
+                locations();
+                
+                addMarkers();
 
               // END location fetching
             } else {
               console.log("Null value detected, send to /dev/null")
               emptyPackets.push(1)
             }
+
+
           
       }
 
@@ -231,7 +235,7 @@ function receiveOutput(evt){
 function locations() {
 
 
-  for (e=0;e<=addressArray.length-1; e++) {
+  for (e=0;e<=addressArray.length; e++) {
 
     var temp1 = "locationCell" + e
     var temp2 = "latitudeCell" + e
@@ -258,6 +262,5 @@ function locations() {
        }
 
       }
-      simosilmu();
 }
 
