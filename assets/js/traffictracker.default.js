@@ -29,9 +29,9 @@ function connect() {
 
 var serverStatus; // Variable for server status (Connected/Disconnected/Error)
 
-/*function init(){
+function init(){
   console.log("Init käynnistyi")
-} // end init */
+} // end init
 
 function onOpen(evt){
   sendCommand()
@@ -46,17 +46,11 @@ function onError(evt){
 
 
 
-//---------------------------------------------------------------------------
-// Sending server a command
-
-//var packetAmount = document.getElementById("amountOfPackets").value
-
-
 //Changeable values-------------------------------------------------------------
 
 
-var packetAmount = 20
-var ipAddress = '10.20.46.45'
+var packetAmount = 200;
+var ipAddress = '10.20.214.180'
 
 
 // Changeable values end---------------------------------------------------
@@ -70,13 +64,11 @@ function sendCommand() {
   
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
 
-  //var packetAmount = document.getElementById("amountOfPackets").value
   var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
-  //ipAddress = " src host " + document.getElementById("ipInput").value
   var temp2 = " src host " + ipAddress  
   command = commandBase + temp1 + temp2
   websocket.send(command);
-  //createRows();
+
 }
 
 
@@ -266,5 +258,6 @@ function locations() {
        }
 
       }
+      simosilmu();
 }
 

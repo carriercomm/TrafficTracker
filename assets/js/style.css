@@ -2,7 +2,7 @@
  * CSS Reset
  * From Blueprint reset.css
  * http://blueprintcss.googlecode.com
- */
+ */ /*
 html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0;padding:0;border:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}
 body {line-height:1.5;}
 table {border-collapse:separate;border-spacing:0;}
@@ -11,10 +11,11 @@ table, td, th {vertical-align:middle;}
 blockquote:before, blockquote:after, q:before, q:after {content:"";}
 blockquote, q {quotes:"" "";}
 a img {border:none;}
-
+*/
 /**
  * Basic Typography
  */
+ /*
 body {
     font-family: "Lucida Grande", Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
     font-size: 80%;
@@ -71,7 +72,7 @@ h6 {
 
 .olControlAttribution {
     bottom: 5px;
-}
+} */
 
 /**
  * Map Examples Specific
@@ -81,6 +82,14 @@ h6 {
     height: 256px;
     border: 1px solid #ccc;
 }
+.regularmap {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left:0;
+    height: px;
+    border: 2px solid green;
+}
 #tags {
     display: none;
 }
@@ -88,6 +97,7 @@ h6 {
 #docs p {
     margin-bottom: 0.5em;
 }
+
 /* mobile specific */
 @media only screen and (max-width: 600px) {
     body {
@@ -101,7 +111,6 @@ h6 {
         width      : 100%;
     }
     #map {
-        border : 0;
         height : 250px;
     }
     #title {
@@ -125,6 +134,7 @@ h6 {
         display : none;
     }
 }
+
 @media only screen and (orientation: landscape) and (max-width: 600px) {
     #shortdesc {
        float: right;
@@ -132,6 +142,7 @@ h6 {
     }
     #map {
         width: 70%;
+        border: 2px dashed red;
     }
     #docs {
         font-size: 12px;

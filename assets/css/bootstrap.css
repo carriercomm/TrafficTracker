@@ -112,6 +112,12 @@ img {
   max-width: none;
 }
 
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+
 button,
 input,
 select,

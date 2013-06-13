@@ -54,6 +54,7 @@ server.listen(8080, function(err) {
 
 //Require node-websocket server implementation
 var WebSocketServer = require('websocket').server;
+var receivedCommand;
 
 //Create new websocket-server object and connect it to http-server
 wsServer = new WebSocketServer({
@@ -74,10 +75,10 @@ wsServer.on('request', function(request) {
     		console.log((new Date()) + ' Received command: ' + message.utf8Data);
 
     		// Execute the command from client
-    		var command = message.utf8Data
+    		receivedCommand = message.utf8Data
     		
     		// Separate arguments from command
-    		var cmd = command.split(' ')[0]
+    		var cmd = receivedCommand.split(' ')[0]
     		
     		// The basic command
     		var commandArray = (message.utf8Data).split(' ')
@@ -88,14 +89,18 @@ wsServer.on('request', function(request) {
     		var args=commandArray.slice(1, commandArray.length)
 
     		// Lets put the arguments and command back together
-    		var command = spawn(cmd, args);
 
-    		command.stdout.on('data', function(data) {
+            // commandista globaali variable
+            // wSocket.closeen command kill thingy
+
+    		receivedCommand = spawn(cmd, args);
+
+    		receivedCommand.stdout.on('data', function(data) {
     			console.log(data.toString())
 
     			connection.sendUTF(data.toString())
     		})
-            command.stdin.end()
+            receivedCommand.stdin.end()
     	}
     	else if (message.type === 'binary') {
         	console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
@@ -105,29 +110,15 @@ wsServer.on('request', function(request) {
 	})
 
 })
+
+
+
 //Eventlistener for wsServer close
 wsServer.on('close',function(){
 	console.log((new Date()) + ' WebSocket connection closed.');
+    receivedCommand.kill('SIGKILL');
 })
 
 
 /*****************************************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
