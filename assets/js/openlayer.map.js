@@ -33,27 +33,44 @@ var LonLatArray = []
 
 function addMarkers() {
 
-	if ( countryArray[countryArray.length-1] != undefined) {
+	if (countryArray[countryArray.length-1] != "Reserved") {
 
-		// Title for the marker
-		var nameMarker = cityArray[cityArray.length-1] + ", " + countryArray[countryArray.length-1];
 
-		// Longitude and longitude for the marker
-		var lon = longitudeArray[longitudeArray.length-1];
-		var lat = latitudeArray[latitudeArray.length-1];
+		// Filter out the "Reserved"-tag
 
-		// Creating new marker
-		marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon.clone());
-		marker.setOpacity(0.8);
-		marker.events.register('mousedown', marker, function(evt) { alert(this.icon.url); OpenLayers.Event.stop(evt); });
-		marker.icon.imageDiv.title = nameMarker;
-		markers.addMarker(marker); 
+
+		if ( countryArray[countryArray.length-1] != undefined) {
+
+
+			// Title for the marker
+			var nameMarker = cityArray[cityArray.length-1] + ", " + countryArray[countryArray.length-1];
+
+			// Longitude and longitude for the marker
+			var lon = longitudeArray[longitudeArray.length-1];
+			var lat = latitudeArray[latitudeArray.length-1];
+
+			// Creating new marker
+			marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon.clone());
+			marker.setOpacity(0.8);
+			marker.events.register('mousedown', marker, function(evt) { alert(this.icon.url); OpenLayers.Event.stop(evt); });
+			marker.icon.imageDiv.title = nameMarker;
+			markers.addMarker(marker); 
+
+
+
+		} else {
+
+			console.log("MAPS: Undefined value detected, doing nothings");
+
+		}
 
 	} else {
-		console.log("undefined value detected, doing nothings");
+
+		console.log("MAPS: Reserved value detected, doing nothings");
+
 	}
 
-};
+}; // END function addMarkers
 
 
 

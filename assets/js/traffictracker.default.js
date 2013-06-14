@@ -36,6 +36,7 @@ function init(){
 
 function onOpen(evt){
   sendCommand()
+  document.getElementById('status').innerHTML = "<i class='icon-spinner icon-large'></i> At the moment I'm doing nothing";
 } // end onOpen
 
 function onClose(evt){
@@ -51,8 +52,8 @@ function onError(evt){
 //Changeable values-------------------------------------------------------------
 
 
-var packetAmount = 200;
-var ipAddress = '10.20.214.180'
+var packetAmount = 40;
+var ipAddress = '10.20.47.210'
 
 
 // Changeable values end---------------------------------------------------
@@ -68,8 +69,10 @@ function sendCommand() {
 
   var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
   var temp2 = " src host " + ipAddress  
-  command = commandBase + /*temp1 + */temp2
+  command = commandBase + temp1 + temp2
   websocket.send(command);
+  document.getElementById('status').innerHTML = "<i class='icon-spinner icon-large'></i> I just sent a command to the server";
+
 
 }
 
@@ -106,10 +109,13 @@ justStupidCounter = 0;
 var emptyPackets = []
 
 function receiveOutput(evt){
+    document.getElementById('status').innerHTML = "<i class='icon-spinner icon-spin icon-large'></i> Now I'm receiving output from server....";
+
 
     // evt.data is the data received from server
     outputxml = evt.data;
     outputxml.toString();
+
     
     // split data per packet
     var packet = outputxml.split(/\n/)
@@ -118,20 +124,22 @@ function receiveOutput(evt){
       for (var i=0;i<packet.length-1;i++) {
 
         var row = body.insertRow(i);
-        
-
         var pDetails = packet[i].split(",") 
 
         // pDetails[0] == Frame number
         // pDetails[1] == Source ip
         // pDetails[2] == Destination ip  
 
+        document.getElementById('counter').innerHTML =  "Package count : " + pDetails[0];
+        document.getElementById('countries').innerHTML = "Countries detected : " + countryArray;
+
         if ( pDetails[1] != "") {
 
           // Filter duplicates from the destination array
           if (destinationArray.indexOf(pDetails[2]) != "-1" ) {
 
-            //console.log("Duplicate destination number " + duplicateCount.length + " detected (" + pDetails[2] + ")")
+            console.log("Duplicate destination number " + duplicateCount.length + " detected (" + pDetails[2] + ")")
+            
             duplicateCount.push(1)
 
           }  else
@@ -142,19 +150,14 @@ function receiveOutput(evt){
                 frameCell.innerHTML = pDetails[0]
 
                 // Cell for source IP
+                // [12:28:52.313] IndexSizeError: Index or size is negative or greater than the allowed amount
                 sourceCell = row.insertCell(1)
                 sourceCell.setAttribute("id", "sourceCell" + justStupidCounter )
-                if ( pDetails[1] == "" ) {
-                  sourceCell.innerHTML ="null"
-                } else 
                 sourceCell.innerHTML = pDetails[1]
 
                 // Cell for destination IP
                 destinationCell = row.insertCell(2)
                 destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
-                if ( pDetails[2] == "") {
-                  destinationCell.innerHTML = "null"
-                } else
                 destinationCell.innerHTML = pDetails[2]
 
                 destinationArray.push(pDetails[2])
@@ -215,6 +218,8 @@ function receiveOutput(evt){
                 
                 addMarkers();
 
+                console.log("NEW: " + pDetails[0] + " : " + pDetails[2] + " : " + addressArray[i] + " : " + cityArray[i] + ", " + countryArray[i]);
+
               // END location fetching
             } else {
               console.log("Null value detected, send to /dev/null")
@@ -237,7 +242,7 @@ function receiveOutput(evt){
 function locations() {
 
 
-  for (e=0;e<=addressArray.length; e++) {
+  for (e=0;e<=addressArray.length-1; e++) {
 
     var temp1 = "locationCell" + e
     var temp2 = "latitudeCell" + e
@@ -246,12 +251,16 @@ function locations() {
 
     if (countryArray[e] == "Reserved") {
  
-      document.getElementById(temp1).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address</a>"
+      document.getElementById(temp1).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address </a> <i class='icon-external-link'></i>"
+      document.getElementById(temp2).innerHTML = "null"
+      document.getElementById(temp3).innerHTML = "null"
  
        } else {
 
         if (cityArray[e] == "" ) {
+
           var locationCell = document.getElementById(temp1.innerHTML = countryArray[e])
+
         } else {
 
         var locationCell = document.getElementById(temp1).innerHTML = cityArray[e] + ", " + countryArray[e]
