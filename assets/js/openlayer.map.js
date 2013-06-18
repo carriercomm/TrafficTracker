@@ -79,7 +79,6 @@ function addMarkers() {
 				// Logging
 				console.log("New Marker placed on the map : " + nameMarker + "(" + lon + lat + ")" )
 				markerCounter.push(1);
-				console.log("No dublilcation detected")
 				markerList.push(nameMarker);
 
 		}
@@ -97,8 +96,6 @@ function addMarkers() {
 		console.log("MAPS: 'Reserved' value detected, doing nothings");
 
 	}
-
-	console.log("Amont of markers: " + markerCounter.length)
 
 }; // END function addMarkers
 

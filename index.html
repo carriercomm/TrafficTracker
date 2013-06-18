@@ -98,6 +98,29 @@
 
     <h2>Sniffing table </h2>
 
+    <h3>Table headers explained</h3>
+
+    <dl class="dl-horizontal">
+
+      <dt>Packet #</dt>
+      <dd>Number of the packet where this specific destination IP was first encountered with. Number
+        of the packets depends on your preferences. </dd>
+
+      <dt>Source</dt>
+      <dd>Ip address of the source. This should be same on each of the rows. If it isn't, check your network settings.</dd>
+
+      <dt>Destionation</dt>
+      <dd>Destination ip address is the address where you are sending packets to. This table shouldn't display any duplicate or empty destination IP's, because they are filtered before adding to the table. Reserved addresses are still displayed though.</dd>
+
+      <dt>Location</dt>
+      <dd>Location service is provided by <a href="http://freegeoip.net/" target="_blank">Freegeoip</a>. The coordinates, city and country of the destination IP address are being fetched from the Freegeoip database.</dd>
+
+      <dt>Latitude/Longitude</dt>
+      <dd>Latitude and longitude (aka. coordinates) of the specific destination address. This data is also provided by aforementioned Freegeoip.</dd>
+    </dl>
+
+    <button onclick="locations()">Locations</button>
+
 
           <table id="outputTable" class="table table-hover table-bordered table-condensed">
             <legend>Sniffing output and locations</legend>
@@ -107,6 +130,7 @@
                 <th width="15%">Packet #</th>
                 <th width="15%">Source</th>
                 <th width="15%">Destination</th>
+                <th>Occurrences</th>
                 <th width="25%">Location</th>
                 <th width="15%">Latitude</th>
                 <th width="15%">Longitude</th>
