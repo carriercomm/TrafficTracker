@@ -8,8 +8,6 @@ var ol_wms = new OpenLayers.Layer.WMS(
     {layers: "basic"}
 ); 
 
-//layer = new OpenLayers.Layer.OSM( "Simple OSM Map");
-
 map.addLayers([ol_wms]);
 
 map.setCenter(new OpenLayers.LonLat(0, 0), 0);
@@ -21,40 +19,70 @@ var size = new OpenLayers.Size(21,25);
 var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
 
-
-// var halfIcon = icon.clone();
-// markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(0,45),halfIcon));
-
 map.zoomToMaxExtent();
 map.zoomIn();
 
+map.addControl(
+    new OpenLayers.Control.MousePosition({
+        prefix: 
+            'EPSG:4326</a> coordinates: ',
+        separator: ' | ',
+        numDigits: 2,
+        emptyString: 'Mouse is not over map.'
+    })
+);
 
-var LonLatArray = []
+
+var markerCounter = []
+var markerList = []
+
+
 
 function addMarkers() {
 
-	if (countryArray[countryArray.length-1] != "Reserved") {
+	if ( countryArray[countryArray.length-1] != "Reserved" ) {
 
 
 		// Filter out the "Reserved"-tag
 
 
-		if ( countryArray[countryArray.length-1] != undefined) {
+		if ( countryArray[countryArray.length-1] != undefined ) {
 
 
 			// Title for the marker
-			var nameMarker = cityArray[cityArray.length-1] + ", " + countryArray[countryArray.length-1];
+			var nameMarker;
 
-			// Longitude and longitude for the marker
-			var lon = longitudeArray[longitudeArray.length-1];
-			var lat = latitudeArray[latitudeArray.length-1];
+			nameMarker = cityArray[cityArray.length-1] + ", " + countryArray[countryArray.length-1];
+			
 
-			// Creating new marker
-			marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon.clone());
-			marker.setOpacity(0.8);
-			marker.events.register('mousedown', marker, function(evt) { alert(this.icon.url); OpenLayers.Event.stop(evt); });
-			marker.icon.imageDiv.title = nameMarker;
-			markers.addMarker(marker); 
+			if ( markerList.indexOf(nameMarker) != "-1") {
+				
+				// Filter duplicate markers
+
+			} else {
+
+				
+
+				// Longitude and longitude for the marker
+				var lon = longitudeArray[longitudeArray.length-1];
+				var lat = latitudeArray[latitudeArray.length-1];
+
+				// Creating new marker
+				marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),icon.clone());
+				marker.setOpacity(0.8);
+				marker.events.register('mousedown', marker, function(evt) { alert(this.icon.url); OpenLayers.Event.stop(evt); });
+
+				// Give the marker a name
+				marker.icon.imageDiv.title = nameMarker;
+				markers.addMarker(marker); 
+
+				// Logging
+				console.log("New Marker placed on the map : " + nameMarker + "(" + lon + lat + ")" )
+				markerCounter.push(1);
+				console.log("No dublilcation detected")
+				markerList.push(nameMarker);
+
+		}
 
 
 
@@ -66,9 +94,11 @@ function addMarkers() {
 
 	} else {
 
-		console.log("MAPS: Reserved value detected, doing nothings");
+		console.log("MAPS: 'Reserved' value detected, doing nothings");
 
 	}
+
+	console.log("Amont of markers: " + markerCounter.length)
 
 }; // END function addMarkers
 

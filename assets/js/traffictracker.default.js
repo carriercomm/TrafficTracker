@@ -17,7 +17,7 @@ function connect() {
 
     websocket.onmessage = receiveOutput;
     websocket.onerror = onError;
-    } 
+    }
     else {
       alert("WebSockets not supported on your browser.");
     } // end if
@@ -52,8 +52,8 @@ function onError(evt){
 //Changeable values-------------------------------------------------------------
 
 
-var packetAmount = 40;
-var ipAddress = '10.20.47.210'
+var packetAmount = 60;
+var ipAddress = '10.20.218.210'
 
 
 // Changeable values end---------------------------------------------------
@@ -72,6 +72,8 @@ function sendCommand() {
   command = commandBase + temp1 + temp2
   websocket.send(command);
   document.getElementById('status').innerHTML = "<i class='icon-spinner icon-large'></i> I just sent a command to the server";
+
+
 
 
 }
@@ -109,12 +111,15 @@ justStupidCounter = 0;
 var emptyPackets = []
 
 function receiveOutput(evt){
+
     document.getElementById('status').innerHTML = "<i class='icon-spinner icon-spin icon-large'></i> Now I'm receiving output from server....";
 
 
     // evt.data is the data received from server
     outputxml = evt.data;
     outputxml.toString();
+
+    locations()
 
     
     // split data per packet
@@ -129,9 +134,6 @@ function receiveOutput(evt){
         // pDetails[0] == Frame number
         // pDetails[1] == Source ip
         // pDetails[2] == Destination ip  
-
-        document.getElementById('counter').innerHTML =  "Package count : " + pDetails[0];
-        document.getElementById('countries').innerHTML = "Countries detected : " + countryArray;
 
         if ( pDetails[1] != "") {
 
@@ -163,30 +165,27 @@ function receiveOutput(evt){
                 destinationArray.push(pDetails[2])
 
 
-
                 // Cells for location information
 
                   // Cell for location
                   locationCell = row.insertCell(3)
                   locationCell.setAttribute("id", "locationCell" + justStupidCounter )
-                  locationCell.innerHTML = "F-f-f-fetching...."
+                  locationCell.innerHTML = "------------"
+                  
 
                   // Cell for latitude
                   latitudeCell = row.insertCell(4)
                   latitudeCell.setAttribute("id", "latitudeCell" + justStupidCounter )
-                  latitudeCell.innerHTML = "disabled"
+                  latitudeCell.innerHTML = "------------"
+                  
 
                   // Cell for longitude
                   longitudeCell = row.insertCell(5)
                   longitudeCell.setAttribute("id", "longitudeCell" + justStupidCounter )
-                  longitudeCell.innerHTML = "disabled"
+                  longitudeCell.innerHTML = "------------"
+                  
 
                 // END for location information
-
-
-
-              body.appendChild(row)
-              table.appendChild(body)
 
 
 
@@ -205,7 +204,14 @@ function receiveOutput(evt){
                   // is 404 - How do you filter that?
 
                   addressArray.push(geodata.ip)
-                  cityArray.push(geodata.city)
+
+                  if (geodata.city == "" ) {
+                    cityArray.push("Unknown") 
+                  }
+                  else { 
+                    cityArray.push(geodata.city) 
+                  }
+
                   countryArray.push(geodata.country_name)  
                   latitudeArray.push(geodata.latitude)
                   longitudeArray.push(geodata.longitude)
@@ -214,9 +220,7 @@ function receiveOutput(evt){
                 J50Npi.getJSON(url, data, callback);
 
                 justStupidCounter++
-                locations();
                 
-                addMarkers();
 
                 console.log("NEW: " + pDetails[0] + " : " + pDetails[2] + " : " + addressArray[i] + " : " + cityArray[i] + ", " + countryArray[i]);
 
@@ -224,15 +228,15 @@ function receiveOutput(evt){
             } else {
               console.log("Null value detected, send to /dev/null")
               emptyPackets.push(1)
+
+
             }
-
-
+             body.appendChild(row)
+             table.appendChild(body)
           
       }
 
-
 } // end receiveOutput
-
 
 
 
@@ -252,8 +256,8 @@ function locations() {
     if (countryArray[e] == "Reserved") {
  
       document.getElementById(temp1).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address </a> <i class='icon-external-link'></i>"
-      document.getElementById(temp2).innerHTML = "null"
-      document.getElementById(temp3).innerHTML = "null"
+      document.getElementById(temp2).innerHTML = "-----"
+      document.getElementById(temp3).innerHTML = "-----"
  
        } else {
 
@@ -272,6 +276,9 @@ function locations() {
 
        }
 
+       addMarkers()
+
       }
+      
 }
 
