@@ -29,12 +29,12 @@
                                    <link rel="shortcut icon" href="../assets/ico/favicon.png">
   </head>
 
-  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+  <body data-spy="scroll" data-target="laatikko">
 
 
     <!-- Navbar
     ================================================== -->
-    <div class="navbar navbar-fixed-top" id="navbar">
+    <div class="navbar navbar-inverse navbar-fixed-top" id="navbar">
       <div class="navbar-inner">
 
           <a class="brand" href="./index.html">TrafficTracker</a>
@@ -72,6 +72,10 @@
           <h1>Traffictracker <small>Documentation</small></h1>
         </div>
 
+        <div id="laatikko">
+          <p>HAHAHAHAHAH</p>
+        </div>
+
 
     <!-- About
     ================================================== -->
@@ -98,6 +102,30 @@
 
       </p>
 
+      <!-- Powered by
+      ================================================ -->
+      <section id="powered">
+        <div class="page-header">
+          <h1>Powered by</h1>
+        </div>
+
+            <ul class="media-list">
+    <li class="media">
+    <a class="pull-left" href="#">
+    <img class="media-object" data-src="/assets/img/openlayers.png">
+    </a>
+    <div class="media-body">
+    <h4 class="media-heading">OpenLayers</h4>
+    ...
+     
+    <!-- Nested media object -->
+    <div class="media">
+    ...
+    </div>
+    </div>
+    </li>
+    </ul>
+
     <!-- Dependencies
     ================================================== -->
     <section id="dependencies">
@@ -107,18 +135,10 @@
 
       <p>TrafficTracker uses several different services in initialization. Here is listed those services and notes about their services.</p>
 
-      <h2>Google Maps</h2>
-        <p><strike>This site uses Google Maps as canvas for the map.</strike>. This site uses OpenLayers. </p>
+      <h2>OpenLayers</h2>
+        <p>Map used in this site is provided by OpenLayers</p>
 
-      <h3>Issues</h3>
-        <p>From <a href="https://developers.google.com/maps/documentation/javascript/usage" target="_blank">Google Developers</a>:</p>
-        <blockquote>For-profit web sites are permitted to generate up to 25 000 map loads per day using the Google Maps JavaScript API v3. A map load is counted when a map is initialized on a web page. User interaction with a map after it has loaded (eg. panning the map, zooming the map, or changing from roadmap to satellite map) does not have any impact on usage limits.</blockquote>
-        <p>Therefore the Maps itself has said 25 000 limit on map initialization. However, this is from <a href="https://developers.google.com/maps/documentation/geocoding/" target="_blank">Google Developers site concerning geocoding</a>.</p>
-        <blockquote>Use of the Google Geocoding API is subject to a query limit of 2,500 geolocation requests per day. (User of Google Maps API for Business may perform up to 100,000 requests per day.) This limit is enforced to prevent abuse and/or repurposing of the Geocoding API, and this limit may be changed in the future without notice. Additionally, we enforce a request rate limit to prevent abuse of the service. If you exceed the 24-hour limit or otherwise abuse the service, the Geocoding API may stop working for you temporarily. If you continue to exceed this limit, your access to the Geocoding API may be blocked.</blockquote>
-        <p>TrafficTracker has in default limited the amount of packages and locations you can track, but it is possible to change amount of packages. Therefore the location points increase, but it doesn't effect the quota limitations. Maps are initialized when the application is launched, and thus the only thing effecting is the repeation of loading the application.</p>
-
-        <p>The usage of Google Maps is tracked with API key. At default TrafficTracker uses my personal API key, and thus it's preferred to change the API key to your personal one if you indent to use this app more frequently. <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key" target="_blank">Obtain an API key</a>
-
+ 
       <h2>jQuery</h2>
         <p>Bootstap needs jQuery to function properly, see more in <a href="http://twitter.github.io/bootstrap/javascript.html" target="_blank">here</a>. jQuery is loaded from the  <a href="http://code.jquery.com/" target="_blank">jQuery website</a>, and therefore is strictly dependant on their services. 
 
@@ -217,7 +237,6 @@
 
     </div> 
   </div>
-
 </div>
 
 

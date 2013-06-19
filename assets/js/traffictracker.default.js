@@ -31,12 +31,10 @@ function connect() {
 var serverStatus; // Variable for server status (Connected/Disconnected/Error)
 
 function init(){
-  console.log("Init käynnistyi")
 } // end init
 
 function onOpen(evt){
   sendCommand()
-  document.getElementById('status').innerHTML = "<i class='icon-spinner icon-large'></i> At the moment I'm doing nothing";
 } // end onOpen
 
 function onClose(evt){
@@ -52,8 +50,8 @@ function onError(evt){
 //Changeable values-------------------------------------------------------------
 
 
-var packetAmount = 100;
-var ipAddress = '10.20.218.210'
+var packetAmount = 40;
+var ipAddress = '10.20.208.122'
 
 
 // Changeable values end---------------------------------------------------
@@ -71,27 +69,12 @@ function sendCommand() {
   var temp2 = " src host " + ipAddress  
   command = commandBase + temp1 + temp2
   websocket.send(command);
-  document.getElementById('status').innerHTML = "<i class='icon-spinner icon-large'></i> I just sent a command to the server";
-
-
-
-
 }
 
-
-
 //-------------------------------------------------------------
-
-
 
 var table = document.getElementById('outputTable');
-var body = document.createElement('tbody')
-
-
-
-
-//-------------------------------------------------------------
-
+var body = document.createElement('tbody');
 
 var cityArray = []
 var addressArray = []
@@ -107,18 +90,19 @@ justStupidCounter = 1;
 var ip = []
 var occurrences = []
 
-
 //-------------------------------------------------------------
 
 var emptyPackets = []
 
 function receiveOutput(evt) {
 
-    document.getElementById('status').innerHTML = "<i class='icon-spinner icon-spin icon-large'></i> Now I'm receiving output from server....";
+    //document.getElementById('status').innerHTML = "<i class='icon-spinner icon-spin icon-large'></i> Now I'm receiving output from server....";
 
     // evt.data is the data received from server
     outputxml = evt.data;
     outputxml.toString();
+
+    locations()
 
     
     // split data per packet
@@ -134,112 +118,109 @@ function receiveOutput(evt) {
         // pDetails[1] == Source ip
         // pDetails[2] == Destination ip
 
+        if ( pDetails[1] != "") {
+          // Filter null packets
 
-        if ( destinationArray.indexOf(pDetails[2]) != -1 ) {
-          console.log("Duplikaatti!")
-          occurrences[ip.indexOf(pDetails[2])]++
+          if ( destinationArray.indexOf(pDetails[2]) != -1 ) {
+            // Duplicate
+            occurrences[ip.indexOf(pDetails[2])]++
 
 
-       } else {
+         } else {
 
-          ip.push(pDetails[2])
-          occurrences.push(1)
-          
-          console.log("Hai")
-
-          var row = body.insertRow(-1)
-
-          //Cell for packet number
-          frameCell = row.insertCell(0)
-          frameCell.setAttribute("id", "frameCell" + justStupidCounter )
-          frameCell.innerHTML = pDetails[0]
-
-          // Cell for source IP
-          sourceCell = row.insertCell(1)
-          sourceCell.setAttribute("id", "sourceCell" + justStupidCounter )
-          sourceCell.innerHTML = pDetails[1]
-
-          // Cell for destination IP
-          destinationCell = row.insertCell(2)
-          destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
-          destinationCell.innerHTML = pDetails[2]
-
-          destinationArray.push(pDetails[2])
-
-          // Cell for occurrences
-          occurrenceCell = row.insertCell(3)
-          occurrenceCell.setAttribute("id", "occurrenceCell" + justStupidCounter )
-          occurrenceCell.innerHTML = "------------"
-
-          // Cells for location information
-
-          // Cell for location
-          locationCell = row.insertCell(4)
-          locationCell.setAttribute("id", "locationCell" + justStupidCounter )
-          locationCell.innerHTML = "------------"
+            ip.push(pDetails[2])
+            occurrences.push(1)
           
 
-          // Cell for latitude
-          latitudeCell = row.insertCell(5)
-          latitudeCell.setAttribute("id", "latitudeCell" + justStupidCounter )
-          latitudeCell.innerHTML = "------------"
-          
+            var row = body.insertRow(-1)
 
-          // Cell for longitude
-          longitudeCell = row.insertCell(6)
-          longitudeCell.setAttribute("id", "longitudeCell" + justStupidCounter )
-          longitudeCell.innerHTML = "------------"
-            
+            //Cell for packet number
+            frameCell = row.insertCell(0)
+            frameCell.setAttribute("id", "frameCell" + justStupidCounter )
+            frameCell.innerHTML = pDetails[0]
 
-          // END for location information
+            // Cell for source IP
+            sourceCell = row.insertCell(1)
+            sourceCell.setAttribute("id", "sourceCell" + justStupidCounter )
+            sourceCell.innerHTML = pDetails[1]
 
+            // Cell for destination IP
+            destinationCell = row.insertCell(2)
+            destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
+            destinationCell.innerHTML = pDetails[2] //+ " (" + occurrences[ip.indexOf("'" + pDetails[2])] + "'") ;
 
+            destinationArray.push(pDetails[2])
 
-          // Fetch location information based on destination IP
+            // Cells for location information
 
-             var freegeoip ="http://freegeoip.net/json/"
-             var url = freegeoip + pDetails[2]
-
-
-            // Credit for this function to Roberto Decurnex
-            // http://robertodecurnex.github.io/J50Npi/
-            var data = {};
-            callback = function(geodata) {
-
-              // Table gets confused if the result from freegeopip
-              // is 404 - How do you filter that?
-
-              addressArray.push(geodata.ip)
-
-              if (geodata.city == "" ) {
-                cityArray.push("Unknown") 
-              }
-              else { 
-                cityArray.push(geodata.city) 
-              }
-
-              countryArray.push(geodata.country_name)
-              latitudeArray.push(geodata.latitude)
-              longitudeArray.push(geodata.longitude)
+              // Cell for location
+              locationCell = row.insertCell(3)
+              locationCell.setAttribute("id", "locationCell" + justStupidCounter )
+              locationCell.innerHTML = "------------"
               
-            } // END callback
 
-            J50Npi.getJSON(url, data, callback);
+              // Cell for latitude
+              latitudeCell = row.insertCell(4)
+              latitudeCell.setAttribute("id", "latitudeCell" + justStupidCounter )
+              latitudeCell.innerHTML = "------------"
+              
 
-            justStupidCounter++
-
-          body.appendChild(row)
-          table.appendChild(body)
-
-          } // END else
-
-
-        //locations()
+              // Cell for longitude
+              longitudeCell = row.insertCell(5)
+              longitudeCell.setAttribute("id", "longitudeCell" + justStupidCounter )
+              longitudeCell.innerHTML = "------------"
+              
+            // END for location information
 
 
 
-}
-} // end receiveOutput
+            // Fetch location information based on destination IP
+
+               var freegeoip ="http://freegeoip.net/json/"
+               var url = freegeoip + pDetails[2]
+
+
+              // Credit for this function to Roberto Decurnex
+              // http://robertodecurnex.github.io/J50Npi/
+              var data = {};
+              callback = function(geodata) {
+
+                // Table gets confused if the result from freegeopip
+                // is 404 - How do you filter that?
+
+                addressArray.push(geodata.ip)
+
+                if (geodata.city == "" ) {
+                  cityArray.push("Unknown") 
+                }
+                else { 
+                  cityArray.push(geodata.city) 
+                }
+
+                countryArray.push(geodata.country_name)
+                latitudeArray.push(geodata.latitude)
+                longitudeArray.push(geodata.longitude)
+                
+              } // END callback
+
+              J50Npi.getJSON(url, data, callback);
+
+              justStupidCounter++
+
+            body.appendChild(row)
+            table.appendChild(body)
+
+            } // END else
+
+        } // END null-detection
+        else {
+          console.log("Filter: Null value")
+          emptyPackets.push(1)
+        }
+
+      } // END for-loop
+
+} // END receiveOutput
 
 
 
@@ -248,14 +229,12 @@ function receiveOutput(evt) {
 
 function locations() {
 
-
-  for (e=1;e<=addressArray.length; e++) {
+  for (var e=1;e<=addressArray.length-1; e++) {
 
     var temp1 = "locationCell" + e
     var temp2 = "latitudeCell" + e
     var temp3 = "longitudeCell" + e
     var temp4 = "destinationCell" + e
-    var temp5 = "occurrenceCell" + e
 
     if (countryArray[e] == "Reserved") {
  
@@ -263,27 +242,24 @@ function locations() {
       document.getElementById(temp2).innerHTML = "-----"
       document.getElementById(temp3).innerHTML = "-----"
  
-       } else {
+    } else {
 
-        if (cityArray[e] == "" ) {
+      if (cityArray[e] == "" ) {
 
-          var locationCell = document.getElementById(temp1.innerHTML = countryArray[e])
+        var locationCell = document.getElementById(temp1.innerHTML = countryArray[e])
 
-        } else {
+      } else {
 
-        var occurrenceCell = document.getElementById(temp5).innerHTML = occurrences[e]
         var locationCell = document.getElementById(temp1).innerHTML = cityArray[e] + ", " + countryArray[e]
         var latitudeCell = document.getElementById(temp2).innerHTML = latitudeArray[e]
         var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
 
-        var destIP = document.getElementById(temp4).innerHTML
       }
 
-       }
-
-       addMarkers()
-
-      }
+    }
       
-}
+    addMarkers()
+
+  }
+} // END Locations
 

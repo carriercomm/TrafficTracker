@@ -13,6 +13,7 @@
 
     <!-- Le styles -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/traffictracker.default.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
@@ -71,22 +72,25 @@
       </p>
 
     </div>
-
+<!--
     <!-- STATUS section
-    ===================================================== -->
+    ===================================================== 
 
     <h2>Status </h2>
 
     <div class="well well-large well-transparent lead">
       <p id="status"> </p>
-    </div>
+    </div> -->
 
 
 
     <!-- MAP STUFF
     ====================================================== -->
+    
+    <div class="page-header">
+      <h1>Maps <small> // Powered by OpenLayers </small> </h1>
+    </div>
 
-    <h2>Map </h2>
 
     <div id="section" onload="maps()">
       <div id="map">
@@ -95,51 +99,75 @@
 
     <!-- TABLE STUFF
     ====================================================== -->
+    <div class="page-header">
+      <h1>Sniff <small> // Powered by tshark + freegeoip </small> </h1>
+    </div>
 
-    <h2>Sniffing table </h2>
+      <div class="accordion" id="accordion2">
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+              Table headers explanation
+            </a>
+          </div>
 
-    <h3>Table headers explained</h3>
+          <div id="collapseOne" class="accordion-body collapse">
+            <div class="accordion-inner">
 
-    <dl class="dl-horizontal">
+              <!-- Content for the first collable -->
+                <dl class="dl-horizontal">
 
-      <dt>Packet #</dt>
-      <dd>Number of the packet where this specific destination IP was first encountered with. Number
-        of the packets depends on your preferences. </dd>
+                  <dt>Packet #</dt>
+                  <dd>Number of the packet where this specific destination IP was first encountered with. Number
+                    of the packets depends on your preferences. </dd>
 
-      <dt>Source</dt>
-      <dd>Ip address of the source. This should be same on each of the rows. If it isn't, check your network settings.</dd>
+                  <dt>Source</dt>
+                  <dd>Ip address of the source. This should be same on each of the rows. If it isn't, check your network settings.</dd>
 
-      <dt>Destionation</dt>
-      <dd>Destination ip address is the address where you are sending packets to. This table shouldn't display any duplicate or empty destination IP's, because they are filtered before adding to the table. Reserved addresses are still displayed though.</dd>
+                  <dt>Destionation</dt>
+                  <dd>Destination ip address is the address where you are sending packets to. This table shouldn't display any duplicate or empty destination IP's, because they are filtered before adding to the table. Reserved addresses are still displayed though.</dd>
 
-      <dt>Location</dt>
-      <dd>Location service is provided by <a href="http://freegeoip.net/" target="_blank">Freegeoip</a>. The coordinates, city and country of the destination IP address are being fetched from the Freegeoip database.</dd>
+                  <dt>Location</dt>
+                  <dd>Location service is provided by <a href="http://freegeoip.net/" target="_blank">Freegeoip</a>. The coordinates, city and country of the destination IP address are being fetched from the Freegeoip database.</dd>
 
-      <dt>Latitude/Longitude</dt>
-      <dd>Latitude and longitude (aka. coordinates) of the specific destination address. This data is also provided by aforementioned Freegeoip.</dd>
-    </dl>
+                  <dt>Latitude/Longitude</dt>
+                  <dd>Latitude and longitude (aka. coordinates) of the specific destination address. This data is also provided by aforementioned Freegeoip.</dd>
+                
+                </dl>
+              <!-- // End for the first collabse -->
 
-    <button onclick="locations()">Locations</button>
-
-
-          <table id="outputTable" class="table table-hover table-bordered table-condensed">
-            <legend>Sniffing output and locations</legend>
-
-            <thead> <!-- Headers for table -->
-               <tr>
-                <th width="15%">Packet #</th>
-                <th width="15%">Source</th>
-                <th width="15%">Destination</th>
-                <th>Occurrences</th>
-                <th width="25%">Location</th>
-                <th width="15%">Latitude</th>
-                <th width="15%">Longitude</th>
-              </tr>
-            </thead> <!-- End of headers -->
-
-          </table>
+            </div>
+          </div>
 
         </div>
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+              Sniff output table <small> // Counter could be nice in here </small>
+            </a> 
+          </div>
+          <div id="collapseTwo" class="accordion-body collapse">
+            <div class="accordion-inner">
+
+              <!-- -->
+                <table id="outputTable" class="table table-hover table-bordered">
+
+                    <thead> <!-- Headers for table -->
+                      <tr>
+                        <th width="15%">Packet #</th>
+                        <th width="15%">Source</th>
+                        <th width="15%">Destination</th>
+                        <th width="25%">Location</th>
+                        <th width="15%">Latitude</th>
+                        <th width="15%">Longitude</th>
+                      </tr>
+                    </thead> <!-- End of headers -->
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div><!-- /container -->
 

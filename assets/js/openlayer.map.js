@@ -17,7 +17,7 @@ map.addLayer(markers);
 
 var size = new OpenLayers.Size(21,25);
 var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-var icon = new OpenLayers.Icon('http://www.openlayers.org/dev/img/marker.png',size,offset);
+var icon = new OpenLayers.Icon('http://www.openstreetmap.org/assets/marker-red-7344acb6b41d14fbaa0476a8eb191da1.png',size,offset);
 
 map.zoomToMaxExtent();
 map.zoomIn();
@@ -87,13 +87,13 @@ function addMarkers() {
 
 		} else {
 
-			console.log("MAPS: Undefined value detected, doing nothings");
+			console.log("FILTER (MAPS): Undefined value detected, doing nothings");
 
 		}
 
 	} else {
 
-		console.log("MAPS: 'Reserved' value detected, doing nothings");
+		console.log("FILTER (MAPS): 'Reserved' value detected, doing nothings");
 
 	}
 
