@@ -34,7 +34,7 @@
 
   </head>
 
-<body onload="connect()">
+<body>
 
     <!-- Navbar
     ================================================== -->
@@ -70,6 +70,15 @@
       <h1>TrafficTracker</h1>
       <p class="lead">This site is created to show outgoing traffic from your computer. or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <strike>Google Maps Api</strike>.
       </p>
+
+      <div class="button-group">
+         <a class="btn btn-large btn-success" onclick="connect()" href="#">
+          Initialize
+          <a class="btn btn-large btn-error" onclick="closeSocket()">Close</a>
+
+
+        </a>
+      </div> <!-- END Button group -->
 
     </div>
 <!--
@@ -143,23 +152,28 @@
         <div class="accordion-group">
           <div class="accordion-heading">
             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-              Sniff output table <small> // Counter could be nice in here </small>
+              Sniff output table
             </a> 
           </div>
           <div id="collapseTwo" class="accordion-body collapse">
             <div class="accordion-inner">
+
+              <div id="tableStatus">
+              </div>
 
               <!-- -->
                 <table id="outputTable" class="table table-hover table-bordered">
 
                     <thead> <!-- Headers for table -->
                       <tr>
-                        <th width="15%">Packet #</th>
+                        <th width="7%">Packet #</th>
                         <th width="15%">Source</th>
                         <th width="15%">Destination</th>
+                        <th width="8%">DNS</th>
                         <th width="25%">Location</th>
                         <th width="15%">Latitude</th>
                         <th width="15%">Longitude</th>
+                        
                       </tr>
                     </thead> <!-- End of headers -->
 
@@ -167,7 +181,36 @@
             </div>
           </div>
         </div>
-      </div>
+
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+              Logfile
+            </a>
+          </div>
+
+          <div id="collapseThree" class="accordion-body collapse">
+            <div class="accordion-inner">
+
+              <pre> Here should be displayed the logfile created after the sniffing has been done.
+                <a href="http://www.htmlgoodies.com/beyond/javascript/read-text-files-using-the-javascript-filereader.html" target="_blank">Some help, maybe?</a>
+              </pre>
+
+            </div>
+          </div>
+
+        </div>
+
+
+      </div> <!-- END Accordion-->
+
+    <div class="page-header">
+      <h1>Issues <small> // Ongoing issues and problems </small> </h1>
+    </div>
+
+      <p>There is a implementation problem with the OpenLayers. There is a problem with the loop that adds the markers to the map. For some reason, it doesnt't go through thearray the way it should be.</p>
+
+
 
     </div><!-- /container -->
 

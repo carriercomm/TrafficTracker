@@ -111,8 +111,6 @@ wsServer.on('request', function(request) {
 
 })
 
-
-
 //Eventlistener for wsServer close
 wsServer.on('close',function(){
 	console.log((new Date()) + ' WebSocket connection closed.');
