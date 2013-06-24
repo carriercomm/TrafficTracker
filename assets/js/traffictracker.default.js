@@ -51,7 +51,7 @@ function onError(evt){
 
 
 var packetAmount = 100;
-var ipAddress = '10.20.209.166'
+var ipAddress = '10.20.204.213'
 
 
 // Changeable values end---------------------------------------------------
@@ -248,7 +248,6 @@ function receiveOutput(evt) {
 function locations() {
 
   for (var e=1;e<=addressArray.length-1; e++) {
-    addMarkers()
 
     var temp1 = "locationCell" + e
     var temp2 = "latitudeCell" + e
@@ -274,6 +273,7 @@ function locations() {
         var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
 
       }
+      addMarkers()
 
     }
 
