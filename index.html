@@ -75,22 +75,13 @@
          <a class="btn btn-large btn-success" onclick="connect()" href="#">
           Initialize
           <a class="btn btn-large btn-error" onclick="closeSocket()">Close</a>
+          <a class="btn btn-large" onclick="createLogFile()">Logfile</a>
 
 
         </a>
       </div> <!-- END Button group -->
 
     </div>
-<!--
-    <!-- STATUS section
-    ===================================================== 
-
-    <h2>Status </h2>
-
-    <div class="well well-large well-transparent lead">
-      <p id="status"> </p>
-    </div> -->
-
 
 
     <!-- MAP STUFF
@@ -162,15 +153,14 @@
               </div>
 
               <!-- -->
-                <table id="outputTable" class="table table-hover table-bordered">
+                <table id="outputTable" class="table table-hover table-bordered table-condensed">
 
                     <thead> <!-- Headers for table -->
                       <tr>
-                        <th width="7%">Packet #</th>
+                        <th width="10%">Packet #</th>
                         <th width="15%">Source</th>
                         <th width="15%">Destination</th>
-                        <th width="8%">DNS</th>
-                        <th width="25%">Location</th>
+                        <th width="30%">Location</th>
                         <th width="15%">Latitude</th>
                         <th width="15%">Longitude</th>
                         
@@ -208,7 +198,9 @@
       <h1>Issues <small> // Ongoing issues and problems </small> </h1>
     </div>
 
-      <p>There is a implementation problem with the OpenLayers. There is a problem with the loop that adds the markers to the map. For some reason, it doesnt't go through thearray the way it should be.</p>
+      <p><strike>There is a implementation problem with the OpenLayers. There is a problem with the loop that adds the markers to the map. For some reason, it doesnt't go through thearray the way it should be.</strike></p>
+
+      <p><strong>24.6.2013 - DNS recognition disabled: </strong>Decided to disable DNS recognition, it doesn't work properly from the tshark. Maybe adding another external service to provide that?</p>
 
 
 

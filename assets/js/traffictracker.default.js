@@ -63,7 +63,7 @@ function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
   
-  commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst -e dns.qry.name ";
+  commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
 
   var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
   var temp2 = "src host " + ipAddress
@@ -103,8 +103,6 @@ function receiveOutput(evt) {
     outputxml = evt.data;
     outputxml.toString();
 
-    locations()
-
     
     // split data per packet
     var packet = outputxml.split(/\n/)
@@ -125,7 +123,6 @@ function receiveOutput(evt) {
           // 1000 packets. Just for the buffers sake
 
           closeSocket()
-          window.alert("Socket closed; Packet number over 1000")
         }
 
           if ( pDetails[1] != "") {
@@ -146,10 +143,9 @@ function receiveOutput(evt) {
               frameCell = row.insertCell(0)
               sourceCell = row.insertCell(1)
               destinationCell = row.insertCell(2)
-              dnsCell = row.insertCell(3)
-              locationCell = row.insertCell(4)
-              latitudeCell = row.insertCell(5)
-              longitudeCell = row.insertCell(6)
+              locationCell = row.insertCell(3)
+              latitudeCell = row.insertCell(4)
+              longitudeCell = row.insertCell(5)
 
 
               //Cell for packet number
@@ -162,17 +158,8 @@ function receiveOutput(evt) {
 
               // Cell for destination IP
               destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
-              destinationCell.innerHTML = pDetails[2] + " (" + occurrences[ip.indexOf(pDetails[2])] + ")" ;
-
+              destinationCell.innerHTML = pDetails[2]
               destinationArray.push(pDetails[2])
-
-              // DNS Cell
-
-              if ( pDetails[3] != "") {
-                dnsCell.innerHTML = pDetails[3]
-              } else {
-                dnsCell.innerHTML = "----"
-              }
 
               // Cells for location information
 
@@ -227,16 +214,20 @@ function receiveOutput(evt) {
 
               body.appendChild(row)
               table.appendChild(body)
+              locations()
 
               } // END else
 
           } // END null-detection
           else {
-            console.log("Filter: Null value")
+            // Null value
             emptyPackets.push(1)
           }
 
+          
+
       } // END for-loop
+
 
 } // END receiveOutput
 
@@ -247,7 +238,7 @@ function receiveOutput(evt) {
 
 function locations() {
 
-  for (var e=1;e<=addressArray.length-1; e++) {
+  for (var e=1;e<addressArray.length; e++) {
 
     var temp1 = "locationCell" + e
     var temp2 = "latitudeCell" + e
@@ -264,11 +255,11 @@ function locations() {
 
       if (cityArray[e] == "" ) {
 
-        var locationCell = document.getElementById(temp1.innerHTML = countryArray[e])
+        var locationCell = document.getElementById(temp1).innerHTML = countryArray[e]
 
       } else {
 
-        var locationCell = document.getElementById(temp1).innerHTML = cityArray[e] + ", " + countryArray[e]
+        var locationCell = document.getElementById(temp1).innerHTML = addressArray[e] + " | " + cityArray[e] + ", " + countryArray[e]
         var latitudeCell = document.getElementById(temp2).innerHTML = latitudeArray[e]
         var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
 
@@ -287,6 +278,11 @@ function closeSocket() {
   websocket.close();
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed </div>";
 
+}
+
+//-------------------------------------------------------------------------
+function createLogFile() {
+  console.log("createLogFile-function called")
 }
 
 

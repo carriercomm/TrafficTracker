@@ -42,11 +42,12 @@ function addMarkers() {
 
 	for (var e=0; e<=countryArray.length; e++) {
 
-		// Counter for addMarkers
-		console.log("addMarkers counter, pitäisi alkaa joka kierroksella alusta: " + e)
 
 		if ( markerList.indexOf(cityArray[e] + ", " + countryArray[e]) != "0") {
-			console.log("nyt pitäisi ilmestyä jokainen markeri karttaan!")
+
+			// ELSE Puuttuu - algoritmi aivan liian raskas
+			// filter maps arrayssa on tuhannen paketin jälkeen 10,000 ilmoitusta 
+			//
 
 
 			if ( countryArray[countryArray.length-1] != "Reserved" ) {
@@ -86,12 +87,12 @@ function addMarkers() {
 						markers.addMarker(marker); 
 
 						// Logging
-						console.log("New Marker placed on the map : " + nameMarker + "(" + lon + "," + lat + ")" + " | " + cityArray[cityArray.length-1] 
+						console.log("New Marker placed on the map : " + nameMarker + "(" + lon + "," + lat + ")"
 							)
 						markerCounter.push(1); 
 						markerList.push(nameMarker);
 
-				}
+					}
 
 				} else {
 
@@ -104,7 +105,8 @@ function addMarkers() {
 				console.log("FILTER (MAPS): 'Reserved' value detected, doing nothings");
 
 			}
-	}
+
+		}
 
 	}
 
