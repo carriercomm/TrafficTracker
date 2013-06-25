@@ -1,6 +1,60 @@
 
+//-------------------------------------------------------------------------
+//
+// This file is a default javascript-file, made for TrafficTracker in 2013.
+// File contains basicly all the functionalitities required by the webapp.
+// 
+// Contact: iuuso @ IRC (Ircnet, Freenode, Quakenet)
+//
+//-------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------
+// Map initialization
+
+var map = L.map('map').setView([51.505, -0.09], 2);
+
+    L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      minZoom: 2,
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+    }).addTo(map);
+
+
+L.marker([48.85, 2.35], { boolean bounceOnAdd, object bounceOnAddOptions, function bounceOnAddCallback }).addTo(map);
+
+
+    // L.marker([51.5, -0.09]).addTo(map)
+    //   .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+
+    // L.circle([51.508, -0.11], 500, {
+    //   color: 'red',
+    //   fillColor: '#f03',
+    //   fillOpacity: 0.5
+    // }).addTo(map).bindPopup("I am a circle.");
+
+    // L.polygon([
+    //   [51.509, -0.08],
+    //   [51.503, -0.06],
+    //   [51.51, -0.047]
+    // ]).addTo(map).bindPopup("I am a polygon.");
+
+
+    var popup = L.popup();
+
+    function onMapClick(e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(map);
+    }
+
+    map.on('click', onMapClick);
+
+
+
 //---------------------------------------------------------------------------
-// Initialize a websocket connection to server
+// Websocket initialization
 
 var websocket;
 var outputxml;
@@ -45,29 +99,14 @@ function onError(evt){
   window.alert("Error establishing WebSocket-connection to server" + evt.data)
 } // end onError
 
-
-
-//Changeable values-------------------------------------------------------------
-
-
-var packetAmount = 100;
-var ipAddress = '10.20.204.213'
-
-
-// Changeable values end---------------------------------------------------
-
-
-
+//-------------------------------------------------------------
 
 function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
   
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
-
-  var temp1 = "-c " + packetAmount; // Temp value, because we need this variable to create tabl
-  var temp2 = "src host " + ipAddress
-  command = commandBase + temp2
+  command = commandBase + "-c 1000 src host 10.20.49.46"
 
   websocket.send(command);
 }
@@ -80,13 +119,15 @@ var body = document.createElement('tbody');
 var cityArray = []
 var addressArray = []
 var countryArray = []
-var latitudeArray = []
+var ispArray = []
 var longitudeArray = []
+var latitudeArray = []
+var ispArray = []
 
 var destinationArray = []
 var duplicateCount = []
 var justStupidCounter; 
-justStupidCounter = 1; 
+justStupidCounter = 0; 
 
 var ip = []
 var occurrences = []
@@ -137,15 +178,14 @@ function receiveOutput(evt) {
               ip.push(pDetails[2])
               occurrences.push(1)
             
-
               var row = body.insertRow(-1)
 
               frameCell = row.insertCell(0)
               sourceCell = row.insertCell(1)
               destinationCell = row.insertCell(2)
               locationCell = row.insertCell(3)
-              latitudeCell = row.insertCell(4)
-              longitudeCell = row.insertCell(5)
+              ispCell = row.insertCell(4)
+              
 
 
               //Cell for packet number
@@ -161,56 +201,69 @@ function receiveOutput(evt) {
               destinationCell.innerHTML = pDetails[2]
               destinationArray.push(pDetails[2])
 
-              // Cells for location information
+              // Cell for location
+              locationCell.setAttribute("id", "locationCell" + justStupidCounter )
+              locationCell.innerHTML = "------------"
+              
 
-                // Cell for location
-                locationCell.setAttribute("id", "locationCell" + justStupidCounter )
-                locationCell.innerHTML = "------------"
-                
+              // Cell for isp
+              ispCell.setAttribute("id", "ispCell" + justStupidCounter )
+              ispCell.innerHTML = "------------"
 
-                // Cell for latitude
-                latitudeCell.setAttribute("id", "latitudeCell" + justStupidCounter )
-                latitudeCell.innerHTML = "------------"
-                
+              // Location service provided by IP-Api
+              var ipApi = "http://ip-api.com/json/"
+              var url = ipApi + pDetails[2]
 
-                // Cell for longitude
-                longitudeCell.setAttribute("id", "longitudeCell" + justStupidCounter )
-                longitudeCell.innerHTML = "------------"
-                
-              // END for location information
+              // // Credit for this function to Roberto Decurnex
+              // // http://robertodecurnex.github.io/J50Npi/
+              var data = {};
+              callback = function(geodata) {
 
-              // Fetch location information based on destination IP
+                if ( geodata.status != "fail") {
 
-                 var freegeoip ="http://freegeoip.net/json/"
-                 var url = freegeoip + pDetails[2]
-
-
-                // Credit for this function to Roberto Decurnex
-                // http://robertodecurnex.github.io/J50Npi/
-                var data = {};
-                callback = function(geodata) {
-
-                  // Table gets confused if the result from freegeopip
-                  // is 404 - How do you filter that?
-
-                  addressArray.push(geodata.ip)
+                  console.log("QUERY : " + geodata.query + " Result: " + geodata.city + ", " + geodata.country)
 
                   if (geodata.city == "" ) {
-                    cityArray.push("Unknown") 
-                  }
-                  else { 
-                    cityArray.push(geodata.city) 
+
+                     cityArray.push("Unknown")
+
+                  } else {
+
+                     cityArray.push(geodata.city)
+                     countryArray.push(geodata.country)
+
                   }
 
-                  countryArray.push(geodata.country_name)
-                  latitudeArray.push(geodata.latitude)
-                  longitudeArray.push(geodata.longitude)
+                  cityArray.push(geodata.city)
+                  addressArray.push(geodata.query)
+                  countryArray.push(geodata.country)
+                  ispArray.push(geodata.isp)
+                  latitudeArray.push(geodata.lat)
+                  longitudeArray.push(geodata.lon)
+
+
+               } else {
+
+                  // geodata.status has fail
+                  switch ( geodata.message ) {
+
+                    case "private range":
+                        //window.alert("privaatti!")
+                        break;
+
+                    case "reserved range":
+                        //window.alert("reserved")
+                        break;
+                  }
+
+                }
+              
                   
-                } // END callback
+              } // END callback
 
-                J50Npi.getJSON(url, data, callback);
+              J50Npi.getJSON(url, data, callback);
 
-                justStupidCounter++
+              justStupidCounter++
 
               body.appendChild(row)
               table.appendChild(body)
@@ -236,22 +289,30 @@ function receiveOutput(evt) {
 //---------------------------------------------------------------------------
 
 
+var markerCounter = []
+var markerList = []
+
+
 function locations() {
 
-  for (var e=1;e<addressArray.length; e++) {
+  for (var e=0;e<addressArray.length; e++) {
 
     var temp1 = "locationCell" + e
-    var temp2 = "latitudeCell" + e
-    var temp3 = "longitudeCell" + e
-    var temp4 = "destinationCell" + e
+    var temp2 = "ispCell" + e
 
     if (countryArray[e] == "Reserved") {
- 
-      document.getElementById(temp1).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address </a> <i class='icon-external-link'></i>"
-      document.getElementById(temp2).innerHTML = "-----"
-      document.getElementById(temp3).innerHTML = "-----"
- 
-    } else {
+      document.getElementById(temp1).innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address </a> <i class='icon-external-link'></i>" 
+    } 
+
+    if (countryArray[e] == "Private") {
+      document.getElementById(temp1).innerHTML = "<a href='https://en.wikipedia.org/wiki/Private_network' target='_blank'>Private address </a> <i class='icon-external-link'></i>"
+    }
+
+    if (countryArray[e] == "Error") {
+      document.getElementById(temp1).innerHTML = "Error"
+
+    }
+    else {
 
       if (cityArray[e] == "" ) {
 
@@ -260,15 +321,37 @@ function locations() {
       } else {
 
         var locationCell = document.getElementById(temp1).innerHTML = addressArray[e] + " | " + cityArray[e] + ", " + countryArray[e]
-        var latitudeCell = document.getElementById(temp2).innerHTML = latitudeArray[e]
-        var longitudeCell = document.getElementById(temp3).innerHTML = longitudeArray[e]
+        var ispCell = document.getElementById(temp2).innerHTML = ispArray[e]
+
+        var lon = longitudeArray[e]
+        var lat = latitudeArray[e]
+
+        var nameMarker = cityArray[e] + ", " + countryArray[e]
+
+        if ( markerList.indexOf(nameMarker) != "-1" ) {
+
+           // Filter duplicate markers
+
+        } else {
+
+          L.marker([lat, lon]).addTo(map)
+          
+          // // Logging
+          console.log("New Marker placed on the map : " + nameMarker + "(" + lon + "," + lat + ")" )
+          markerCounter.push(1); 
+          markerList.push(nameMarker);
+        }
+
+        
 
       }
-      addMarkers()
 
     }
 
   }
+
+  document.getElementById(temp2).innerHTML = "-----"
+
 } // END Locations
 
 
@@ -281,8 +364,10 @@ function closeSocket() {
 }
 
 //-------------------------------------------------------------------------
+
 function createLogFile() {
   console.log("createLogFile-function called")
 }
+
 
 
