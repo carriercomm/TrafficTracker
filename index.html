@@ -76,7 +76,7 @@
          <a class="btn btn-large btn-success" onclick="connect()" href="#">
           Initialize
           <a class="btn btn-large btn-error" onclick="closeSocket()">Close</a>
-          <a class="btn btn-large" onclick="createLogFile()">Logfile</a>
+          <a class="btn btn-large" onclick="locations()">Locations</a>
 
 
         </a>
@@ -147,7 +147,7 @@
               Sniff output table
             </a> 
           </div>
-          <div id="collapseTwo" class="accordion-body collapse">
+          <div id="collapseTwo" class="accordion-body collapse in">
             <div class="accordion-inner">
 
               <div id="tableStatus">
@@ -159,9 +159,9 @@
                     <thead> <!-- Headers for table -->
                       <tr>
                         <th width="10%">Packet #</th>
-                        <th width="15%">Source</th>
+                        <th width="10%">Source</th>
                         <th width="15%">Destination</th>
-                        <th width="30%">Location</th>
+                        <th width="35%">Location</th>
                         <th width="30%">ISP</th>
                       </tr>
                     </thead> <!-- End of headers -->
@@ -210,20 +210,17 @@
 
     <!-- jQuery, required be bootstrap-->
     <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
-
+ 
     <!-- Bootstrap-->
-    <script src="/assets/js/bootstrap.js"></script>
+    <script src="assets/js/bootstrap.js"></script>
 
     <!-- TrafficTrackers basic functionalitites -->
     <script src="assets/js/leaflet.js"></script>
-        <script src="assets/js/bouncemarker.js"></script>
+    <script src="assets/js/bouncemarker.js"></script>
 
     <!-- <script src="http://openlayers.org/api/OpenLayers.js"></script> -->
     <script src="assets/js/traffictracker.default.js"></script>
-
-
-
-    
+  
     <!-- J50n - Credits to Roberto Decurnex : http://robertodecurnex.github.io/J50Npi/-->
     <script src="/assets/js/J50Npi.js"></script>
 

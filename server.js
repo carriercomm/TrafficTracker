@@ -97,7 +97,8 @@ wsServer.on('request', function(request) {
 
     		receivedCommand.stdout.on('data', function(data) {
     			console.log(data.toString())
-
+                //var packet = data.toString().split(/\n/)
+                //console.log(packet)
     			connection.sendUTF(data.toString())
     		})
             receivedCommand.stdin.end()
