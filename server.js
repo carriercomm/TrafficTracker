@@ -90,15 +90,13 @@ wsServer.on('request', function(request) {
 
     		// Lets put the arguments and command back together
 
-            // commandista globaali variable
-            // wSocket.closeen command kill thingy
-
     		receivedCommand = spawn(cmd, args);
 
+            receivedCommand.stdout.write("Hello!")
+
     		receivedCommand.stdout.on('data', function(data) {
-    			console.log(data.toString())
-                //var packet = data.toString().split(/\n/)
-                //console.log(packet)
+    			//console.log(data.toString())
+                process.stdout.write(data.toString())
     			connection.sendUTF(data.toString())
     		})
             receivedCommand.stdin.end()

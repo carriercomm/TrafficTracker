@@ -17,6 +17,7 @@
     <link href="assets/css/traffictracker.default.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/leaflet.css" rel="stylesheet">
+    <link href="assets/js/Control.FullScreen.css" rel="stylesheet">
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
 
     <style>
@@ -66,7 +67,7 @@
 
     <!-- BIG header
     ===================================================== -->
-     <div class="hero-unit">
+      <div class="hero-unit">
 
       <h1>TrafficTracker</h1>
       <p class="lead">This site is created to show outgoing traffic from your computer. or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <strike>Google Maps Api</strike>.
@@ -76,11 +77,12 @@
          <a class="btn btn-large btn-success" onclick="connect()" href="#">
           Initialize
           <a class="btn btn-large btn-error" onclick="closeSocket()">Close</a>
-          <a class="btn btn-large" onclick="locations()">Locations</a>
+          <a class="btn btn-large" onclick="theRest()">asdasd</a>
+          <a class="btn btn-large" onclick="createLogFile()">Logfile</a>
 
 
         </a>
-      </div> <!-- END Button group -->
+      </div> 
 
     </div>
 
@@ -174,16 +176,51 @@
         <div class="accordion-group">
           <div class="accordion-heading">
             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-              Logfile
+              Summary
             </a>
           </div>
 
-          <div id="collapseThree" class="accordion-body collapse">
+          <div id="collapseThree" class="accordion-body collapse in">
             <div class="accordion-inner">
 
-              <pre> Here should be displayed the logfile created after the sniffing has been done.
-                <a href="http://www.htmlgoodies.com/beyond/javascript/read-text-files-using-the-javascript-filereader.html" target="_blank">Some help, maybe?</a>
-              </pre>
+              <span>
+
+                <div id="logging">
+
+                  <p> <strong> TIME </strong> </p>
+                  <p id="startTime">Time initialized: </p>
+                  <p id ="finishTime">Time finished: </p>
+                  <p id="totalTime">Total runtime: </p>
+                  <p>================================================</p>
+
+                  <p> <strong> ADDRESSESS </strong> </p>
+
+                  <p id="packageCount"></p>
+                  <p id="nullCount"></p>
+                  <p id="startupTime"></p>
+                  <p id="addressLog"></p>
+                  <p id="cityLog"></p>
+                  <p id="countryLog"></p>
+
+
+                  <p>================================================</p>
+
+                  <p> <strong> LOCATIONS </strong> </p>
+
+                  <p id="markerCount">Markers added: </p>
+                  <p id="">Cities detected: </p>
+                  <p ip="">Countries detected: </p>
+                  <p id="">....</p>
+
+
+
+
+                  <div id="addressDetails">
+                  </div>
+
+                </div>
+
+              </span>
 
             </div>
           </div>
@@ -192,16 +229,6 @@
 
 
       </div> <!-- END Accordion-->
-
-    <div class="page-header">
-      <h1>Issues <small> // Ongoing issues and problems </small> </h1>
-    </div>
-
-      <p><strike>There is a implementation problem with the OpenLayers. There is a problem with the loop that adds the markers to the map. For some reason, it doesnt't go through thearray the way it should be.</strike></p>
-
-      <p><strong>24.6.2013 - DNS recognition disabled: </strong>Decided to disable DNS recognition, it doesn't work properly from the tshark. Maybe adding another external service to provide that?</p>
-
-
 
     </div><!-- /container -->
 
@@ -217,6 +244,12 @@
     <!-- TrafficTrackers basic functionalitites -->
     <script src="assets/js/leaflet.js"></script>
     <script src="assets/js/bouncemarker.js"></script>
+    <script src="assets/js/Control.FullScreen.js"></script>
+
+    <!-- Piechart-->
+    <script src="assets/js/raphael-min.js"></script>
+    <script src="assets/js/g.raphael-min.js"></script>
+    <script src="assets/js/g.pie-min.js"></script>
 
     <!-- <script src="http://openlayers.org/api/OpenLayers.js"></script> -->
     <script src="assets/js/traffictracker.default.js"></script>
