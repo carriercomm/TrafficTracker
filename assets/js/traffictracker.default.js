@@ -86,7 +86,7 @@ function sendCommand() {
   
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
   var temp1 = "-c " + packetAmount
-  command = commandBase + temp1 + " src host 10.20.200.148"
+  command = commandBase + temp1 + " src host 192.168.11.32"
   startTime = new Date()
   document.getElementById("startTime").innerHTML = "Time initialized: " + startTime
 
@@ -105,7 +105,7 @@ var countryArray = []
 var ispArray = []
 var longitudeArray = []
 var latitudeArray = []
-var ispArray = []
+var locationArray = []
 
 var destinationArray = []
 var duplicateCount = []
@@ -120,6 +120,7 @@ var countryOccurrence = []
 
 var markerCounter = []
 var markerList = []
+
 
 
 //-------------------------------------------------------------
@@ -144,7 +145,17 @@ function receiveOutput(evt) {
 
           var pDetails = packet[i].split(",")
 
+          if ( pDetails[0].value != "0") {
+
+            theRest()
+
+          }
+
+
           document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/" + packetAmount + ") </div>"
+
+          document.getElementById("packageCount").innerHTML = "Number of packets sent: " + pDetails[0]
+
 
           if ( pDetails[0] >= packetAmount ) {
             closeSocket()
@@ -189,7 +200,7 @@ function receiveOutput(evt) {
 
                 // Cell for destination IP
                 destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
-                destinationCell.innerHTML = "<a href='http://ip-api.com/json/" + pDetails[2] + "' target='_blank'>" + pDetails[2] + "</a>"
+                destinationCell.innerHTML = pDetails[2]
                 destinationArray.push(pDetails[2])
 
                 // Cell for location
@@ -228,10 +239,11 @@ function receiveOutput(evt) {
                     }
 
                   ispCell.innerHTML = geodata.isp
-                  row.setAttribute("class","success")
+                  row.setAttribute("class","")
 
                   if ( countryArray.indexOf(geodata.country) == "-1") {
 
+                    // If not duplicate, then add this country to the countryArray
                     countryArray.push(geodata.country)
 
                   }
@@ -239,6 +251,9 @@ function receiveOutput(evt) {
                   countryOccurrence[countryArray.indexOf(geodata.country)]++
 
                   addressArray.push(geodata.query)
+                  destinationCell.innerHTML = "<strong>" + geodata.query + "</strong>"
+                  locationArray.push(geodata.city + ", " + geodata.country)
+
                   ispArray.push(geodata.isp)
                   latitudeArray.push(geodata.lat)
                   longitudeArray.push(geodata.lon)
@@ -253,7 +268,6 @@ function receiveOutput(evt) {
                  } else {
 
                     failArray.push(1)
-
                     row.setAttribute("class","info")
 
                     // geodata.status has fail
@@ -262,13 +276,13 @@ function receiveOutput(evt) {
                       case "private range":
                           locationCell.innerHTML = "<a href='http://en.wikipedia.org/wiki/Reserved_IP_addresses' target='_blank'>Reserved address </a> <i class='icon-external-link'></i>"
                           ispCell.innerHTML = "--------"
-                          countryArray.push("Private")
+                          //countryArray.push("Private")
                           break;
 
                       case "reserved range":
                           locationCell.innerHTML = "<a href='https://en.wikipedia.org/wiki/Private_network' target='_blank'>Private address </a> <i class='icon-external-link'></i>" 
                           ispCell.innerHTML = "--------"
-                          countryArray.push("Reserved")
+                          //countryArray.push("Reserved")
                           break;
 
                       case "invalid query":
@@ -297,9 +311,10 @@ function receiveOutput(evt) {
             console.log("Over xxx addressess collected, quitting")
             closeSocket()
            }
-           theRest()
+           
 
       } // END for-loop
+
 
 justStupidCounter++
 
@@ -326,14 +341,14 @@ function createLogFile() {
   document.getElementById("finishTime").innerHTML = "Time finished: " + endTime
 
   // Addressess
-  document.getElementById("packageCount").innerHTML = "Number of packets sent: " + packetAmount
   document.getElementById("nullCount").innerHTML = "Null packets encountered: " + emptyPackets.length
   document.getElementById("addressLog").innerHTML = "Addrressess detected: " + addressArray.length
 
   // Markers and locations
   document.getElementById("markerCount").innerHTML = "Markers added: " + markerCounter.length
-  document.getElementById("cityLog").innerHTML = "Cities:" + cityArray.length
-  document.getElementById("countryLog").innerHTML = "Countries: " + countryArray.length;
+  document.getElementById("cityLog").innerHTML = "Cities detected: " + cityArray.length
+  //document.getElementById("countryLog").innerHTML = "Countries detected: " + countryArray.length
+  document.getElementById("ispLog").innerHTML = "ISP:s detected: " + ispArray.length
 
 
   for (var i=0; i<=ip.length;i++) {
@@ -342,25 +357,51 @@ function createLogFile() {
 
 }
 
-function theRest() {
+ function theRest() {
 
-var rowLength = table.rows.length
+ var rowLength = table.rows.length
 
-for (var i = 0; i < rowLength ; i++) {
+ for (var i = 0; i < rowLength ; i++) {
 
-  var oCells = table.rows.item(i).cells;
-   //gets cells of current row
-   var cellLength = oCells.length;
-       for(var j = 0; j < cellLength; j++){
+  var oCells = table.rows.item(i).cells
+ 
+  var cellLength = oCells.length
+  
+     for ( var j = 1; j < cellLength; j++ ) {
 
-          var cellVal = oCells.item(j).innerHTML;
+      var cellVal = oCells.item(j).innerHTML
 
-          if ( cellVal = "null") {
-            window.alert("null löydetty")
-          } 
+      if ( cellVal == "null") {
+
+        // 1. Etsi destination cellistä ip
+        var locationVall = oCells.item(2).innerHTML
+        //console.log(locationVall) // <- IP-osoitteet
+
+        if ( locationArray.indexOF(locationVall) == "-1") {
+          var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
 
 
-   }  
-}
+        }
+        
+        var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
+        //console.log(locationSijainti)
+
+        if ( locationArray[addressArray.indexOf(locationVall)] == "-1") {
+
+        var keijo = oCells.item(j).innerHTML = locationSijainti
+
+      } else {
+        var keijo = oCells.item(j).innerHTML = "hasta la vista"
+      }
+
+        // 2. ip.indexOf sijainti
+        // 3. location.indexOf sijainti
+        // 4. print & profit
+          
+      }
+
+    } 
+
+  }
 
 }
