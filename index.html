@@ -103,7 +103,7 @@
     <!-- TABLE STUFF
     ====================================================== -->
     <div class="page-header">
-      <h1>Sniff <small> // Powered by tshark + freegeoip </small> </h1>
+      <h1>Sniff <small> // Powered by <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">tshark</a> + <a href="http://ip-api.com/" target="_blank">ip-api</a> </small> </h1>
     </div>
 
       <div class="accordion" id="accordion2">
@@ -156,15 +156,15 @@
               </div>
 
               <!-- -->
-                <table id="outputTable" class="table table-hover table-bordered table-condensed">
+                <table id="outputTable" class="table table-hover table-bordered table-striped table-condensed">
 
                     <thead> <!-- Headers for table -->
                       <tr>
                         <th width="10%">Packet #</th>
-                        <th width="10%">Source</th>
                         <th width="15%">Destination</th>
-                        <th width="35%">Location</th>
+                        <th width="30%">Location</th>
                         <th width="30%">ISP</th>
+                        <th width="15%">Reverse DNS</th>
                       </tr>
                     </thead> <!-- End of headers -->
 
@@ -183,7 +183,7 @@
           <div id="collapseThree" class="accordion-body collapse in">
             <div class="accordion-inner">
 
-              <span>
+              <pre class="pre-scrollable">
 
                 <div id="logging">
 
@@ -218,7 +218,7 @@
 
                 </div>
 
-              </span>
+              </pre>
 
             </div>
           </div>

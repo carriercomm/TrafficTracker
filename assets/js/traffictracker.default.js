@@ -77,16 +77,20 @@ function onError(evt){
 
 // Command to be sent to the server
 
-var packetAmount = 1000
+//var packetAmount = 1000
 var startTime
+
+// Before you start, make sure that you change this ip
+// according to your networks ip-address
+var hostIP = "192.168.11.32"
 
 function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
   
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
-  var temp1 = "-c " + packetAmount
-  command = commandBase + temp1 + " src host 192.168.11.32"
+  //var temp1 = "-c " + packetAmount
+  command = commandBase /*+ temp1 */+ " src host " + hostIP
   startTime = new Date()
   document.getElementById("startTime").innerHTML = "Time initialized: " + startTime
 
@@ -138,10 +142,9 @@ function receiveOutput(evt) {
 
       // Print packets line by line
       for (var i=0;i<packet.length-1;i++) {
-  
-        if ( addressArray.length <= 40 ) {
-          // Close the connection after x amount of addressess
-          // in addressArray
+
+        // Close the connection after 40 addressess in addressArray
+        if ( addressArray.length <= 400 ) {
 
           var pDetails = packet[i].split(",")
 
@@ -151,15 +154,12 @@ function receiveOutput(evt) {
 
           }
 
-
-          document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/" + packetAmount + ") </div>"
-
+          document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/) Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
           document.getElementById("packageCount").innerHTML = "Number of packets sent: " + pDetails[0]
 
-
-          if ( pDetails[0] >= packetAmount ) {
-            closeSocket()
-          }
+          // if ( pDetails[0] >= packetAmount ) {
+          //   closeSocket()
+          // }
 
           // pDetails[0] == Frame number
           // pDetails[1] == Source ip
@@ -168,6 +168,14 @@ function receiveOutput(evt) {
             if ( pDetails[1] != "") {
 
                // Filter null packets
+
+                         
+              if ( pDetails[1] != hostIP) {
+                // This is here to detect changes in host ip (aka. source ip)
+                window.alert("Alert! shark shows that your host ip is different from the one that you have given. WebSocket closed.")
+                closeSocket();
+                console.log("Alert! " + pDetails[1] + " != " + hostIP + " , connection closed")
+              }
 
               if ( destinationArray.indexOf(pDetails[2]) != -1 ) {
                 
@@ -185,18 +193,15 @@ function receiveOutput(evt) {
                 row.setAttribute("class","warning")
 
                 frameCell = row.insertCell(0)
-                sourceCell = row.insertCell(1)
-                destinationCell = row.insertCell(2)
-                locationCell = row.insertCell(3)
-                ispCell = row.insertCell(4)       
+                destinationCell = row.insertCell(1)
+                locationCell = row.insertCell(2)
+                ispCell = row.insertCell(3)
+                reverseCell = row.insertCell(4)
+                reverseCell.innerHTML = "--------"
 
                 //Cell for packet number
                 frameCell.setAttribute("id", "frameCell" + justStupidCounter )
                 frameCell.innerHTML = pDetails[0]
-
-                // Cell for source IP
-                sourceCell.setAttribute("id", "sourceCell" + justStupidCounter )
-                sourceCell.innerHTML = pDetails[1]
 
                 // Cell for destination IP
                 destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
@@ -251,8 +256,13 @@ function receiveOutput(evt) {
                   countryOccurrence[countryArray.indexOf(geodata.country)]++
 
                   addressArray.push(geodata.query)
-                  destinationCell.innerHTML = "<strong>" + geodata.query + "</strong>"
+                  destinationCell.innerHTML = geodata.query
                   locationArray.push(geodata.city + ", " + geodata.country)
+
+                  if ( geodata.reverse != "" ) {
+                    reverseCell.innerHTML = geodata.reverse
+                  }
+                  
 
                   ispArray.push(geodata.isp)
                   latitudeArray.push(geodata.lat)
@@ -322,13 +332,15 @@ justStupidCounter++
 
 //-------------------------------------------------------------------------
 
-var endTime
+
 
 function closeSocket() {
   websocket.close()
   console.log("Disconnected")
   createLogFile()
-  endTime = new Date()
+  var endTime = new Date()
+
+  document.getElementById("finishTime").innerHTML = "Time finished: " + endTime
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed. See Logfile for details.</div>"
 }
 
@@ -338,7 +350,6 @@ function createLogFile() {
 
 
   // Time
-  document.getElementById("finishTime").innerHTML = "Time finished: " + endTime
 
   // Addressess
   document.getElementById("nullCount").innerHTML = "Null packets encountered: " + emptyPackets.length
@@ -377,14 +388,15 @@ function createLogFile() {
         var locationVall = oCells.item(2).innerHTML
         //console.log(locationVall) // <- IP-osoitteet
 
+
+        // THIS if-statement works, although it's wrong
+        // what the hell
         if ( locationArray.indexOF(locationVall) == "-1") {
-          var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
+           var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
 
-
-        }
+         }
         
         var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
-        //console.log(locationSijainti)
 
         if ( locationArray[addressArray.indexOf(locationVall)] == "-1") {
 
@@ -393,10 +405,6 @@ function createLogFile() {
       } else {
         var keijo = oCells.item(j).innerHTML = "hasta la vista"
       }
-
-        // 2. ip.indexOf sijainti
-        // 3. location.indexOf sijainti
-        // 4. print & profit
           
       }
 
