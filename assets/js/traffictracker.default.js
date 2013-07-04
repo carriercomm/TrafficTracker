@@ -148,11 +148,11 @@ function receiveOutput(evt) {
 
           var pDetails = packet[i].split(",")
 
-          if ( pDetails[0].value != "0") {
+          // if ( pDetails[0].value != "0") {
 
-            theRest()
+          //   theRest()
 
-          }
+          // }
 
           document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/) Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
           document.getElementById("packageCount").innerHTML = "Number of packets sent: " + pDetails[0]
@@ -189,33 +189,46 @@ function receiveOutput(evt) {
                 ip.push(pDetails[2])
                 occurrences.push(1)
               
-                var row = body.insertRow(-1)
-                row.setAttribute("class","warning")
+                //var row = body.insertRow(-1)
+                //var addNewRow = new Function("arg1","arg2", "ret", callback);
+                function addNewRow(arg1, arg2, arg3, arg4) {
+                  console.log("addNewRow kutsuttu (" + arg1 + "," + arg2 + "," + arg3 + "," + arg4 + ")")
+                  var row = body.insertRow(-1)
+                  frameCell = row.insertCell(0)
+                  frameCell.innerHTML = "<strong>" + arg1 + "</strong>"
+                  destinationCell = row.insertCell(1)
+                  destinationCell.innerHTML = "<strong>" + arg2 + "</strong>s"
+                  locationCell = row.insertCell(2)
+                  locationCell.innerHTML = "<strong>" + arg3 + "</strong>"
+                  ispCell = row.insertCell(3)
+                  ispCell.innerHTML = "<strong>" + arg4 + "</strong>"
+                  reverseCell = row.insertCell(4)
+                  reverseCell.innerHTML = "addNewRow-funkkari"
+                  body.appendChild(row)
+                  table.appendChild(body)
+                }
 
-                frameCell = row.insertCell(0)
-                destinationCell = row.insertCell(1)
-                locationCell = row.insertCell(2)
-                ispCell = row.insertCell(3)
-                reverseCell = row.insertCell(4)
-                reverseCell.innerHTML = "--------"
+                
+
+                //row.setAttribute("class","warning")
 
                 //Cell for packet number
-                frameCell.setAttribute("id", "frameCell" + justStupidCounter )
-                frameCell.innerHTML = pDetails[0]
+                // frameCell.setAttribute("id", "frameCell" + justStupidCounter )
+                // frameCell.innerHTML = pDetails[0]
 
-                // Cell for destination IP
-                destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
-                destinationCell.innerHTML = pDetails[2]
+                // // Cell for destination IP
+                // destinationCell.setAttribute("id", "destinationCell" + justStupidCounter )
+                // destinationCell.innerHTML = pDetails[2]
                 destinationArray.push(pDetails[2])
 
                 // Cell for location
-                locationCell.setAttribute("id", "locationCell" + justStupidCounter )
+                //locationCell.setAttribute("id", "locationCell" + justStupidCounter )
                 //console.log("locationCell created with id " + locationCell.id)
-                locationCell.innerHTML = "null"
+                //locationCell.innerHTML = "null"
                 
                 // Cell for isp
-                ispCell.setAttribute("id", "ispCell" + justStupidCounter )
-                ispCell.innerHTML = "null"
+                //ispCell.setAttribute("id", "ispCell" + justStupidCounter )
+                //ispCell.innerHTML = "null"
 
                 // Location service provided by IP-Api
                 var ipApi = "http://ip-api.com/json/"
@@ -233,18 +246,18 @@ function receiveOutput(evt) {
                     if (geodata.city == "" ) {
 
                       // Those packages with city unknown
-                      locationCell.innerHTML = "<i>Unknown</i>, " + geodata.country
+                      //locationCell.innerHTML = "<i>Unknown</i>, " + geodata.country
                       cityArray.push("Unknown")
 
                     } else {
 
   		                // Packages with known city
-                      locationCell.innerHTML = geodata.city + ", " + geodata.country                  
+                      //locationCell.innerHTML = geodata.city + ", " + geodata.country                  
                       cityArray.push(geodata.city)
                     }
 
-                  ispCell.innerHTML = geodata.isp
-                  row.setAttribute("class","")
+                  //ispCell.innerHTML = geodata.isp
+                  //row.setAttribute("class","")
 
                   if ( countryArray.indexOf(geodata.country) == "-1") {
 
@@ -256,11 +269,11 @@ function receiveOutput(evt) {
                   countryOccurrence[countryArray.indexOf(geodata.country)]++
 
                   addressArray.push(geodata.query)
-                  destinationCell.innerHTML = geodata.query
+                  //destinationCell.innerHTML = geodata.query
                   locationArray.push(geodata.city + ", " + geodata.country)
 
                   if ( geodata.reverse != "" ) {
-                    reverseCell.innerHTML = geodata.reverse
+                    //reverseCell.innerHTML = geodata.reverse
                   }
                   
                   ispArray.push(geodata.isp)
@@ -277,7 +290,7 @@ function receiveOutput(evt) {
                  } else {
 
                     failArray.push(1)
-                    row.setAttribute("class","info")
+                    //row.setAttribute("class","info")
 
                     // geodata.status has fail
                     switch ( geodata.message ) {
@@ -300,15 +313,13 @@ function receiveOutput(evt) {
                     }
 
                   }
+
+                  addNewRow(pDetails[0], pDetails[2],nameMarker,geodata.isp)
                 
                 }); // END callback
 
-        
-                var fetchInformation = new Function("arg1", "arg2", "return arg1");
-                ispCell.innerHTML = fetchInformation(ispArray[justStupidCounter],10) // => 50
 
-                body.appendChild(row)
-                table.appendChild(body)
+
 
               } // END else
 
