@@ -263,7 +263,6 @@ function receiveOutput(evt) {
                     reverseCell.innerHTML = geodata.reverse
                   }
                   
-
                   ispArray.push(geodata.isp)
                   latitudeArray.push(geodata.lat)
                   longitudeArray.push(geodata.lon)
@@ -304,6 +303,10 @@ function receiveOutput(evt) {
                 
                 }); // END callback
 
+        
+                var fetchInformation = new Function("arg1", "arg2", "return arg1");
+                ispCell.innerHTML = fetchInformation(ispArray[justStupidCounter],10) // => 50
+
                 body.appendChild(row)
                 table.appendChild(body)
 
@@ -332,16 +335,14 @@ justStupidCounter++
 
 //-------------------------------------------------------------------------
 
-
-
 function closeSocket() {
   websocket.close()
   console.log("Disconnected")
-  createLogFile()
   var endTime = new Date()
 
   document.getElementById("finishTime").innerHTML = "Time finished: " + endTime
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed. See Logfile for details.</div>"
+  createLogFile()
 }
 
 //-------------------------------------------------------------------------
@@ -353,13 +354,13 @@ function createLogFile() {
 
   // Addressess
   document.getElementById("nullCount").innerHTML = "Null packets encountered: " + emptyPackets.length
-  document.getElementById("addressLog").innerHTML = "Addrressess detected: " + addressArray.length
+  document.getElementById("addressLog").innerHTML = "Addressess detected: " + addressArray.length
 
   // Markers and locations
-  document.getElementById("markerCount").innerHTML = "Markers added: " + markerCounter.length
-  document.getElementById("cityLog").innerHTML = "Cities detected: " + cityArray.length
-  //document.getElementById("countryLog").innerHTML = "Countries detected: " + countryArray.length
-  document.getElementById("ispLog").innerHTML = "ISP:s detected: " + ispArray.length
+  document.getElementById("markerCount").innerHTML = "Numbers of markers added to the map:" + markerCounter.length
+  document.getElementById("cityLog").innerHTML = "Number of cities detected: " + cityArray.length
+  document.getElementById("countryLog").innerHTML = "Number of countries detected: " + countryArray.length
+  document.getElementById("ispLog").innerHTML = "Number of ISP:s detected: " + ispArray.length
 
 
   for (var i=0; i<=ip.length;i++) {
@@ -372,39 +373,28 @@ function createLogFile() {
 
  var rowLength = table.rows.length
 
- for (var i = 0; i < rowLength ; i++) {
+ for (var i = 1; i < rowLength ; i++) {
 
   var oCells = table.rows.item(i).cells
- 
   var cellLength = oCells.length
   
-     for ( var j = 1; j < cellLength; j++ ) {
+     for ( var j = 1; j < 2; j++ ) {
 
-      var cellVal = oCells.item(j).innerHTML
+      var cellVal = oCells.item(j).innerHTML // <- Values from locationcells
+      console.log("cellVal : " + cellVal)
 
       if ( cellVal == "null") {
 
-        // 1. Etsi destination cellistä ip
-        var locationVall = oCells.item(2).innerHTML
-        //console.log(locationVall) // <- IP-osoitteet
+        var locationVal = oCells.item(2).innerHTML // <- IP-addresses from tables
+        console.log("locationVal : " + locationVal)
+        var locationFound = locationArray[addressArray.indexOf(locationVal)]
+        var keijo = oCells.item(j).innerHTML = locationFound
 
-
-        // THIS if-statement works, although it's wrong
-        // what the hell
-        if ( locationArray.indexOF(locationVall) == "-1") {
-           var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
-
-         }
-        
-        var locationSijainti = locationArray[addressArray.indexOf(locationVall)]
-
-        if ( locationArray[addressArray.indexOf(locationVall)] == "-1") {
-
-        var keijo = oCells.item(j).innerHTML = locationSijainti
-
-      } else {
-        var keijo = oCells.item(j).innerHTML = "hasta la vista"
-      }
+        if ( locationArray[addressArray.indexOf(locationVal)] != "-1") {
+          var keijo = oCells.item(j).innerHTML = locationFound
+        } else {
+          var keijo = oCells.item(j).innerHTML = "-------------"
+        }
           
       }
 
@@ -413,3 +403,6 @@ function createLogFile() {
   }
 
 }
+
+//-------------------------------------------------------------------------
+
