@@ -149,20 +149,24 @@
               Sniff output table
             </a> 
           </div>
-          <div id="collapseTwo" class="accordion-body collapse">
+          <div id="collapseTwo" class="accordion-body collapse in">
             <div class="accordion-inner">
 
               <div id="tableStatus">
               </div>
 
+              <p class="text-right"><a href="http://en.wikipedia.org/wiki/Reserved_IP_addresses" target="_blank">Reserved ip address</a> <i class='icon-external-link'></i> </p>
+              <p class="text-right"><a href="http://en.wikipedia.org/wiki/Private_network#Private_use_of_other_reserved_addresses" target="_blank">Private address</a> <i class='icon-external-link'></i></p>
+
               <!-- -->
-                <table id="outputTable" class="table table-hover table-bordered table-striped table-condensed">
+                <table id="outputTable" class="table table-hover table-bordered table-striped">
 
                     <thead> <!-- Headers for table -->
                       <tr>
+                        <th width="5%">#</th>
                         <th width="10%">Packet #</th>
                         <th width="15%">Destination</th>
-                        <th width="30%">Location</th>
+                        <th width="25%">Location</th>
                         <th width="30%">ISP</th>
                         <th width="15%">Reverse DNS</th>
                       </tr>
@@ -180,7 +184,7 @@
             </a>
           </div>
 
-          <div id="collapseThree" class="accordion-body collapse in">
+          <div id="collapseThree" class="accordion-body collapse">
             <div class="accordion-inner">
 
               <span>
@@ -201,6 +205,8 @@
                   <p id="addressLog"></p>
                   <p id="cityLog"></p>
                   <p ip="countryLog"></p>
+                  <p id="reservedLog"></p>
+                  <p id="privateLog"></p>
 
 
                   <p>================================================</p>
@@ -210,9 +216,6 @@
                   
 
                   <p id="">....</p>
-
-
-
 
                   <div id="addressDetails">
                   </div>
