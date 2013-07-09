@@ -77,7 +77,7 @@ function onError(evt){
 
 // Command to be sent to the server
 
-var packetAmount = 200
+var packetAmount = 300
 var startTime
 
 // Before you start, make sure that you change this ip
@@ -92,8 +92,9 @@ function sendCommand() {
   var temp1 = "-c " + packetAmount
   command = commandBase + temp1 + " src host " + hostIP
   startTime = new Date()
-  document.getElementById("startTime").innerHTML = "Time initialized: " + startTime
+  document.getElementById("startTime").textContent = "Time initialized: " + startTime
 
+tshark -i en1 -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.169.11.32 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == "GET" || http.request.method == "HEAD"'
 
   websocket.send(command);
 }
@@ -126,6 +127,8 @@ var markerList = []
 var reservedCounter = []
 var privateCounter = []
 
+var yy = 0
+
 //-------------------------------------------------------------
 
 var emptyPackets = []
@@ -147,8 +150,8 @@ function receiveOutput(evt) {
 
           var pDetails = packet[i].split(",")
 
-          document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/) Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
-          document.getElementById("packageCount").innerHTML = "Number of packets sent: " + pDetails[0]
+          document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/" + packetAmount + ") Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
+          document.getElementById("packageCount").textContent = "Number of packets sent: " + pDetails[0]
 
           if ( pDetails[0] >= packetAmount ) {
             closeSocket()
@@ -180,32 +183,29 @@ function receiveOutput(evt) {
                 ip.push(pDetails[2])
                 occurrences.push(1)
               
-                function addNewRow(lineNmbr, packetNmbr, destinationIP, locationData, ispData, reverseData, callback) {
-                  //console.log("addNewRow (" + packetNmbr + "," + destinationIP + "," + locationData + "," + ispData + "," + reverseData + ")")
+                function addNewRow(destinationIP, locationData, ispData, reverseData, callback) {
                   var row = body.insertRow(-1)
 
                   lineNroCell = row.insertCell(0)
-                  lineNroCell.textContent = lineNmbr
-
-                  frameCell = row.insertCell(1)
-                  frameCell.textContent =  packetNmbr 
-
+                  duplicateCell = row.insertCell(1)
+                  duplicateCell.setAttribute("id", "duplicateCell" + yy)
                   destinationCell = row.insertCell(2)
-                  destinationCell.textContent =  destinationIP 
-
                   locationCell = row.insertCell(3)
-                  locationCell.textContent =  locationData 
-
                   ispCell = row.insertCell(4)
-                  ispCell.textContent =  ispData 
-
                   reverseCell = row.insertCell(5)
+                  
+                  lineNroCell.textContent = yy             
+                  duplicateCell.innerHTML = "<i>Collecting data...</i>"
+                  destinationCell.textContent =  destinationIP
+                  locationCell.textContent = locationData
+                  ispCell.textContent =  ispData 
                   reverseCell.textContent =  reverseData 
 
                   body.appendChild(row)
                   table.appendChild(body)
 
                   callback(destinationIP + "|" + locationData)
+                  yy++
                 }
 
                 destinationArray.push(pDetails[2])
@@ -219,24 +219,14 @@ function receiveOutput(evt) {
                 var data = {};
                 J50Npi.getJSON(url, data, function(geodata) {
 
-                  if ( geodata.status != "success") {
-                    switch ( geodata.message ) {
-                      case "reserved range":
-                          locationArray.push("Reserved address")
-                          reservedCounter.push("1")
-                          break;
-                      case "private range":
-                          locationArray.push("Private address")
-                          privateCounter.push("1")
-                          break;
-                      case "invalid query":
-                          console.log("Invalid address!")
-                          break;
-                      default:
-                          console.log("Ei pitäisi tapahtua : " + geodata.query)
-                          break;
+                  if ( geodata.status == "fail") {
+                    if ( geodata.message == "reserved range" ) {
+                      reservedCounter.push("1")
                     }
-                  }
+                    if ( geodata.message == "private range" ) {
+                      privateCounter.push("1")
+                    }
+                  } else 
 
                     if ( geodata.city == "" ) {
                       // Those packages with city unknown
@@ -271,7 +261,7 @@ function receiveOutput(evt) {
                     }
                     markerList.push(nameMarker)
 
-                  addNewRow(locationArray.length, pDetails[0], geodata.query, nameMarker, geodata.isp, geodata.reverse, function(result) {
+                  addNewRow(geodata.query, nameMarker, geodata.isp, geodata.reverse, function(result) {
                   //console.log("callback kutsuttu: " + result)
                   });    
                 
@@ -300,38 +290,42 @@ function receiveOutput(evt) {
 
 function closeSocket() {
   websocket.close()
+  printDuplicates()
   console.log("Disconnected")
   var endTime = new Date()
 
-  document.getElementById("finishTime").innerHTML = "Time finished: " + endTime
+  document.getElementById("finishTime").textContent = "Time finished: " + endTime
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed. See Logfile for details.</div>"
   createLogFile()
+  
 }
 
 //-------------------------------------------------------------------------
 
 function createLogFile() {
 
-
   // Time
 
   // Addressess
-  document.getElementById("nullCount").innerHTML = "Null packets encountered: " + emptyPackets.length
-  document.getElementById("addressLog").innerHTML = "Addressess detected: " + addressArray.length
+  document.getElementById("nullCount").textContent = "Null packets encountered: " + emptyPackets.length
+  document.getElementById("addressLog").textContent = "Addressess detected: " + addressArray.length
   document.getElementById("reservedLog").textContent = "Reserved addressess detected : " + reservedCounter.length
   document.getElementById("privateLog").textContent = "Private addresses detected : " + privateCounter.length
 
   // Markers and locations
-  document.getElementById("markerCount").innerHTML = "Numbers of markers added to the map:" + markerCounter.length
-  document.getElementById("cityLog").innerHTML = "Number of cities detected: " + cityArray.length
-  document.getElementById("countryLog").innerHTML = "Number of countries detected: " + countryArray.length
-  document.getElementById("ispLog").innerHTML = "Number of ISP:s detected: " + ispArray.length
+  document.getElementById("markerCount").textContent = "Numbers of markers added to the map:" + markerCounter.length
+  document.getElementById("cityLog").textContent = "Number of cities detected: " + cityArray.length
+  //document.getElementById("countryLog").textContent = "Number of countries detected: " + countryArray.length
+  //document.getElementById("ispLog").textContent = "Number of ISP:s detected: " + ispArray.length
 
-  // Counter and occu
+}
 
-
-  for (var i=0; i<=ip.length;i++) {
-    document.getElementById("addressDetails").innerHTML += "<br>" + i + " &thinsp; " + ip[i] + " &thinsp; " + occurrences[i]
-  }
-
+function printDuplicates() {
+  console.log("printDuplicates kutsuttiin")
+    for (var i=0; i<=yy;i++) {
+      console.log("päästiin sisälle")
+      var temp = "duplicateCell" + i
+      console.log(temp)
+      document.getElementById(temp).textContent = occurrences[i]
+    }
 }
