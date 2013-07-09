@@ -82,7 +82,7 @@ var startTime
 
 // Before you start, make sure that you change this ip
 // according to your networks ip-address
-var hostIP = "192.168.11.32"
+var hostIP = "192.168.11.8"
 
 function sendCommand() {
 
@@ -90,7 +90,7 @@ function sendCommand() {
   
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
   //var temp1 = "-c " + packetAmount
-  command = commandBase /*+ temp1 */+ " src host " + hostIP
+  command = commandBase /*+ temp1 */+ "src host " + hostIP
   startTime = new Date()
   document.getElementById("startTime").innerHTML = "Time initialized: " + startTime
 
