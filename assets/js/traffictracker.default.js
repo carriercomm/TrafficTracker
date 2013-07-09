@@ -77,7 +77,7 @@ function onError(evt){
 
 // Command to be sent to the server
 
-var packetAmount = 300
+var packetAmount = 200
 var startTime
 
 // Before you start, make sure that you change this ip
@@ -88,18 +88,18 @@ function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
   
-  commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst ";
-<<<<<<< HEAD
-  //var temp1 = "-c " + packetAmount
-  command = commandBase /*+ temp1 */+ "src host " + hostIP
-=======
-  var temp1 = "-c " + packetAmount
-  command = commandBase + temp1 + " src host " + hostIP
->>>>>>> 753f0958aa46a93a5a607282e9270960f36bf170
+  commandBase = "tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
+  commandExtra = "'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == 'GET' || http.request.method == 'HEAD'"
+
+  var temp1 = "-c " + packetAmount 
+  command = commandBase + temp1 + " src host " + hostIP //+ " " + commandExtra
+  // var temp1 = "-c " + packetAmount
+  //command = commandBase + temp1 + " src host " + hostIP
+  //command = tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.168.11.8 
   startTime = new Date()
   document.getElementById("startTime").textContent = "Time initialized: " + startTime
 
-tshark -i en1 -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.169.11.32 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == "GET" || http.request.method == "HEAD"'
+//tshark -i en1 -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.169.11.32 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == "GET" || http.request.method == "HEAD"'
 
   websocket.send(command);
 }
@@ -159,7 +159,8 @@ function receiveOutput(evt) {
           document.getElementById("packageCount").textContent = "Number of packets sent: " + pDetails[0]
 
           if ( pDetails[0] >= packetAmount ) {
-            closeSocket()
+            //closeSocket()
+            console.log("Piisaa jo")
           }
 
           // pDetails[0] == Frame number
