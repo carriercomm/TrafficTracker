@@ -18,7 +18,19 @@
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/leaflet.css" rel="stylesheet">
     <link href="assets/js/Control.FullScreen.css" rel="stylesheet">
+    <link href="assets/js/themes/blue/style.css" rel="stylesheet">
     <!-- <link href="assets/css/style.css" rel="stylesheet"> -->
+        <!-- jQuery, required be bootstrap-->
+    <script type="text/javascript" src="assets/js/jquery-latest.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.tablesorter.js"></script>
+
+    <script type="text/javascript" id="js">$(document).ready(function() {
+  // call the tablesorter plugin
+  $("table").tablesorter({
+    // sort on the first column and third column, order asc
+    sortList: [[0,0],[2,0]]
+  });
+}); </script>
 
     <style>
       body {
@@ -149,20 +161,24 @@
               Sniff output table
             </a> 
           </div>
-          <div id="collapseTwo" class="accordion-body collapse">
+          <div id="collapseTwo" class="accordion-body collapse in">
             <div class="accordion-inner">
 
               <div id="tableStatus">
               </div>
 
+              <p class="text-right"><a href="http://en.wikipedia.org/wiki/Reserved_IP_addresses" target="_blank">Reserved ip address</a> <i class='icon-external-link'></i> </p>
+              <p class="text-right"><a href="http://en.wikipedia.org/wiki/Private_network#Private_use_of_other_reserved_addresses" target="_blank">Private address</a> <i class='icon-external-link'></i></p>
+
               <!-- -->
-                <table id="outputTable" class="table table-hover table-bordered table-striped table-condensed">
+                <table id="outputTable" class="table table-hover table-bordered table-striped tablesorter">
 
                     <thead> <!-- Headers for table -->
                       <tr>
-                        <th width="10%">Packet #</th>
+                        <th width="5%">#</th>
+                        <th width="10%">Duplicate</th>
                         <th width="15%">Destination</th>
-                        <th width="30%">Location</th>
+                        <th width="25%">Location</th>
                         <th width="30%">ISP</th>
                         <th width="15%">Reverse DNS</th>
                       </tr>
@@ -180,7 +196,7 @@
             </a>
           </div>
 
-          <div id="collapseThree" class="accordion-body collapse in">
+          <div id="collapseThree" class="accordion-body collapse">
             <div class="accordion-inner">
 
               <span>
@@ -201,6 +217,8 @@
                   <p id="addressLog"></p>
                   <p id="cityLog"></p>
                   <p ip="countryLog"></p>
+                  <p id="reservedLog"></p>
+                  <p id="privateLog"></p>
 
 
                   <p>================================================</p>
@@ -210,9 +228,6 @@
                   
 
                   <p id="">....</p>
-
-
-
 
                   <div id="addressDetails">
                   </div>
@@ -234,27 +249,26 @@
     <!-- Le javascript
     ================================================== -->
 
-    <!-- jQuery, required be bootstrap-->
-    <script src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+
  
     <!-- Bootstrap-->
-    <script src="assets/js/bootstrap.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
 
     <!-- TrafficTrackers basic functionalitites -->
-    <script src="assets/js/leaflet.js"></script>
-    <script src="assets/js/bouncemarker.js"></script>
-    <script src="assets/js/Control.FullScreen.js"></script>
+    <script type="text/javascript" src="assets/js/leaflet.js"></script>
+    <script type="text/javascript" src="assets/js/bouncemarker.js"></script>
+    <script type="text/javascript" src="assets/js/Control.FullScreen.js"></script>
 
     <!-- Piechart-->
-    <script src="assets/js/raphael-min.js"></script>
-    <script src="assets/js/g.raphael-min.js"></script>
-    <script src="assets/js/g.pie-min.js"></script>
+    <script type="text/javascript" src="assets/js/raphael-min.js"></script>
+    <script type="text/javascript" src="assets/js/g.raphael-min.js"></script>
+    <script type="text/javascript" src="assets/js/g.pie-min.js"></script>
 
     <!-- <script src="http://openlayers.org/api/OpenLayers.js"></script> -->
-    <script src="assets/js/traffictracker.default.js"></script>
+    <script type="text/javascript" src="assets/js/traffictracker.default.js"></script>
   
     <!-- J50n - Credits to Roberto Decurnex : http://robertodecurnex.github.io/J50Npi/-->
-    <script src="/assets/js/J50Npi.js"></script>
+    <script type="text/javascript" src="/assets/js/J50Npi.js"></script>
 
   </body>
 </html>
