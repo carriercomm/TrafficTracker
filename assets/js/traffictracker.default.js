@@ -82,13 +82,13 @@ var startTime
 
 // Before you start, make sure that you change this ip
 // according to your networks ip-address
-var hostIP = "192.168.11.8"
+var hostIP = "192.168.11.32"
 
 function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
   
-  commandBase = "tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
+  commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
   commandExtra = "'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == 'GET' || http.request.method == 'HEAD'"
 
   var temp1 = "-c " + packetAmount 
