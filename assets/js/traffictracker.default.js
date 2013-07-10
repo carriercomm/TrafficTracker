@@ -66,7 +66,7 @@ function onOpen(evt){
 } // end onOpen
 
 function onClose(evt){
-
+  closeSocket()
 } // end onClose;
 
 function onError(evt){
@@ -88,8 +88,13 @@ function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
   
+<<<<<<< HEAD
   commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
   commandExtra = "'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == 'GET' || http.request.method == 'HEAD'"
+=======
+  commandBase = "tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
+  //commandExtra = "'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == 'GET' || http.request.method == 'HEAD'"
+>>>>>>> 5a2a5b38386524ee053217645dc4c16ea8eeb06a
 
   var temp1 = "-c " + packetAmount 
   command = commandBase + temp1 + " src host " + hostIP //+ " " + commandExtra
@@ -109,13 +114,13 @@ function sendCommand() {
 var table = document.getElementById('outputTable');
 var body = document.createElement('tbody');
 
-var cityArray = []        // Array where cities are stored (ip-api)
-var addressArray = []     // Array where ip-adrressess are stored (ip-api)
-var countryArray = []     // Countries (ip-api)
-var ispArray = []         // ISP:s (ip-api)
-var longitudeArray = []   // Longitudes (ip-api)
-var latitudeArray = []    // Longitudes (ip-api)
-var locationArray = []    // Locations = City, Country (ip-api)
+  var cityArray = []        // Array where cities are stored (ip-api)
+  var addressArray = []     // Array where ip-adrressess are stored (ip-api)
+  var countryArray = []     // Countries (ip-api)
+  var ispArray = []         // ISP:s (ip-api)
+  var longitudeArray = []   // Longitudes (ip-api)
+  var latitudeArray = []    // Longitudes (ip-api)
+  var locationArray = []    // Locations = City, Country (ip-api)
 
 var destinationArray = []
 var duplicateCount = []
@@ -159,7 +164,7 @@ function receiveOutput(evt) {
           document.getElementById("packageCount").textContent = "Number of packets sent: " + pDetails[0]
 
           if ( pDetails[0] >= packetAmount ) {
-            //closeSocket()
+            closeSocket()
             console.log("Piisaa jo")
           }
 
