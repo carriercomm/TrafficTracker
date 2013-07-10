@@ -114,9 +114,5 @@ wsServer.on('request', function(request) {
 wsServer.on('close',function(){
 	console.log((new Date()) + ' WebSocket connection closed.');
     receivedCommand.kill('SIGKILL');
-
+    console.log(new Date() + ' Really, its killed')
 })
-
-
-/*****************************************************************************/
-
