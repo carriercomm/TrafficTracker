@@ -82,25 +82,22 @@ var startTime
 
 // Before you start, make sure that you change this ip
 // according to your networks ip-address
-var hostIP = "192.168.11.32"
+var hostIP = "192.168.11.26"
+
+// Change according to your systems interface
+// in what you want to listen. 
+var hostInterface = "en0"
 
 function sendCommand() {
 
   var outputCommand = document.getElementById("outputCommand");
-  
-<<<<<<< HEAD
-  commandBase = "tshark -l -i en1 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
-  commandExtra = "'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == 'GET' || http.request.method == 'HEAD'"
-=======
+  commandFields = "-n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
+  // Capture HTTP GET Requests: http://wiki.wireshark.org/CaptureFilters
+  commandExtra = "'port 80 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420'"
   commandBase = "tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
-  //commandExtra = "'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == 'GET' || http.request.method == 'HEAD'"
->>>>>>> 5a2a5b38386524ee053217645dc4c16ea8eeb06a
 
   var temp1 = "-c " + packetAmount 
-  command = commandBase + temp1 + " src host " + hostIP //+ " " + commandExtra
-  // var temp1 = "-c " + packetAmount
-  //command = commandBase + temp1 + " src host " + hostIP
-  //command = tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.168.11.8 
+  command = "tshark -l -i " + hostInterface + " " + commandFields + temp1 + " src host " + hostIP + " " + commandExtra
   startTime = new Date()
   document.getElementById("startTime").textContent = "Time initialized: " + startTime
 
