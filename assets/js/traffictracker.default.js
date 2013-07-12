@@ -77,28 +77,30 @@ function onError(evt){
 
 // Command to be sent to the server
 
-var packetAmount = 200
 var startTime
 
 // Before you start, make sure that you change this ip
 // according to your networks ip-address
-var hostIP = "192.168.11.26"
+var hostIP = "192.168.11.18"
 
 // Change according to your systems interface
 // in what you want to listen. 
-var hostInterface = "en0"
+var hostInterface = "eth0"
+
+// Spell to run tshark as a normal user in
+// Ubuntu/Debian
+// sudo setcap cap_net_raw=+ep /usr/bin/dumpcap
 
 function sendCommand() {
 
-  var outputCommand = document.getElementById("outputCommand");
+  var outputCommand = document.getElementById("outputCommand")
   commandFields = "-n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
   // Capture HTTP GET Requests: http://wiki.wireshark.org/CaptureFilters
-  commandExtra = "'port 80 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420'"
-  commandBase = "tshark -l -i wlan0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
+  commandExtra = "src host " + hostIP + " and port 80 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420"
+  commandBase = "tshark -l -i eth0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
 
-  var temp1 = "-c " + packetAmount 
-  command = "tshark -l -i " + hostInterface + " " + commandFields + temp1 + " src host " + hostIP + " " + commandExtra
-  startTime = new Date()
+  command = "tshark -l -i " + hostInterface + " " + commandFields + commandExtra
+  startTime = new Date("01/01/2007 " + valuestart).getHours();
   document.getElementById("startTime").textContent = "Time initialized: " + startTime
 
 //tshark -i en1 -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.169.11.32 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == "GET" || http.request.method == "HEAD"'
@@ -111,13 +113,13 @@ function sendCommand() {
 var table = document.getElementById('outputTable');
 var body = document.createElement('tbody');
 
-  var cityArray = []        // Array where cities are stored (ip-api)
-  var addressArray = []     // Array where ip-adrressess are stored (ip-api)
-  var countryArray = []     // Countries (ip-api)
-  var ispArray = []         // ISP:s (ip-api)
-  var longitudeArray = []   // Longitudes (ip-api)
-  var latitudeArray = []    // Longitudes (ip-api)
-  var locationArray = []    // Locations = City, Country (ip-api)
+var cityArray = []        // IP-Api: Array for fetched cities
+var addressArray = []     // IP-Api: Array for query addressess (geodata.query)
+var countryArray = []     // IP-Api: Countries
+var ispArray = []         // ISP:s (ip-api)
+var longitudeArray = []   // Longitudes (ip-api)
+var latitudeArray = []    // Longitudes (ip-api)
+var locationArray = []    // Locations = City, Country (ip-api)
 
 var destinationArray = []
 var duplicateCount = []
@@ -152,18 +154,10 @@ function receiveOutput(evt) {
       // Print packets line by line
       for (var i=0;i<packet.length-1;i++) {
 
-        // Close the connection after 40 addressess in addressArray
-        if ( addressArray.length <= 400 ) {
-
           var pDetails = packet[i].split(",")
 
-          document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + "/" + packetAmount + ") Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
+          document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + ") Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
           document.getElementById("packageCount").textContent = "Number of packets sent: " + pDetails[0]
-
-          if ( pDetails[0] >= packetAmount ) {
-            closeSocket()
-            console.log("Piisaa jo")
-          }
 
           // pDetails[0] == Frame number
           // pDetails[1] == Source ip
@@ -283,12 +277,7 @@ function receiveOutput(evt) {
               // Null value
               emptyPackets.push(1)
               console.log("null detected")
-            } 
-
-           } else {
-            console.log("Over xxx addressess collected, quitting")
-            closeSocket()
-           }        
+            }      
 
       } // END for-loop
 
@@ -300,10 +289,13 @@ function closeSocket() {
   websocket.close()
   printDuplicates()
   console.log("Disconnected")
-  var endTime = new Date()
+  var endTime = new Date("01/01/2007 " + valuestop).getHours();
+  var hourDiff = timeEnd - timeStart;
 
   document.getElementById("finishTime").textContent = "Time finished: " + endTime
+
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed. See Logfile for details.</div>"
+  document.getElementById('totalTime').textContent = timeDiff
   createLogFile()
   
 }
@@ -323,8 +315,8 @@ function createLogFile() {
   // Markers and locations
   document.getElementById("markerCount").textContent = "Numbers of markers added to the map:" + markerCounter.length
   document.getElementById("cityLog").textContent = "Number of cities detected: " + cityArray.length
-  //document.getElementById("countryLog").textContent = "Number of countries detected: " + countryArray.length
-  //document.getElementById("ispLog").textContent = "Number of ISP:s detected: " + ispArray.length
+  document.getElementById("countryLog").textContent = "Number of countries detected: " + countryArray.length
+  document.getElementById("ispLog").textContent = "Number of ISP:s detected: " + ispArray.length
 
 }
 

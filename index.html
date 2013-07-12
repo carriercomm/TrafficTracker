@@ -36,73 +36,13 @@
 
 <body onload="connect()">
 
-    <!-- Navbar
-    ================================================== -->
-     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-
-          <a class="brand" href="./index.html">TrafficTracker</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active">
-                <a href="./index.html">Home</a>
-              </li>
-              <li class="">
-                <a href="./documentation.html">Documentation</a>
-              </li>
-
-            </ul>
-          </div>
-      </div>
-    </div>
-
-    <!-- END Navbar
-    ================================================== -->
-
-
-  <div class="container">
-
-
-    <!-- BIG header
-    ===================================================== -->
-      <div class="hero-unit">
-
-      <h1>TrafficTracker</h1>
-      <p class="lead">This site is created to show outgoing traffic from your computer. or basicly any platform you can get <a href="http://nodejs.org/">Node.js</a> and <a href="http://www.websocket.org/">WebSockets</a> running. When done, you would see your outgoing traffic in realtime, and located on the map using <strike>Google Maps Api</strike>.
-      </p>
-
-      <div class="button-group">
-         <a class="btn btn-large btn-success" onclick="connect()" href="#">
-          Initialize
-          <a class="btn btn-large btn-error" onclick="closeSocket()">Close</a>
-          <a class="btn btn-large" onclick="theRest()">asdasd</a>
-          <a class="btn btn-large" onclick="createLogFile()">Logfile</a>
-
-
-        </a>
-      </div> 
-
-    </div>
-
+    <a class="btn" onclick="closeSocket()">Close and log</a>
 
     <!-- MAP STUFF
     ====================================================== -->
-    
-    <div class="page-header">
-      <h1>Maps <small> // Powered by Leaflet </small> </h1>
-    </div>
-
-
-    <div id="section" onload="maps()">
-      <div id="map" style="width: 100% height: 700px">
-      </div>
-    </div>
 
     <!-- TABLE STUFF
     ====================================================== -->
-    <div class="page-header">
-      <h1>Sniff <small> // Powered by <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">tshark</a> + <a href="http://ip-api.com/" target="_blank">ip-api</a> </small> </h1>
-    </div>
 
       <div class="accordion" id="accordion2">
         <div class="accordion-group">
@@ -140,14 +80,41 @@
             </div>
           </div>
 
+
         </div>
         <div class="accordion-group">
           <div class="accordion-heading">
             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+              Map
+            </a>
+          </div>
+
+          <div id="collapseTwo" class="accordion-body collapse">
+            <div class="accordion-inner">
+
+              <!-- Content for the first collable -->
+              <div id="section" onload="maps()">
+              <p>Helou</p>
+                <div id="map" style="width: 100% height: 700px">
+                </div>
+              </div>
+
+              <!-- // End for the first collabse -->
+
+            </div>
+          </div>
+
+
+        </div>
+
+
+        <div class="accordion-group">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
               Sniff output table
             </a> 
           </div>
-          <div id="collapseTwo" class="accordion-body collapse in">
+          <div id="collapseThree" class="accordion-body collapse in">
             <div class="accordion-inner">
 
               <div id="tableStatus">
@@ -211,6 +178,8 @@
 
                   <p> <strong> DETAILS </strong> </p>
 
+                  <p id="countriesDetected"></p>
+
                   
 
                   <p id="">....</p>
@@ -230,7 +199,7 @@
 
       </div> <!-- END Accordion-->
 
-    </div><!-- /container -->
+    <!-- </div>< /container -->
 
     <!-- Le javascript
     ================================================== -->
