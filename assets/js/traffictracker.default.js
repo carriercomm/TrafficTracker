@@ -160,7 +160,7 @@ function receiveOutput(evt) {
           var pDetails = packet[i].split(",")
 
           document.getElementById('tableStatus').innerHTML = "<div class='alert alert-info'> <i class='icon-spinner icon-spin icon-large'></i> <strong>Heads up! </strong> This table is still being updated (" + pDetails[0] + ") Host ip: " + hostIP + "</div>"// + packetAmount + ") </div>"
-          document.getElementById("packageCount").textContent = "Number of packets sent: " + pDetails[0]
+          document.getElementById("packageCount").textContent = pDetails[0]
 
           // pDetails[0] == Frame number
           // pDetails[1] == Source ip
@@ -284,6 +284,8 @@ function receiveOutput(evt) {
 
       } // END for-loop
 
+      createLogFile()
+
 } // END receiveOutput
 
 //-------------------------------------------------------------------------
@@ -308,21 +310,21 @@ function closeSocket() {
 function createLogFile() {
 
   console.log("Logging-function called")
-  printDuplicates()
+  //printDuplicates()
 
   // Time
 
   // Addressess
-  document.getElementById("nullCount").textContent = "Null packets encountered: " + emptyPackets.length
-  document.getElementById("addressLog").textContent = "Addressess detected: " + addressArray.length
-  document.getElementById("reservedLog").textContent = "Reserved addressess detected : " + reservedCounter.length
-  document.getElementById("privateLog").textContent = "Private addresses detected : " + privateCounter.length
+  document.getElementById("nullCount").textContent = emptyPackets.length
+  document.getElementById("addressLog").textContent = addressArray.length
+  document.getElementById("reservedLog").textContent = reservedCounter.length
+  document.getElementById("privateLog").textContent = privateCounter.length
 
   // Markers and locations
-  document.getElementById("markerCount").textContent = "Numbers of markers added to the map:" + markerCounter.length
-  document.getElementById("cityLog").textContent = "Number of cities detected: " + cityArray.length
-  document.getElementById("countryLog").textContent = "Number of countries detected: " + countryArray.length
-  document.getElementById("ispLog").textContent = "Number of ISP:s detected: " + ispArray.length
+  document.getElementById("markerCount").textContent = markerCounter.length
+  document.getElementById("cityLog").textContent = cityArray.length
+  //document.getElementById("countryLog").textContent = countryArray.length
+  document.getElementById("ispLog").textContent = ispArray.length
 
 }
 

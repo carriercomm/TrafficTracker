@@ -11,7 +11,7 @@
 
     <!-- Le styles -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" /> -->
     <link href="assets/css/traffictracker.default.css" rel="stylesheet">
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/leaflet.css" rel="stylesheet">
@@ -81,7 +81,7 @@
             </a>
           </div>
 
-          <div id="collapseTwo" class="accordion-body collapse in">
+          <div id="collapseTwo" class="accordion-body collapse">
             <div class="accordion-inner">
 
               <!-- Content for the first collable -->
@@ -105,7 +105,7 @@
               Sniff output table
             </a> 
           </div>
-          <div id="collapseThree" class="accordion-body collapse in">
+          <div id="collapseThree" class="accordion-body collapse">
             <div class="accordion-inner">
 
               <div id="tableStatus">
@@ -140,43 +140,50 @@
             </a>
           </div>
 
-          <div id="collapseFour" class="accordion-body collapse">
+          <div id="collapseFour" class="accordion-body collapse in">
             <div class="accordion-inner">
 
-              <span>
+              <span> 
+
+             <a href="#" class="btn btn-success" onclick="createLogFile()"><i class="icon-white icon-heart"></i> createLogFile()</a>
 
                 <div id="logging">
 
                   <p> <strong> TIME </strong> </p>
                   <p id="startTime">Time initialized: </p>
-                  <p id ="finishTime">Time finished: </p>
-                  <p id="totalTime">Total runtime: </p>
+
                   <p>================================================</p>
 
                   <p> <strong> NUMBERS </strong> </p>
 
-                  <p id="markerCount"></p>
-                  <p id="packageCount"></p>
-                  <p id="nullCount"></p>
-                  <p id="addressLog"></p>
-                  <p id="cityLog"></p>
-                  <p ip="countryLog"></p>
-                  <p id="reservedLog"></p>
-                  <p id="privateLog"></p>
+                  <p> <strong> # NUMBER OF PACKETS </strong> </p>
+                  <p id="packageCount">foo bar</p>
 
+                  <p> <strong> # NUMBER OF NULL PACKETS </strong> </p>
+                  <p id="nullCount">foo bar</p>
+
+                  <p> <strong> # NUMBER OF PRIVATE ADDRESSESS </strong> </p>
+                  <p id="privateLog">foo bar</p>
+
+                  <p> <strong> # NUMBER OF RESERVED ADDRESSESS </strong> </p>
+                  <p id="reservedLog">foo bar</p>
+
+                  <p> <strong> # NUMBER OF ADDRESSESS </strong> </p>
+                  <p id="addressLog">foo bar</p>
 
                   <p>================================================</p>
 
-                  <p> <strong> DETAILS </strong> </p>
+                  <p> <strong> # NUMBER OF CITIES/LOCATIONS </strong> </p> 
+                  <p id="cityLog">foo bar</p>
 
-                  <p id="countriesDetected"></p>
+                  <p> <strong> # NUMBER OF COUNTRIES </strong> </p>
+                  <p ip="countryLog">foo bar</p>
 
-                  
+                  <p> <strong> # NUMBER OF MARKERS ON THE MAP </strong> </p>
+                  <p id="markerCount">foo bar</p>
 
-                  <p id="">....</p>
-
-                  <div id="addressDetails">
-                  </div>
+                  <p> <strong> # NUMBER OF ISPS </strong> </p>
+                  <p id ="ispLog">foo bar</p>
 
                 </div>
 
@@ -213,4 +220,4 @@
     <script type="text/javascript" src="/assets/js/J50Npi.js"></script>
 
   </body>
-</html>
+</html>u

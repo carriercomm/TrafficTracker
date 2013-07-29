@@ -63,17 +63,19 @@ sites=("www.facebook.com"
 	"www.amazon.de");
 
 
-browser="/usr/lib/chromium/chromium"
+#browser="/usr/lib/chromium/chromium"
+browser="/usr/bin/firefox -new-instance"
 i=0
 
 while true	
 	do
 		if [ "$i" -lt 50 ] 
 			then
-			echo "Launching $browser with site : ${sites[i]}"
-			$browser ${sites[i]} > log & sleep 8
+			pkill -9 firefox
+			echo "Launching $browser with site number $i : ${sites[i]}"
+			$browser ${sites[i]} > log & sleep 10
 			grep ERROR log && break
-			pkill -9 chromium
+			pkill -9 iceweasel
 			echo "Browser killed...."
 			i=$(($i+1))
 		else 
