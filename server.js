@@ -4,6 +4,7 @@ var path = require("path");
 var url = require("url");
 var filesys = require("fs");
 var execSync = require("execSync");
+var WebSocketServer = require('websocket').server;
 
 var spawn = require('child_process').spawn;
 
@@ -52,8 +53,6 @@ server.listen(8080, function(err) {
 
 /*****************************************************************************/
 
-//Require node-websocket server implementation
-var WebSocketServer = require('websocket').server;
 var receivedCommand;
 
 //Create new websocket-server object and connect it to http-server
@@ -94,12 +93,18 @@ wsServer.on('request', function(request) {
 
             receivedCommand.stdout.write("Hello!")
 
+            try{
+
     		receivedCommand.stdout.on('data', function(data) {
-    			//console.log(data.toString())
-                process.stdout.write(data.toString())
-    			connection.sendUTF(data.toString())
-    		})
+                    process.stdout.write(data.toString())
+    			     connection.sendUTF(data.toString())
+            })
             receivedCommand.stdin.end()
+            }
+            catch(e){
+                console.log('Disconnect error: ')
+                console.log(e)
+            }
     	}
     	else if (message.type === 'binary') {
         	console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
@@ -112,7 +117,6 @@ wsServer.on('request', function(request) {
 
 //Eventlistener for wsServer close
 wsServer.on('close',function(){
-	console.log((new Date()) + ' WebSocket connection closed.');
-    receivedCommand.kill('SIGKILL');
-    console.log(new Date() + ' Really, its killed')
-})
+	console.log((new Date()) + ' WebSocket connection closed.')
+    receivedCommand.kill('SIGINT')
+});

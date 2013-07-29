@@ -18,6 +18,8 @@ var map = L.map('map').setView([42.55308, -4.277351], 2);
 L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
   maxZoom: 18,
   minZoom: 2,
+  scrollWheelZoom: false,
+  dragging: false,
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
 }).addTo(map);
 
@@ -62,6 +64,7 @@ function init(){
 } // end init
 
 function onOpen(evt){
+  console.log("Websocket open, waiting for traffic....")
   sendCommand()
 } // end onOpen
 
@@ -81,11 +84,11 @@ var startTime
 
 // Before you start, make sure that you change this ip
 // according to your networks ip-address
-var hostIP = "192.168.11.18"
+var hostIP = "10.20.204.133"
 
 // Change according to your systems interface
 // in what you want to listen. 
-var hostInterface = "eth0"
+var hostInterface = "wlan0"
 
 // Spell to run tshark as a normal user in
 // Ubuntu/Debian
@@ -100,7 +103,7 @@ function sendCommand() {
   commandBase = "tshark -l -i eth0 -n -T fields -E separator=, -e frame.number -e ip.src -e ip.dst "
 
   command = "tshark -l -i " + hostInterface + " " + commandFields + commandExtra
-  startTime = new Date("01/01/2007 " + valuestart).getHours();
+  startTime = new Date();
   document.getElementById("startTime").textContent = "Time initialized: " + startTime
 
 //tshark -i en1 -T fields -E separator=, -e frame.number -e ip.src -e ip.dst src host 192.169.11.32 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' -R 'http.request.method == "GET" || http.request.method == "HEAD"'
@@ -197,7 +200,7 @@ function receiveOutput(evt) {
                   reverseCell = row.insertCell(5)
                   
                   lineNroCell.textContent = yy             
-                  duplicateCell.innerHTML = "<i>Collecting data...</i>"
+                  duplicateCell.innerHTML = "---"
                   destinationCell.textContent =  destinationIP
                   locationCell.textContent = locationData
                   ispCell.textContent =  ispData 
@@ -295,7 +298,7 @@ function closeSocket() {
   document.getElementById("finishTime").textContent = "Time finished: " + endTime
 
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed. See Logfile for details.</div>"
-  document.getElementById('totalTime').textContent = timeDiff
+  document.getElementById('totalTime').textContent = hourDiff
   createLogFile()
   
 }
@@ -303,6 +306,9 @@ function closeSocket() {
 //-------------------------------------------------------------------------
 
 function createLogFile() {
+
+  console.log("Logging-function called")
+  printDuplicates()
 
   // Time
 
@@ -321,9 +327,7 @@ function createLogFile() {
 }
 
 function printDuplicates() {
-  console.log("printDuplicates kutsuttiin")
     for (var i=0; i<=yy;i++) {
-      console.log("päästiin sisälle")
       var temp = "duplicateCell" + i
       console.log(temp)
       document.getElementById(temp).textContent = occurrences[i]

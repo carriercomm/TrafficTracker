@@ -63,17 +63,21 @@ sites=("www.facebook.com"
 	"www.amazon.de");
 
 
-browser="/usr/lib/chromium-browser/chromium-browser"
+browser="/usr/lib/chromium/chromium"
 i=0
 
 while true	
 	do
-		echo "Launching $browser with site : ${sites[i]}"
-		$browser ${sites[i]} > log & sleep 8
-		grep ERROR log && break
-		pkill -9 chromium
-		echo "Browser killed...."
-		i=$(($i+1))
+		if [ "$i" -lt 50 ] 
+			then
+			echo "Launching $browser with site : ${sites[i]}"
+			$browser ${sites[i]} > log & sleep 8
+			grep ERROR log && break
+			pkill -9 chromium
+			echo "Browser killed...."
+			i=$(($i+1))
+		else 
+			echo "Limit reached." 
+		fi
 done
-
 

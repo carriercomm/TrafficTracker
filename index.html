@@ -36,14 +36,6 @@
 
 <body onload="connect()">
 
-    <a class="btn" onclick="closeSocket()">Close and log</a>
-
-    <!-- MAP STUFF
-    ====================================================== -->
-
-    <!-- TABLE STUFF
-    ====================================================== -->
-
       <div class="accordion" id="accordion2">
         <div class="accordion-group">
           <div class="accordion-heading">
@@ -89,13 +81,12 @@
             </a>
           </div>
 
-          <div id="collapseTwo" class="accordion-body collapse">
+          <div id="collapseTwo" class="accordion-body collapse in">
             <div class="accordion-inner">
 
               <!-- Content for the first collable -->
-              <div id="section" onload="maps()">
-              <p>Helou</p>
-                <div id="map" style="width: 100% height: 700px">
+              <div id="section">
+                <div id="map" onload="maps()" style="width: 100% height: 700px">
                 </div>
               </div>
 
@@ -144,12 +135,12 @@
 
         <div class="accordion-group">
           <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
               Summary
             </a>
           </div>
 
-          <div id="collapseThree" class="accordion-body collapse">
+          <div id="collapseFour" class="accordion-body collapse">
             <div class="accordion-inner">
 
               <span>
@@ -203,7 +194,7 @@
 
     <!-- Le javascript
     ================================================== -->
-            <!-- jQuery, required be bootstrap-->
+    <!-- jQuery, required be bootstrap-->
     <script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="assets/js/jquery.tablesorter.js"></script>
 
@@ -214,11 +205,6 @@
     <script type="text/javascript" src="assets/js/leaflet.js"></script>
     <script type="text/javascript" src="assets/js/bouncemarker.js"></script>
     <script type="text/javascript" src="assets/js/Control.FullScreen.js"></script>
-
-    <!-- Piechart-->
-    <script type="text/javascript" src="assets/js/raphael-min.js"></script>
-    <script type="text/javascript" src="assets/js/g.raphael-min.js"></script>
-    <script type="text/javascript" src="assets/js/g.pie-min.js"></script>
 
     <!-- <script src="http://openlayers.org/api/OpenLayers.js"></script> -->
     <script type="text/javascript" src="assets/js/traffictracker.default.js"></script>
