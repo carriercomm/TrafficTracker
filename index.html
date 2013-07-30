@@ -18,6 +18,9 @@
     <link href="assets/js/Control.FullScreen.css" rel="stylesheet">
     <link href="assets/js/themes/blue/style.css" rel="stylesheet">
 
+                    <!-- Sortable tables -->
+    <script type="text/javascript" src="/assets/js/sorttable.js"></script>
+
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -146,6 +149,9 @@
               <span> 
 
              <a href="#" class="btn btn-success" onclick="createLogFile()"><i class="icon-white icon-heart"></i> createLogFile()</a>
+             <a href="#" class="btn btn-success" onclick="printDuplicates()"><i class="icon-white icon-heart"></i> printDuplicates()</a>
+             <a href="#" class="btn btn-success" onclick="printHitsPerCountry()"><i class="icon-white icon-heart"></i> printHitsPerCountry()</a>
+
 
                 <div id="logging">
 
@@ -185,6 +191,24 @@
                   <p> <strong> # NUMBER OF ISPS </strong> </p>
                   <p id ="ispLog">foo bar</p>
 
+                  <p>================================================</p>
+
+                  <table id="countryOccurrenceTable" class="sortable table table-hover table-bordered table-striped">
+                    <thead> <!-- Headers for table -->
+                      <tr>
+                        <th>Country</th>
+                        <th>Hits</th>
+                      </tr>
+                    </thead> <!-- End of headers -->
+
+                    <!-- Here is printed the number of hits, aka. packages
+                         per country. The table created is sortable -->
+                         <tbody>
+                         </tbody>
+
+              </table>
+
+
                 </div>
 
               </span>
@@ -215,9 +239,12 @@
 
     <!-- <script src="http://openlayers.org/api/OpenLayers.js"></script> -->
     <script type="text/javascript" src="assets/js/traffictracker.default.js"></script>
-  
+
     <!-- J50n - Credits to Roberto Decurnex : http://robertodecurnex.github.io/J50Npi/-->
     <script type="text/javascript" src="/assets/js/J50Npi.js"></script>
 
+
+
+
   </body>
-</html>u
+</html>

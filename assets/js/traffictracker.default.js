@@ -119,7 +119,7 @@ var body = document.createElement('tbody');
 var cityArray = []        // IP-Api: Array for fetched cities
 var addressArray = []     // IP-Api: Array for query addressess (geodata.query)
 var countryArray = []     // IP-Api: Countries
-var ispArray = []         // ISP:s (ip-api)
+var ispArray = []         // IP-API: ISP's
 var longitudeArray = []   // Longitudes (ip-api)
 var latitudeArray = []    // Longitudes (ip-api)
 var locationArray = []    // Locations = City, Country (ip-api)
@@ -171,7 +171,7 @@ function receiveOutput(evt) {
                          
               if ( pDetails[1] != hostIP) {
                 // This is here to detect changes in host ip (aka. source ip)
-                window.alert("Alert! shark shows that your host ip is different from the one that you have given. WebSocket closed.")
+                window.alert("Alert! shark shows that your host ip is different from the one that you have given, and you might be sniffin someone elses network traffic. WebSocket closed.")
                 closeSocket();
                 console.log("Alert! " + pDetails[1] + " != " + hostIP + " , connection closed")
               }
@@ -233,19 +233,24 @@ function receiveOutput(evt) {
                     }
                   } else 
 
-                    if ( geodata.city == "" ) {
-                      // Those packages with city unknown
-                      cityArray.push("Unknown")
-
-                    } else {
-  		                // Packages with known city               
-                      cityArray.push(geodata.city)
+                    // City detection and handling
+                    if ( cityArray.indexOf(geodata.city) == "-1") {
+                      // If not duplicate, then add this city to the cityArray
+                      if ( geodata.city == "" ) {
+                        // Those packages with city unknown
+                        cityArray.push("Unknown")
+                      } else {
+    		                // Packages with known city               
+                        cityArray.push(geodata.city)
+                      }
                     }
 
+                    // Country detection and handling
                     if ( countryArray.indexOf(geodata.country) == "-1") {
                       // If not duplicate, then add this country to the countryArray
                       countryArray.push(geodata.country)
-                    }
+                      countryOccurrence.push(1)
+                    } else 
 
                     countryOccurrence[countryArray.indexOf(geodata.country)]++
                     addressArray.push(geodata.query)
@@ -292,15 +297,8 @@ function receiveOutput(evt) {
 
 function closeSocket() {
   websocket.close()
-  printDuplicates()
   console.log("Disconnected")
-  var endTime = new Date("01/01/2007 " + valuestop).getHours();
-  var hourDiff = timeEnd - timeStart;
-
-  document.getElementById("finishTime").textContent = "Time finished: " + endTime
-
   document.getElementById('tableStatus').innerHTML = "<div class='alert alert-error'> <i class='icon-asterisk'></i> <strong>State </strong> Connection to server closed. See Logfile for details.</div>"
-  document.getElementById('totalTime').textContent = hourDiff
   createLogFile()
   
 }
@@ -312,8 +310,6 @@ function createLogFile() {
   console.log("Logging-function called")
   //printDuplicates()
 
-  // Time
-
   // Addressess
   document.getElementById("nullCount").textContent = emptyPackets.length
   document.getElementById("addressLog").textContent = addressArray.length
@@ -322,16 +318,40 @@ function createLogFile() {
 
   // Markers and locations
   document.getElementById("markerCount").textContent = markerCounter.length
-  document.getElementById("cityLog").textContent = cityArray.length
-  //document.getElementById("countryLog").textContent = countryArray.length
-  document.getElementById("ispLog").textContent = ispArray.length
+  document.getElementById("cityLog").textContent = "<strong>" + cityArray.length + "</strong> (" + cityArray + ")"
+  document.getElementById("countryLog").textContent = "<strong>" + countryArray.length + "</strong> (" + countryArray + ")"
+  document.getElementById("ispLog").textContent = "<strong>" + ispArray.length + "</strong> (" +ispArray + ")"
 
 }
 
 function printDuplicates() {
     for (var i=0; i<=yy;i++) {
       var temp = "duplicateCell" + i
-      console.log(temp)
       document.getElementById(temp).textContent = occurrences[i]
     }
+}
+
+function printHitsPerCountry() {
+
+  console.log("printHitsPerCountry kutsuttiin")
+  var countryOccurrenceTable = document.getElementById('countryOccurrenceTable')
+  var countryBody = document.createElement('tbody')
+
+  for (var i=0; i<=countryArray;i++) {
+
+    console.log("loopissa sisällä: " + i)
+
+    var row = countryBody.insertRow(-1)
+    countryCell = row.insertCell(0)
+    hitsPerCountryCell = row.insertCell(1)
+    countryCell.textContent = countryArray[i]
+    hitsPerCountryCell.textContent = countryOccurrence[i]
+
+
+    countryBody.appendChild(row)
+    countryOccurrenceTable.appendChild(countryBody)
+
+  }
+
+                     
 }
