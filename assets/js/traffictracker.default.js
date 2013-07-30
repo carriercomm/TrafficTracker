@@ -120,18 +120,19 @@ var cityArray = []        // IP-Api: Array for fetched cities
 var addressArray = []     // IP-Api: Array for query addressess (geodata.query)
 var countryArray = []     // IP-Api: Countries
 var ispArray = []         // IP-API: ISP's
-var longitudeArray = []   // Longitudes (ip-api)
-var latitudeArray = []    // Longitudes (ip-api)
-var locationArray = []    // Locations = City, Country (ip-api)
+var longitudeArray = []   // IP-Api: Longitudes for markers
+var latitudeArray = []    // IP-Api: Latitudes for markers
+var locationArray = []    // IP-Api: Locations: City, Country
 
 var destinationArray = []
 var duplicateCount = []
 var failArray = []
 
-var ip = []
+var ip = []               //
 var occurrences = []
 
 var countryOccurrence = []
+var ispOccurrence = []
 
 var markerCounter = []
 var markerList = []
@@ -242,6 +243,7 @@ function receiveOutput(evt) {
                       } else {
     		                // Packages with known city               
                         cityArray.push(geodata.city)
+                        console.log("Kaupunki tiedetään: " + geodata.city)
                       }
                     }
 
@@ -250,13 +252,19 @@ function receiveOutput(evt) {
                       // If not duplicate, then add this country to the countryArray
                       countryArray.push(geodata.country)
                       countryOccurrence.push(1)
-                    } else 
+                    } else
+
+                    // ISP Detection and handling
+                    if ( ispArray.indexOf(geodata.isp) == "-1") {
+                      ispArray.push(geodata.isp)
+                      ispOccurrence.push(1)
+                    }
 
                     countryOccurrence[countryArray.indexOf(geodata.country)]++
                     addressArray.push(geodata.query)
                     locationArray.push(geodata.city + ", " + geodata.country)
                     
-                    ispArray.push(geodata.isp)
+                    ispOccurrence[ispArray.indexOf(geodata.isp)]++
                     latitudeArray.push(geodata.lat)
                     longitudeArray.push(geodata.lon)
 
@@ -331,27 +339,54 @@ function printDuplicates() {
     }
 }
 
+function printHits() {
+  printHitsPerCountry()
+  printHitsPerAddress()
+  printHitsPerISP
+}
+
 function printHitsPerCountry() {
 
-  console.log("printHitsPerCountry kutsuttiin")
-  var countryOccurrenceTable = document.getElementById('countryOccurrenceTable')
-  var countryBody = document.createElement('tbody')
+  var countryBody = document.getElementById('countryOccurrenceTable')
 
-  for (var i=0; i<=countryArray;i++) {
-
-    console.log("loopissa sisällä: " + i)
-
+  for (var i=0; i<=countryArray.length-1;i++) {
     var row = countryBody.insertRow(-1)
     countryCell = row.insertCell(0)
     hitsPerCountryCell = row.insertCell(1)
     countryCell.textContent = countryArray[i]
     hitsPerCountryCell.textContent = countryOccurrence[i]
 
-
     countryBody.appendChild(row)
-    countryOccurrenceTable.appendChild(countryBody)
+  }                  
+}
+
+function printHitsPerAddress() {
+
+  var addressBody = document.getElementById('addressOccurrenceTable')
+
+  for (var i=0; i<=ip.length-1; i++) {
+    var row = addressBody.insertRow(-1)
+    addressCell = row.insertCell(0)
+    hitsPerAddressCell = row.insertCell(1)
+    addressCell.textContent = ip[i]
+    hitsPerAddressCell.textContent = occurrences[i]
+
+    addressBody.appendChild(row)
+  }
+}
+
+function printHitsPerISP() {
+
+  var ispBody = document.getElementById('ispOccurrenceTable')
+
+  for (var i=0; i<= ispArray.length-1; i++) {
+    var row = ispBody.insertRow(-1)
+    ispCell = row.insertCell(0)
+    hitsPerISPCell = row.insertCell(1)
+    ispCell.textContent = ispArray[i]
+    hitsPerISPCell.textContent = ispOccurrence[i]
+
+    ispBody.appendChild(row)
 
   }
-
-                     
 }

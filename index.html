@@ -148,9 +148,11 @@
 
               <span> 
 
-             <a href="#" class="btn btn-success" onclick="createLogFile()"><i class="icon-white icon-heart"></i> createLogFile()</a>
-             <a href="#" class="btn btn-success" onclick="printDuplicates()"><i class="icon-white icon-heart"></i> printDuplicates()</a>
-             <a href="#" class="btn btn-success" onclick="printHitsPerCountry()"><i class="icon-white icon-heart"></i> printHitsPerCountry()</a>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default" onclick="createLogFile()">createLogFile()</button>
+                <button type="button" class="btn btn-default" onclick="printDuplicates()">Print duplicates to table</button>
+                <button type="button" class="btn btn-default" onclick="printHits()">Print Hit-tables</button>
+              </div>
 
 
                 <div id="logging">
@@ -193,20 +195,60 @@
 
                   <p>================================================</p>
 
-                  <table id="countryOccurrenceTable" class="sortable table table-hover table-bordered table-striped">
+                  <legend>Hits per country</legend>
+                  <table class="sortable table table-hover table-bordered table-striped table-condensed" style="width: 50%">
                     <thead> <!-- Headers for table -->
                       <tr>
-                        <th>Country</th>
-                        <th>Hits</th>
+                        <th width=50%>Country</th>
+                        <th width=50%>Hits</th>
                       </tr>
                     </thead> <!-- End of headers -->
 
+                    <tbody id="countryOccurrenceTable">
+                    </tbody>
+
                     <!-- Here is printed the number of hits, aka. packages
                          per country. The table created is sortable -->
-                         <tbody>
-                         </tbody>
 
-              </table>
+                  </table>
+
+                  <legend>Hits per ip-address</legend>
+                  <table class="sortable table table-hover table-bordered table-striped table-condensed" style="width: 50%">
+                   <thead>
+                    <tr>
+                      <th width=50%>IP-Address</th>
+                      <th width=50%>Hits</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="addressOccurrenceTable">
+                  </tbody>
+
+                  <!-- Here is printed collected addresses and the hits
+                       they have had. -->
+
+                  </table>
+
+                  <legend>Hits per ISP</legend>
+                   <table class="sortable table table-hover table-bordered table-striped table-condensed" style="width: 50%">
+                   <thead>
+                    <tr>
+                      <th width=50%>ISP</th>
+                      <th width=50%>Hits</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="ispOccurrenceTable">
+                  </tbody>
+
+                  <!-- Here is printed collected ISP's and the hits
+                       they have had. -->
+
+                  </table>
+
+
+
+
 
 
                 </div>
