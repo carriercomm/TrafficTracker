@@ -84,11 +84,11 @@ var startTime
 
 // Before you start, make sure that you change this ip
 // according to your networks ip-address
-var hostIP = "10.20.204.133"
+var hostIP = "10.20.47.13"
 
 // Change according to your systems interface
 // in what you want to listen. 
-var hostInterface = "wlan0"
+var hostInterface = "eth0"
 
 // Spell to run tshark as a normal user in
 // Ubuntu/Debian
@@ -116,23 +116,26 @@ function sendCommand() {
 var table = document.getElementById('outputTable');
 var body = document.createElement('tbody');
 
-var cityArray = []        // IP-Api: Array for fetched cities
-var addressArray = []     // IP-Api: Array for query addressess (geodata.query)
-var countryArray = []     // IP-Api: Countries
-var ispArray = []         // IP-API: ISP's
-var longitudeArray = []   // IP-Api: Longitudes for markers
-var latitudeArray = []    // IP-Api: Latitudes for markers
-var locationArray = []    // IP-Api: Locations: City, Country
+var cityArray = []         // IP-Api: Array for fetched cities
+var addressArray = []      // IP-Api: Array for query addressess (geodata.query)
+var countryArray = []      // IP-Api: Countries
+var ispArray = []          // IP-API: ISP's
+var longitudeArray = []    // IP-Api: Longitudes for markers
+var latitudeArray = []     // IP-Api: Latitudes for markers
+var locationArray = []     // IP-Api: Locations: City, Country
+var reserveArray = []      // IP-Api: Reserve DNS
 
 var destinationArray = []
 var duplicateCount = []
 var failArray = []
 
-var ip = []               //
+var ip = []                 // 
 var occurrences = []
 
-var countryOccurrence = []
-var ispOccurrence = []
+var cityOccurrence = []     // IP-Api: Counter for city occurrences
+var countryOccurrence = []  // IP-Api: Counter for country occurrences
+var ispOccurrence = []      // IP-Api: Counter for ISP occurrences
+var reserveOccurrence = []  // IP-Api: Counter for Reserve DNS occurrences
 
 var markerCounter = []
 var markerList = []
@@ -188,7 +191,113 @@ function receiveOutput(evt) {
 
                 ip.push(pDetails[2])
                 occurrences.push(1)
+
+                // Function for adding acquired data and variables
+                // to arrays
+                // dst == destination
+                function addToArray(dstIP, dstCity, dstCountry, dstISP, dstReverse, dstLat, dstLon) {
+
+                  console.log("addToArray kutsuttu arvoilla: " + dstIP + " | " + dstCity + " | " + dstCountry + " | " + dstISP + " | " + dstLat + "," + dstLon)
+
+                  addressArray.push(dstIP)
+
+                  //----------City detection and handling---------------------
+
+                  if ( cityArray.indexOf(dstCity) == "-1") {
+                    // If not duplicate, then add this city to the cityArray
+
+                    if ( dstCity == "" ) {
+                      // Those packages with city unknown
+
+                      if (cityArray.indexOf("Unknown") == "-1") {
+                        cityArray.push("Unknown")
+                        cityOccurrence.push(1)
+                      } else {
+
+                        cityOccurrence[cityArray.indexOf("Unknown")]++
+                      } 
+
+                    } else {
+                      // Packages with known city               
+                      cityArray.push(dstCity)
+                      cityOccurrence.push(1)
+
+                    }
+                  } else {
+                    cityOccurrence[cityArray.indexOf(dstCity)]++
+                 }
+
+                  // ---------END City------------------------------------
+
+                  //----------Country detection and handling------------------
+
+                    if ( countryArray.indexOf(dstCountry) == "-1") {
+                      // If not duplicate, then add this country to the countryArray
+                      countryArray.push(dstCountry)
+                      countryOccurrence.push(1)
+                    } else {
+                      countryOccurrence[countryArray.indexOf(dstCountry)]++
+                    }
+
+                  // ---------END Country------------------------------------
+
+                  //----------ISP detection and handling---------------------
+
+                  if ( ispArray.indexOf(dstISP) == "-1") {
+
+                    if (dstISP == "" ) {
+                        // Unknown ISP
+
+                      if (ispArray.indexOf("Unknown") == "-1") {
+                        ispArray.push("Unknown")
+                        ispOccurrence.push(1)
+                      } else {
+                        ispOccurrence[ispArray.indexOf("Unknown")]++
+                      }
+
+                    } else {
+                      ispArray.push(dstISP)
+                      ispOccurrence.push(1)
+                    }
+                  } else {
+                      ispOccurrence[ispArray.indexOf(dstISP)]++
+                    }
+          
+
+                  // ---------END ISP--------------------------------------
+
+                  //----------RESERVE DNS -----------------------------------------
+
+                  if ( reserveArray.indexOf(dstReverse) == "-1") {
+
+                    if ( dstReverse == "" ) {
+                      // Unknown reserve DNS
+
+                      if ( reserveArray.indexOf("Unknown") == "-1") {
+                        reserveArray.push("Unknown")
+                        reserveOccurrence.push(1)
+                      } else {
+                        reserveOccurrence[reserveArray.indexOf("Unknown")]++
+                      }
+
+                    } else {
+                      // Known reserve DNS
+                      reserveArray.push(dstReverse)
+                      reserveOccurrence.push(1)
+                    }
+                  } else {
+                    reserveOccurrence[reserveArray.indexOf(dstReverse)]++
+                  }
+
+                  // ---------END RESERVE DNS--------------------------------------
+
+                  // Latitudes and longitudes for markers
+                  latitudeArray.push(dstLat)
+                  longitudeArray.push(dstLon)
+
+                }
               
+                // Function for adding new row to the sniffing-table
                 function addNewRow(destinationIP, locationData, ispData, reverseData, callback) {
                   var row = body.insertRow(-1)
 
@@ -232,55 +341,25 @@ function receiveOutput(evt) {
                     if ( geodata.message == "private range" ) {
                       privateCounter.push("1")
                     }
-                  } else 
+                  } else
 
-                    // City detection and handling
-                    if ( cityArray.indexOf(geodata.city) == "-1") {
-                      // If not duplicate, then add this city to the cityArray
-                      if ( geodata.city == "" ) {
-                        // Those packages with city unknown
-                        cityArray.push("Unknown")
-                      } else {
-    		                // Packages with known city               
-                        cityArray.push(geodata.city)
-                        console.log("Kaupunki tiedetään: " + geodata.city)
-                      }
-                    }
+                  if ( geodata.city == "" ) {
+                    var nameMarker = "Unknown, " + geodata.country
+                  } else {
+                    var nameMarker = geodata.city + ", " + geodata.country
+                  }
+                  markerList.push(nameMarker)
+ 
+                  locationArray.push(geodata.city + ", " + geodata.country)
 
-                    // Country detection and handling
-                    if ( countryArray.indexOf(geodata.country) == "-1") {
-                      // If not duplicate, then add this country to the countryArray
-                      countryArray.push(geodata.country)
-                      countryOccurrence.push(1)
-                    } else
+                  // Adding a new marker to the map
+                  L.marker([geodata.lat, geodata.lon], { bounceOnAdd: true, bounceOnAddDuration: 500, bounceOnAddHeight: 200 }).addTo(map)
+                  markerCounter.push(1)
 
-                    // ISP Detection and handling
-                    if ( ispArray.indexOf(geodata.isp) == "-1") {
-                      ispArray.push(geodata.isp)
-                      ispOccurrence.push(1)
-                    }
-
-                    countryOccurrence[countryArray.indexOf(geodata.country)]++
-                    addressArray.push(geodata.query)
-                    locationArray.push(geodata.city + ", " + geodata.country)
-                    
-                    ispOccurrence[ispArray.indexOf(geodata.isp)]++
-                    latitudeArray.push(geodata.lat)
-                    longitudeArray.push(geodata.lon)
-
-                    // Adding a new marker to the map
-                    L.marker([geodata.lat, geodata.lon], { bounceOnAdd: true, bounceOnAddDuration: 500, bounceOnAddHeight: 200 }).addTo(map)
-                    markerCounter.push(1)
-
-                    if ( geodata.city == "" ) {
-                      var nameMarker = "Unknown, " + geodata.country
-                    } else {
-                      var nameMarker = geodata.city + ", " + geodata.country
-                    }
-                    markerList.push(nameMarker)
+                  addToArray(geodata.query, geodata.city, geodata.country, geodata.isp, geodata.reverse, geodata.lat, geodata.lon, function(result) {
+                  });
 
                   addNewRow(geodata.query, nameMarker, geodata.isp, geodata.reverse, function(result) {
-                  //console.log("callback kutsuttu: " + result)
                   });    
                 
                 }); // END callback
@@ -315,7 +394,7 @@ function closeSocket() {
 
 function createLogFile() {
 
-  console.log("Logging-function called")
+  //console.log("Logging-function called")
   //printDuplicates()
 
   // Addressess
@@ -326,9 +405,9 @@ function createLogFile() {
 
   // Markers and locations
   document.getElementById("markerCount").textContent = markerCounter.length
-  document.getElementById("cityLog").textContent = "<strong>" + cityArray.length + "</strong> (" + cityArray + ")"
-  document.getElementById("countryLog").textContent = "<strong>" + countryArray.length + "</strong> (" + countryArray + ")"
-  document.getElementById("ispLog").textContent = "<strong>" + ispArray.length + "</strong> (" +ispArray + ")"
+  document.getElementById("cityLog").textContent = cityArray.length
+  document.getElementById("countryLog").textContent = countryArray.length
+  document.getElementById("ispLog").textContent = ispArray.length
 
 }
 
@@ -339,10 +418,16 @@ function printDuplicates() {
     }
 }
 
+
+//-------------------------------------------------------------------------
+// Here are the functions that print the hit-tables
+
 function printHits() {
   printHitsPerCountry()
   printHitsPerAddress()
-  printHitsPerISP
+  printHitsPerISP()
+  printHitsPerCity()
+  printHitsPerReserve()
 }
 
 function printHitsPerCountry() {
@@ -390,3 +475,36 @@ function printHitsPerISP() {
 
   }
 }
+
+function printHitsPerCity() {
+
+  var cityBody = document.getElementById('cityOccurrenceTable')
+
+  for (var i=0; i<= cityArray.length-1; i++) {
+    var row = cityBody.insertRow(-1)
+    cityCell = row.insertCell(0)
+    hitsPerCityCell = row.insertCell(1)
+    cityCell.textContent = cityArray[i]
+    hitsPerCityCell.textContent = cityOccurrence[i]
+
+    cityBody.appendChild(row)
+
+  }
+}
+
+function printHitsPerReserve() {
+
+  var reserveBody = document.getElementById('DNSOccurrenceTable')
+
+  for (var i=0; i<= reserveArray.length-1; i++) {
+    var row = reserveBody.insertRow(-1)
+    reserveCell = row.insertCell(0)
+    hitsPerReserveCell = row.insertCell(1)
+    reserveCell.textContent = reserveArray[i]
+    hitsPerReserveCell.textContent = reserveOccurrence[i]
+
+    reserveBody.appendChild(row)
+
+  }
+}
+

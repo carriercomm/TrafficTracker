@@ -89,7 +89,7 @@
 
               <!-- Content for the first collable -->
               <div id="section">
-                <div id="map" onload="maps()" style="width: 100% height: 700px">
+               <div id="map" onload="maps()" style="width: 100% height: 700px">
                 </div>
               </div>
 
@@ -185,7 +185,7 @@
                   <p id="cityLog">foo bar</p>
 
                   <p> <strong> # NUMBER OF COUNTRIES </strong> </p>
-                  <p ip="countryLog">foo bar</p>
+                  <p id="countryLog">foo bar</p>
 
                   <p> <strong> # NUMBER OF MARKERS ON THE MAP </strong> </p>
                   <p id="markerCount">foo bar</p>
@@ -247,6 +247,39 @@
                   </table>
 
 
+                  <legend>Hits per City</legend>
+                   <table class="sortable table table-hover table-bordered table-striped table-condensed" style="width: 50%">
+                   <thead>
+                    <tr>
+                      <th width=50%>City</th>
+                      <th width=50%>Hits</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="cityOccurrenceTable">
+                  </tbody>
+
+                  <!-- Here is printed collected cities and the hits
+                       they have had. -->
+
+                  </table>
+
+                  <legend>Hits per reserve DNS</legend>
+                   <table class="sortable table table-hover table-bordered table-striped table-condensed" style="width: 50%">
+                   <thead>
+                    <tr>
+                      <th width=50%>Reserve DNS</th>
+                      <th width=50%>Hits</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="DNSOccurrenceTable">
+                  </tbody>
+
+                  <!-- Here is printed collected DNS's and the hits
+                       they have had. -->
+
+                  </table>
 
 
 
