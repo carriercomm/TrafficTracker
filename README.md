@@ -61,3 +61,12 @@ The scripts used in TrafficTracker are loaded in a certain order. Sometimes duri
 
 <strong> TrafficTracker acts funky! It crashes everytime I reload the frontpage. </strong>
 
+What OS are you running? If it's a unix-based OS, try <code> sudo setcap cap_net_raw=+ep /usr/bin/dumpcap </code>. This modifies the permissions of a regular user to make network sniffing possible.
+
+If this doesn't affect your problem anyway, try running tshark from the command line without TrafficTracker. For example, you could try <code> tshark -c 10 -i "interface" </code>. Replace interface with proper interface. You can list your interfaces with <code> /sbin/ifconfig </code>. 
+
+<strong> Argh! This doesn't make sense. I cannot get it to function at all. I'm losing my mind here. </strong>
+
+Before you loose your mind try contacting me. I might be able to help you.
+
+You can find me at IRC - freenode for example - by the nick iuuso.
