@@ -3,7 +3,7 @@ TrafficTracker
 
 About
 -----
-TrafficTracker is a tool created for monitoring your network activity. On default, it sniffs your HTTP GET-requests while browsing websites. With TrafficTracker, you can put your network activity on the map.
+TrafficTracker is a tool created for monitoring your network activity. It's basicly on webapp, but it's functionalitites are based on tshark. On default, it sniffs your HTTP GET-requests while browsing websites. With TrafficTracker, you can put your network activity on the map.
 
 How does it work
 -----------------------
