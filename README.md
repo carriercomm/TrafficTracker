@@ -11,3 +11,8 @@ TrafficTracker is basicly a webapp, but it works on top of Nodejs via Websockets
 
 Installation
 ---------------
+TrafficTracker has been developed on Mac OS X and Debian Wheezy. 
+
+<code> git clone https://github.com/iuuso/TrafficTracker.git </code>
+
+That should do it.
