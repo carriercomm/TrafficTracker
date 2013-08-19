@@ -8,6 +8,14 @@
 //
 //-------------------------------------------------------------------------
 
+// Before you start, make sure that you change this ip
+// according to your networks ip-address
+var hostIP = "10.20.47.13"
+
+// Change according to your systems interface
+// in what you want to listen. 
+var hostInterface = "eth0"
+
 
 //-------------------------------------------------------------------------
 
@@ -81,14 +89,6 @@ function onError(evt){
 // Command to be sent to the server
 
 var startTime
-
-// Before you start, make sure that you change this ip
-// according to your networks ip-address
-var hostIP = "10.20.47.13"
-
-// Change according to your systems interface
-// in what you want to listen. 
-var hostInterface = "eth0"
 
 // Spell to run tshark as a normal user in
 // Ubuntu/Debian
