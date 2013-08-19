@@ -59,6 +59,12 @@ Please remember that TrafficTracker is meant to be used solely on the system you
 
 The scripts used in TrafficTracker are loaded in a certain order. Sometimes during the development there was delay ot loading leaflet-maps. Try reloading. Tshark is ready to sniff your traffic when you see "Command received" on the terminal. That message comes from server which has received your command for sniffing traffic.
 
+<strong> I might have a suggestion for improving TrafficTracker. Can I fork TrafficTracker?</strong>
+
+Of course you can. You can do anything you want with this. But remember to credit the services you are using etc. 
+
+Also drop me a /msg in IRC and tell me what you forked and why. I'm really interested on what you decided to do with TrafficTracker!
+
 <strong> TrafficTracker acts funky! It crashes everytime I reload the frontpage. </strong>
 
 What OS are you running? If it's a unix-based OS, try <code> sudo setcap cap_net_raw=+ep /usr/bin/dumpcap </code>. This modifies the permissions of a regular user to make network sniffing possible.
