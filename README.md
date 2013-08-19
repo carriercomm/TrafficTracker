@@ -65,6 +65,14 @@ Of course you can. You can do anything you want with this. But remember to credi
 
 Also drop me a /msg in IRC and tell me what you forked and why. I'm really interested on what you decided to do with TrafficTracker!
 
+<strong> I'm not interested in my HTTP GET-requests, that's silly. Can I use TrafficTracker to display anything else? </strong>
+
+Sure, it basicly comes down to shark. Tshark is an extremely flexible sniffer, and you can use it in various different ways. <a href="http://www.wireshark.org/docs/man-pages/tshark.html" target="_blank">Take a look at the tshark-documentation</a>.
+
+Only limitation is the output from tshark. The output with comma separation and every packet in a new line is something that cannot be changed - although it's allowed if you wish go down that road. Prepare to make some serious modifications to the code in that case.
+
+But sure, you can change what you sniff actually. HTTP Get-requests are limited in this statement: <code> port 80 and tcp[((tcp[12:1] & 0xf0) >> 2):4] = 0x47455420 </code>. Remove that, modify it, add another extra capture filter, you name it. Couple of examples can be found from <a href="http://wiki.wireshark.org/CaptureFilters">here</a>.
+
 <strong> TrafficTracker acts funky! It crashes everytime I reload the frontpage. </strong>
 
 What OS are you running? If it's a unix-based OS, try <code> sudo setcap cap_net_raw=+ep /usr/bin/dumpcap </code>. This modifies the permissions of a regular user to make network sniffing possible.
