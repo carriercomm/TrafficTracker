@@ -38,11 +38,11 @@ Almost there. Find and install tshark to your systems. Dependending on your syst
 Usage
 -----
 
-1. Open <code>traffictracker.default.js</code> with the text editor of choise. Change the values of code> hostIP </code> and <code> hostInterface </code> according to your system.
+1. Open <code>traffictracker.default.js</code> with the text editor of choise. Change the values of <code> hostIP </code> and <code> hostInterface </code> according to your system.
 
 2. Run the TrafficTracker server with <code> node server.js </code>. You have to be in the same folder as where the server.js is.
 
-3. Open your browser and point it to <code> http://localhost:8080/index.html </code>. You should now see in your terminal - where the server.js is running - that websocket is open and traffic can be sniffed.
+3. Open your browser and point it to <code> http://localhost:8080/index.html </code>. You should now see in your terminal - where the server.js is running - that websocket is open and traffic is being sniffed. 
 
 4. Now you could open up a new browser window / a different browser and surf the web. At the same time tshark is sniffing your HTTP GET-requests and TrafficTracker is displaying it on the map, with several other information about your connection.
 
@@ -50,4 +50,14 @@ Troubleshooting
 ---------------
 
 <strong> TrafficTracker doesn't show any activity at all, although i'm creating traffic like never before! </strong>
-Have you changed the <code> hostIP </code> and <code> hostInterface </code> according to your system? If those remain unchanged - 
+
+Have you changed the <code> hostIP </code> and <code> hostInterface </code> according to your system? If those remain unchanged, you might be sniffing someone elses traffic or - in worst case scenario - nothing at all. 
+
+Please remember that TrafficTracker is meant to be used solely on the system you're maintaining. Although tshark makes sniffing someone elses traffic possible, and TrafficTracker is flexible enough to support that, it is not recommended. 
+
+<strong> Although I reload the frontpage there isn't any package movement at all! </strong>
+
+The scripts used in TrafficTracker are loaded in a certain order. Sometimes during the development there was delay ot loading leaflet-maps. Try reloading. Tshark is ready to sniff your traffic when you see "Command received" on the terminal. That message comes from server which has received your command for sniffing traffic.
+
+<strong> TrafficTracker acts funky! It crashes everytime I reload the frontpage. </strong>
+
